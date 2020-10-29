@@ -20,11 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/compare.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/compare_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/models/compare.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/testdata/test01_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/compare.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +58,58 @@
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
+  <component name="RunManager" selected="Go Test.compare_test.go">
+    <configuration name="TestExchange in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestExchange\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestIsSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestIsSort\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestShow in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestShow\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="compare_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/code/compare_test.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.compare_test.go" />
+        <item itemvalue="Go Test.TestIsSort in github.com/clarechu/algorithms/code" />
+        <item itemvalue="Go Test.TestExchange in github.com/clarechu/algorithms/code" />
+        <item itemvalue="Go Test.TestShow in github.com/clarechu/algorithms/code" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
@@ -88,6 +137,22 @@
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="442" y="270" key="#Notifications/0.23.1440.833@0.23.1440.833" timestamp="1603985194024" />
+    <state width="1398" height="202" key="GridCell.Tab.0.bottom" timestamp="1603986531019">
+      <screen x="0" y="23" width="1440" height="833" />
+    </state>
+    <state width="1398" height="202" key="GridCell.Tab.0.bottom/0.23.1440.833@0.23.1440.833" timestamp="1603986531019" />
+    <state width="1398" height="202" key="GridCell.Tab.0.center" timestamp="1603986531019">
+      <screen x="0" y="23" width="1440" height="833" />
+    </state>
+    <state width="1398" height="202" key="GridCell.Tab.0.center/0.23.1440.833@0.23.1440.833" timestamp="1603986531019" />
+    <state width="1398" height="202" key="GridCell.Tab.0.left" timestamp="1603986531018">
+      <screen x="0" y="23" width="1440" height="833" />
+    </state>
+    <state width="1398" height="202" key="GridCell.Tab.0.left/0.23.1440.833@0.23.1440.833" timestamp="1603986531018" />
+    <state width="1398" height="202" key="GridCell.Tab.0.right" timestamp="1603986531019">
+      <screen x="0" y="23" width="1440" height="833" />
+    </state>
+    <state width="1398" height="202" key="GridCell.Tab.0.right/0.23.1440.833@0.23.1440.833" timestamp="1603986531019" />
     <state x="221" y="78" key="SettingsEditor" timestamp="1603985376629">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
@@ -96,5 +161,8 @@
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="385" y="180" width="670" height="676" key="search.everywhere.popup/0.23.1440.833@0.23.1440.833" timestamp="1603983510743" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/clarechu_github_io$compare_test_go.out" NAME="compare_test.go Coverage Results" MODIFIED="1603986526866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

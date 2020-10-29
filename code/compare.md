@@ -1,3 +1,8 @@
+# Compare
+
+比较大小的基本方法
+
+```go
 package compare
 
 import (
@@ -32,3 +37,5 @@ func exchange(comparable []*models.Comparable, i, j int) {
 	comparable[i] = comparable[j]
 	comparable[j] = c
 }
+
+```
