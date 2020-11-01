@@ -19,11 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="添加compare目录">
-      <change afterPath="$PROJECT_DIR$/code/insertion.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/insertion_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/selection.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/selection_test.go" afterDir="false" />
+    <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="添加 插入排序和 选择排序算法">
+      <change afterPath="$PROJECT_DIR$/code/merge.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/merge_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/compare.md" beforeDir="false" afterPath="$PROJECT_DIR$/code/compare.md" afterDir="false" />
     </list>
@@ -62,18 +60,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
-  <component name="RunManager" selected="Go Test.TestInsertion in github.com/clarechu/algorithms/code">
-    <configuration name="TestExchange in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestExchange\E$" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Go Test.TestMergeSort in github.com/clarechu/algorithms/code">
     <configuration name="TestInsertion in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$/code" />
@@ -94,6 +81,17 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <pattern value="^\QTestIsSort\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestMergeSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestMergeSort\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestSelectionSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -118,11 +116,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestMergeSort in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.TestInsertion in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.TestSelectionSort in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.compare_test.go" />
         <item itemvalue="Go Test.TestIsSort in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.TestExchange in github.com/clarechu/algorithms/code" />
       </list>
     </recent_temporary>
   </component>
@@ -145,7 +143,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="compare markdown" />
     <MESSAGE value="添加compare目录" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加compare目录" />
+    <MESSAGE value="添加 插入排序和 选择排序算法" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加 插入排序和 选择排序算法" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -159,46 +158,46 @@
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="442" y="270" key="#Notifications/0.23.1440.833@0.23.1440.833" timestamp="1603985194024" />
-    <state width="1398" height="364" key="GridCell.Tab.0.bottom" timestamp="1604076631701">
+    <state width="1398" height="323" key="GridCell.Tab.0.bottom" timestamp="1604248378559">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="364" key="GridCell.Tab.0.bottom/0.23.1440.833@0.23.1440.833" timestamp="1604076631701" />
-    <state width="1398" height="364" key="GridCell.Tab.0.center" timestamp="1604076631700">
+    <state width="1398" height="323" key="GridCell.Tab.0.bottom/0.23.1440.833@0.23.1440.833" timestamp="1604248378559" />
+    <state width="1398" height="323" key="GridCell.Tab.0.center" timestamp="1604248378558">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="364" key="GridCell.Tab.0.center/0.23.1440.833@0.23.1440.833" timestamp="1604076631700" />
-    <state width="1398" height="364" key="GridCell.Tab.0.left" timestamp="1604076631699">
+    <state width="1398" height="323" key="GridCell.Tab.0.center/0.23.1440.833@0.23.1440.833" timestamp="1604248378558" />
+    <state width="1398" height="323" key="GridCell.Tab.0.left" timestamp="1604248378558">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="364" key="GridCell.Tab.0.left/0.23.1440.833@0.23.1440.833" timestamp="1604076631699" />
-    <state width="1398" height="364" key="GridCell.Tab.0.right" timestamp="1604076631700">
+    <state width="1398" height="323" key="GridCell.Tab.0.left/0.23.1440.833@0.23.1440.833" timestamp="1604248378558" />
+    <state width="1398" height="323" key="GridCell.Tab.0.right" timestamp="1604248378559">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="364" key="GridCell.Tab.0.right/0.23.1440.833@0.23.1440.833" timestamp="1604076631700" />
-    <state width="1398" height="467" key="GridCell.Tab.1.bottom" timestamp="1604075883456">
+    <state width="1398" height="323" key="GridCell.Tab.0.right/0.23.1440.833@0.23.1440.833" timestamp="1604248378559" />
+    <state width="1398" height="323" key="GridCell.Tab.1.bottom" timestamp="1604248378560">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="467" key="GridCell.Tab.1.bottom/0.23.1440.833@0.23.1440.833" timestamp="1604075883456" />
-    <state width="1398" height="467" key="GridCell.Tab.1.center" timestamp="1604075883455">
+    <state width="1398" height="323" key="GridCell.Tab.1.bottom/0.23.1440.833@0.23.1440.833" timestamp="1604248378560" />
+    <state width="1398" height="323" key="GridCell.Tab.1.center" timestamp="1604248378560">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="467" key="GridCell.Tab.1.center/0.23.1440.833@0.23.1440.833" timestamp="1604075883455" />
-    <state width="1398" height="467" key="GridCell.Tab.1.left" timestamp="1604075883454">
+    <state width="1398" height="323" key="GridCell.Tab.1.center/0.23.1440.833@0.23.1440.833" timestamp="1604248378560" />
+    <state width="1398" height="323" key="GridCell.Tab.1.left" timestamp="1604248378559">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="467" key="GridCell.Tab.1.left/0.23.1440.833@0.23.1440.833" timestamp="1604075883454" />
-    <state width="1398" height="467" key="GridCell.Tab.1.right" timestamp="1604075883456">
+    <state width="1398" height="323" key="GridCell.Tab.1.left/0.23.1440.833@0.23.1440.833" timestamp="1604248378559" />
+    <state width="1398" height="323" key="GridCell.Tab.1.right" timestamp="1604248378560">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="467" key="GridCell.Tab.1.right/0.23.1440.833@0.23.1440.833" timestamp="1604075883456" />
+    <state width="1398" height="323" key="GridCell.Tab.1.right/0.23.1440.833@0.23.1440.833" timestamp="1604248378560" />
     <state x="221" y="78" key="SettingsEditor" timestamp="1603985376629">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="221" y="78" key="SettingsEditor/0.23.1440.833@0.23.1440.833" timestamp="1603985376629" />
-    <state x="320" y="179" key="Vcs.Push.Dialog.v2" timestamp="1603986729946">
+    <state x="320" y="179" key="Vcs.Push.Dialog.v2" timestamp="1604076684926">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state x="320" y="179" key="Vcs.Push.Dialog.v2/0.23.1440.833@0.23.1440.833" timestamp="1603986729946" />
+    <state x="320" y="179" key="Vcs.Push.Dialog.v2/0.23.1440.833@0.23.1440.833" timestamp="1604076684926" />
     <state x="385" y="180" width="670" height="676" key="search.everywhere.popup" timestamp="1603983510743">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
@@ -211,6 +210,11 @@
           <url>file://$PROJECT_DIR$/code/selection_test.go</url>
           <line>11</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/code/merge.go</url>
+          <line>17</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
