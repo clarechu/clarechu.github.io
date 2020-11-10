@@ -19,9 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="添加 插入排序和 选择排序算法">
-      <change afterPath="$PROJECT_DIR$/code/merge.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/merge_test.go" afterDir="false" />
+    <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="归并排序">
+      <change afterPath="$PROJECT_DIR$/code/quick.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/quick_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/compare.md" beforeDir="false" afterPath="$PROJECT_DIR$/code/compare.md" afterDir="false" />
     </list>
@@ -60,8 +60,8 @@
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
-  <component name="RunManager" selected="Go Test.TestMergeSort in github.com/clarechu/algorithms/code">
-    <configuration name="TestInsertion in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Test.TestQuick in github.com/clarechu/algorithms/code">
+    <configuration name="TestQuick in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$/code" />
       <framework value="gotest" />
@@ -69,29 +69,7 @@
       <package value="github.com/clarechu/algorithms/code" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestInsertion\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestIsSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestIsSort\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestMergeSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestMergeSort\E$" />
+      <pattern value="^\QTestQuick\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestSelectionSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -105,22 +83,44 @@
       <pattern value="^\QTestSelectionSort\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="compare_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestSort in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$/code" />
       <framework value="gotest" />
-      <kind value="FILE" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
       <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/code/compare_test.go" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestSort\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test clarechu.github.io" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/clarechu/algorithms" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestMergeSort in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.TestInsertion in github.com/clarechu/algorithms/code" />
+        <item itemvalue="Go Test.TestQuick in github.com/clarechu/algorithms/code" />
+        <item itemvalue="Go Test.TestSort in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.TestSelectionSort in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.compare_test.go" />
-        <item itemvalue="Go Test.TestIsSort in github.com/clarechu/algorithms/code" />
+        <item itemvalue="Go Test.go test github.com/clarechu/algorithms/code" />
+        <item itemvalue="Go Test.go test clarechu.github.io" />
       </list>
     </recent_temporary>
   </component>
@@ -144,7 +144,8 @@
     <MESSAGE value="compare markdown" />
     <MESSAGE value="添加compare目录" />
     <MESSAGE value="添加 插入排序和 选择排序算法" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加 插入排序和 选择排序算法" />
+    <MESSAGE value="归并排序" />
+    <option name="LAST_COMMIT_MESSAGE" value="归并排序" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -158,46 +159,54 @@
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="442" y="270" key="#Notifications/0.23.1440.833@0.23.1440.833" timestamp="1603985194024" />
-    <state width="1398" height="323" key="GridCell.Tab.0.bottom" timestamp="1604248378559">
+    <state width="1398" height="363" key="GridCell.Tab.0.bottom" timestamp="1605020779963">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.0.bottom/0.23.1440.833@0.23.1440.833" timestamp="1604248378559" />
-    <state width="1398" height="323" key="GridCell.Tab.0.center" timestamp="1604248378558">
+    <state width="1398" height="363" key="GridCell.Tab.0.bottom/0.23.1440.833@0.23.1440.833" timestamp="1605020779963" />
+    <state width="1878" height="357" key="GridCell.Tab.0.bottom/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417227" />
+    <state width="1398" height="363" key="GridCell.Tab.0.center" timestamp="1605020779963">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.0.center/0.23.1440.833@0.23.1440.833" timestamp="1604248378558" />
-    <state width="1398" height="323" key="GridCell.Tab.0.left" timestamp="1604248378558">
+    <state width="1398" height="363" key="GridCell.Tab.0.center/0.23.1440.833@0.23.1440.833" timestamp="1605020779963" />
+    <state width="1878" height="357" key="GridCell.Tab.0.center/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417226" />
+    <state width="1398" height="363" key="GridCell.Tab.0.left" timestamp="1605020779962">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.0.left/0.23.1440.833@0.23.1440.833" timestamp="1604248378558" />
-    <state width="1398" height="323" key="GridCell.Tab.0.right" timestamp="1604248378559">
+    <state width="1398" height="363" key="GridCell.Tab.0.left/0.23.1440.833@0.23.1440.833" timestamp="1605020779962" />
+    <state width="1878" height="357" key="GridCell.Tab.0.left/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417226" />
+    <state width="1398" height="363" key="GridCell.Tab.0.right" timestamp="1605020779963">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.0.right/0.23.1440.833@0.23.1440.833" timestamp="1604248378559" />
-    <state width="1398" height="323" key="GridCell.Tab.1.bottom" timestamp="1604248378560">
+    <state width="1398" height="363" key="GridCell.Tab.0.right/0.23.1440.833@0.23.1440.833" timestamp="1605020779963" />
+    <state width="1878" height="357" key="GridCell.Tab.0.right/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417226" />
+    <state width="1398" height="279" key="GridCell.Tab.1.bottom" timestamp="1605020760055">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.1.bottom/0.23.1440.833@0.23.1440.833" timestamp="1604248378560" />
-    <state width="1398" height="323" key="GridCell.Tab.1.center" timestamp="1604248378560">
+    <state width="1398" height="279" key="GridCell.Tab.1.bottom/0.23.1440.833@0.23.1440.833" timestamp="1605020760055" />
+    <state width="1878" height="357" key="GridCell.Tab.1.bottom/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417228" />
+    <state width="1398" height="279" key="GridCell.Tab.1.center" timestamp="1605020760054">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.1.center/0.23.1440.833@0.23.1440.833" timestamp="1604248378560" />
-    <state width="1398" height="323" key="GridCell.Tab.1.left" timestamp="1604248378559">
+    <state width="1398" height="279" key="GridCell.Tab.1.center/0.23.1440.833@0.23.1440.833" timestamp="1605020760054" />
+    <state width="1878" height="357" key="GridCell.Tab.1.center/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417227" />
+    <state width="1398" height="279" key="GridCell.Tab.1.left" timestamp="1605020760053">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.1.left/0.23.1440.833@0.23.1440.833" timestamp="1604248378559" />
-    <state width="1398" height="323" key="GridCell.Tab.1.right" timestamp="1604248378560">
+    <state width="1398" height="279" key="GridCell.Tab.1.left/0.23.1440.833@0.23.1440.833" timestamp="1605020760053" />
+    <state width="1878" height="357" key="GridCell.Tab.1.left/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417227" />
+    <state width="1398" height="279" key="GridCell.Tab.1.right" timestamp="1605020760054">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state width="1398" height="323" key="GridCell.Tab.1.right/0.23.1440.833@0.23.1440.833" timestamp="1604248378560" />
+    <state width="1398" height="279" key="GridCell.Tab.1.right/0.23.1440.833@0.23.1440.833" timestamp="1605020760054" />
+    <state width="1878" height="357" key="GridCell.Tab.1.right/0.23.1920.1013@0.23.1920.1013" timestamp="1604888417228" />
     <state x="221" y="78" key="SettingsEditor" timestamp="1603985376629">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="221" y="78" key="SettingsEditor/0.23.1440.833@0.23.1440.833" timestamp="1603985376629" />
-    <state x="320" y="179" key="Vcs.Push.Dialog.v2" timestamp="1604076684926">
+    <state x="320" y="179" key="Vcs.Push.Dialog.v2" timestamp="1604248490979">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state x="320" y="179" key="Vcs.Push.Dialog.v2/0.23.1440.833@0.23.1440.833" timestamp="1604076684926" />
+    <state x="320" y="179" key="Vcs.Push.Dialog.v2/0.23.1440.833@0.23.1440.833" timestamp="1604248490979" />
     <state x="385" y="180" width="670" height="676" key="search.everywhere.popup" timestamp="1603983510743">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
@@ -216,10 +225,28 @@
           <line>17</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/code/quick.go</url>
+          <line>40</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/code/quick_test.go</url>
+          <line>11</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/code/quick_test.go</url>
+          <line>10</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/clarechu_github_io$compare_test_go.out" NAME="compare_test.go Coverage Results" MODIFIED="1603986526866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/clarechu_github_io$go_test_clarechu_github_io.out" NAME="go test clarechu.github.io Coverage Results" MODIFIED="1604248440114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/clarechu_github_io$TestMergeSort_in_github_com_clarechu_algorithms_code.out" NAME="TestMergeSort in github.com/clarechu/algorithms/code Coverage Results" MODIFIED="1604248432848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/clarechu_github_io$TestSort_in_github_com_clarechu_algorithms_code.out" NAME="TestSort in github.com/clarechu/algorithms/code Coverage Results" MODIFIED="1605018141925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

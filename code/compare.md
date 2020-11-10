@@ -126,3 +126,44 @@ func merge(a []*models.Comparable, lo, mid, hi int) {
 }
 
 ```
+
+
+快速排序
+
+
+
+```go
+func quick(a []*models.Comparable, lo, hi int) {
+	if lo >= hi {
+		return
+	}
+	k := a[lo]
+	i, j := lo, hi
+	for {
+		for ; i < j; j-- {
+			if less(a[j], k) {
+				break
+			}
+		}
+		if i < j {
+			a[i] = a[j]
+			i++
+		}
+		for ; i < j; i++ {
+			if less(k, a[i]) {
+				break
+			}
+		}
+		if i < j {
+			a[j] = a[i]
+			j--
+		}
+		if i >= j {
+			break
+		}
+	}
+	a[i] = k
+	quick(a, lo, i-1)
+	quick(a, i+1, hi)
+}
+```
