@@ -20,10 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="归并排序">
-      <change afterPath="$PROJECT_DIR$/code/quick.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/quick_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/queue/queue.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/compare.md" beforeDir="false" afterPath="$PROJECT_DIR$/code/compare.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
