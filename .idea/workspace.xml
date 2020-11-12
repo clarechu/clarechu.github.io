@@ -20,8 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="归并排序">
-      <change afterPath="$PROJECT_DIR$/code/queue/queue.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istio/bookinfo-gateway.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istio/bookinfo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istio/bookinfo.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istio/iptables.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istio/istio-use.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/queue/queue.md" beforeDir="false" afterPath="$PROJECT_DIR$/code/queue/queue.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +61,13 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/istio" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/istio" />
+    </key>
   </component>
   <component name="RunManager" selected="Go Test.TestQuick in github.com/clarechu/algorithms/code">
     <configuration name="TestQuick in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -157,6 +168,10 @@
       <screen x="0" y="23" width="1440" height="833" />
     </state>
     <state x="442" y="270" key="#Notifications/0.23.1440.833@0.23.1440.833" timestamp="1603985194024" />
+    <state x="712" y="338" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605180301717">
+      <screen x="0" y="23" width="1920" height="1013" />
+    </state>
+    <state x="712" y="338" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1920.1013@0.23.1920.1013" timestamp="1605180301717" />
     <state width="1398" height="363" key="GridCell.Tab.0.bottom" timestamp="1605020779963">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
