@@ -1,8 +1,5 @@
 # istio 流量管理使用说明
 
-<font face="黑体" color=red size=3>（多用一点篇幅来讲讲这些东西是什么，用来干什么之类的)</font>
-<font face="黑体" color=red size=3>（讲完功能之后要提solarmesh是如何解决这些问题的)</font>
-
 ### 前提条件<font face="黑体" color=red size=3>（改成“开始前准备”会不会好点)</font>
 
 在开始之前，请检查以下先决条件：
