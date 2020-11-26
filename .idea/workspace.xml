@@ -20,6 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47e8d99a-a9b7-4099-b7e6-2d9674157243" name="Default Changelist" comment="归并排序">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/istio/iptables.md" beforeDir="false" afterPath="$PROJECT_DIR$/istio/iptables-analysis.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/istio/istio-use.md" beforeDir="false" afterPath="$PROJECT_DIR$/istio/istio-use.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
