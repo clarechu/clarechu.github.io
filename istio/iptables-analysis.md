@@ -32,7 +32,7 @@ iptables 的表（tables） 和链（chains）
 
 * `LOG`：在/var/log/messages文件中记录日志信息，然后将数据包传递给下一条规则，也就是说除了记录以外不对数据包做任何其他操作，仍然让下一条规则去匹配。
 
-iptables具有以下4个内置表。
+### iptables具有以下4个内置表
 
 1. Filter
 
@@ -50,36 +50,101 @@ FORWARD  负责转发流经主机但不进入本机的数据包、起转发作�
 OUTPUT  处理所有原地址是本机地址的数据包、通俗的讲就是处理从主机发出去的数据包。
 ```
 
-1. NAT表
+2. NAT表
+```bash
+NAT表
 
-2. Mangle
+是网络地址转换的意思。即负责来源与目的IP地址和port的转换、和主机本身无关。一般用于局域网多人共享上网或者内网IP映射外网IP及不同端口转换服务等功能。Nat表的功能很重要、这个表定义了三个链（chains）
 
-3. Raw
+OUTPUT
 
--t：指定要操纵的表；
--A：向规则链中添加条目；
--D：从规则链中删除条目；
--I：向规则链中插入条目；
--R：替换规则链中的条目；
--L：显示规则链中已有的条目；
--F：清楚规则链中已有的条目；
--Z：清空规则链中的数据包计算器和字节计数器；
--N：创建新的用户自定义规则链；
--P：定义规则链中的默认目标；
--h：显示帮助信息；
--p：指定要匹配的数据包协议类型；
--s：指定要匹配的数据包源ip地址；
--d：指定要匹配的数据包目标ip地址；
--j：指定要跳转的目标；
--i：指定数据包进入本机的网络接口（网卡）；
--o：指定数据包离开本机的网络接口（网卡）；
---sport：匹配来源端口号；
---dport：匹配目标端口号。
+主机发出去的数据包有关、在数据包路由之前改变主机产生的数据包的目的地址等。
 
-下述规则允许端口80上的传入HTTP通信。
+PREROUTING
+
+在数据包刚到达防火墙时、进行路由判断之前执行的规则、改变包的目的地址（DNAT功能）、端口等（通俗比喻，就是收信时、根据规则重写收件人的地址、这看上去不地道啊、）把公司IP映射到局域网的机器上、此链多用于把外部IP地址端口的服务、映射为内部IP地址及端口
+
+POSTROUTING
+
+在数据包离开防火墙时进行路由判断之后执行的规则、改变包的源地址（SNAT）、端口等（通俗比喻、就是寄信时写好发件人的地址、要让人家回信是能够有地址可回）刺链多用于局域网共享上网，把所有局域网的地址、转换为公网地址上
+```
+
+3. Mangle
 
 ```bash
-iptables -A INPUT -i eth1 -p tcp --dport 80 -d 1.2.3.4 -j ACCEPT
+
+Mangle
+
+主要负责修改数据包中特殊的路由标记，如TTL、TOS、MARK等、这个表定义了5个链（chains）
+
+INPUT
+
+同filter表的INPUT
+
+FORWARD
+
+同filter表的FORWARD
+
+OUTPUT  同fileter表的OUTPUT
+
+PREROUTING  同nat表的PREROUTING
+
+POSTOUTING  同nat表的POSTOUTING
+
+```
+
+1. Raw
+
+后面在说
+
+### 参数定义
+
+```bash
+-t：指定要操纵的表； `table`
+
+-A：向规则链中添加条目；`Append`
+
+-D：从规则链中删除条目； `delete`
+
+-I：向规则链中插入条目；`insert`
+
+-R：替换规则链中的条目；`replace`
+
+-L：显示规则链中已有的条目；``
+
+-F：清除规则链中已有的条目；`flush`
+
+-Z：清空规则链中的数据包计算器和字节计数器；
+
+-N：创建新的用户自定义规则链；
+
+-P：定义规则链中的默认目标；`policy`
+
+-h：显示帮助信息；`help`
+
+-p：指定要匹配的数据包协议类型；`proto	protocol: by number or name, eg. tcp`
+
+-s：指定要匹配的数据包源ip地址；`source`
+
+-d：指定要匹配的数据包目标ip地址；`destination`
+
+-j：指定要跳转的目标；`jump`
+
+-i：指定数据包进入本机的网络接口（网卡）；`input`
+
+-o：指定数据包离开本机的网络接口（网卡）；`onput`
+
+--sport：匹配来源端口号；`source port`
+
+--dport：匹配目标端口号。`destination port`
+
+下述规则允许端口80上的传入HTTP通信。
+```
+
+#### 例如
+
+```bash
+$ iptables -A INPUT -i eth1 -p tcp --dport 80 -d 1.2.3.4 -j ACCEPT
 ```
 
 -A 表示我们正在添加新规则。缺省情况下，除非您指定另一个表，否则iptables会将所有新规则添加到 Filter 表中。
@@ -93,3 +158,13 @@ iptables -A INPUT -i eth1 -p tcp --dport 80 -d 1.2.3.4 -j ACCEPT
 -d 指定目标IP地址，即1.2.3.4。如果未指定目标IP地址，则该规则将适用于eth1上的所有传入流量，而不管IP地址如何。
 
 -j 指定要执行的操作或JUMP操作。在这里，我们使用接受策略来接受数据包。
+
+开放端口指定插入第几行
+
+```bash
+# --line-number 展示行号
+$ iptables -nL  --line-number
+
+$ iptables -I INPUT 4 -p tcp --dport 1234 -j ACCEPT
+在第四行插入iptables
+```
