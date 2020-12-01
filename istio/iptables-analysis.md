@@ -144,7 +144,9 @@ POSTOUTING  同nat表的POSTOUTING
 #### 例如
 
 ```bash
+
 $ iptables -A INPUT -i eth1 -p tcp --dport 80 -d 1.2.3.4 -j ACCEPT
+
 ```
 
 -A 表示我们正在添加新规则。缺省情况下，除非您指定另一个表，否则iptables会将所有新规则添加到 Filter 表中。
@@ -165,6 +167,73 @@ $ iptables -A INPUT -i eth1 -p tcp --dport 80 -d 1.2.3.4 -j ACCEPT
 # --line-number 展示行号
 $ iptables -nL  --line-number
 
+# 在第四行插入iptables
 $ iptables -I INPUT 4 -p tcp --dport 1234 -j ACCEPT
-在第四行插入iptables
+
 ```
+
+禁止所有INPUT
+
+```bash
+$ iptables -P INPUT DROP
+$ iptables -P OUTPUT DROP
+```
+
+
+我现在用一个测试软件来测试连通性
+
+### 四、nc搭建简单内网聊天室
+
+本机-本机 ， 单台机器开了两个shell窗口，当一个窗口输入消息时，另一个窗口也会同步显示
+
+```bash
+ncat -v -lp 8080
+```
+
+#### 服务端
+
+```bash
+[root@localhost ~]$ ncat -v -lp 8080
+Ncat: Version 7.50 ( https://nmap.org/ncat )
+Ncat: Listening on :::8080
+Ncat: Listening on 0.0.0.0:8080
+Ncat: Connection from 127.0.0.1.
+Ncat: Connection from 127.0.0.1:45996.
+xxx
+xxx
+```
+
+##### 客户端
+
+```bash
+[root@localhost ~]$ nc -v 127.0.0.1 8080
+Ncat: Version 7.50 ( https://nmap.org/ncat )
+Ncat: Connected to 127.0.0.1:8080.
+xxx
+xxx
+```
+
+### NAT 作用及使用
+
+我们现在讲一下nat表主要的作用
+
+端口转发
+
+```bash
+
+# 将 8080 转发到80 端口上面
+
+ $  iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDERECT --to-ports 8000
+
+# 如果防火墙默认是关闭的状态
+
+则需要设置以下规则
+
+$ iptables -A INPUT -p tcp --dport 8000 -j ACCEPT
+
+$ iptables -A OUTPUT -p tcp --sport 8000 -j ACCEPT
+
+
+```
+
+流量转发
