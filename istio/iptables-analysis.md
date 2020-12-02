@@ -98,6 +98,7 @@ POSTOUTING  同nat表的POSTOUTING
 
 ```bash
 
+
 ```
 
 后面在说
@@ -241,4 +242,14 @@ $ iptables -A OUTPUT -p tcp --sport 8000 -j ACCEPT
 
 ```
 
-流量转发
+#### 流量转发
+
+##### 将流量转发到服务器上面
+
+在 10.10.13.111 上 设置 将 对 10.10.13.111的请求转发到10.10.13.110 并实现 逆转,
+
+```bash
+iptables -t nat -I PREROUTING -p tcp --dport 8001 -d 10.10.13.111 -j DNAT --to-destination 10.10.13.110
+
+iptables -t nat -I POSTROUTING -p tcp --dport 8001 -d 10.10.13.110 -j SNAT --to-destination 10.10.13.111
+```
