@@ -34,7 +34,8 @@ iptables 的表（tables） 和链（chains）
 
 ### iptables具有以下4个内置表
 
-1. Filter
+
+#### 1. Filter
 
 ```bash
 Filter表
@@ -50,7 +51,7 @@ FORWARD  负责转发流经主机但不进入本机的数据包、起转发作�
 OUTPUT  处理所有原地址是本机地址的数据包、通俗的讲就是处理从主机发出去的数据包。
 ```
 
-2. NAT表
+#### 2. NAT表
 
 ```bash
 NAT表
@@ -70,7 +71,7 @@ POSTROUTING
 在数据包离开防火墙时进行路由判断之后执行的规则、改变包的源地址（SNAT）、端口等（通俗比喻、就是寄信时写好发件人的地址、要让人家回信是能够有地址可回）刺链多用于局域网共享上网，把所有局域网的地址、转换为公网地址上
 ```
 
-1. Mangle
+#### 3. Mangle
 
 ```bash
 Mangle
@@ -93,7 +94,11 @@ POSTOUTING  同nat表的POSTOUTING
 
 ```
 
-1. Raw
+#### 4. Raw
+
+```bash
+
+```
 
 后面在说
 
