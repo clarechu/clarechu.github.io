@@ -2,8 +2,8 @@
 
 clare 的博客
 
-* [kiali](istio/kiali.md)
-* [compare](code/compare.md)
-* [如何使用istio](istio/istio-use.md)
-* [iptables](istio/iptables-analysis.md)
-* [更改docker默认挂载目录](docker/mv-docker-file.md)
+* [kiali](source/istio/kiali.md)
+* [compare](source/code/compare.md)
+* [如何使用istio](source/istio/istio-use.md)
+* [iptables](source/istio/iptables-analysis.md)
+* [更改docker默认挂载目录](source/docker/mv-docker-file.md)
