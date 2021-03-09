@@ -1,5 +1,8 @@
 ---
 title: istio 流量管理使用说明
+date: 2021-01-21
+tags:
+- istio
 ---
 
 istio 流量管理使用说明

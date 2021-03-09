@@ -1,7 +1,11 @@
 ---
 title: kiali 源码解析
-tags: kiali
-date: 2021-03-09 18:36:28
+date: 2021-01-21 18:36:28
+categories: 
+- istio
+tags: 
+- istio
+- kiali
 ---
 
 
