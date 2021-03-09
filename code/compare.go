@@ -2,7 +2,7 @@ package compare
 
 import (
 	"fmt"
-	"github.com/clarechu/algorithms/source/code/models"
+	"github.com/clarechu/algorithms/code/models"
 )
 
 func show(comparable []*models.Comparable) {

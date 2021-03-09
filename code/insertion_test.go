@@ -1,14 +1,14 @@
 package compare
 
 import (
-	"github.com/clarechu/algorithms/source/code/testdata"
+	"github.com/clarechu/algorithms/code/testdata"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestMergeSort(t *testing.T) {
+func TestInsertion(t *testing.T) {
 	data := testdata.GetCompare()
 	assert.False(t, isSorted(data))
-	mergeSort(data)
+	insertionSort(data)
 	assert.True(t, isSorted(data))
 }

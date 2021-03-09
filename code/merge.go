@@ -1,6 +1,6 @@
 package compare
 
-import "github.com/clarechu/algorithms/source/code/models"
+import "github.com/clarechu/algorithms/code/models"
 
 //Merge Sort 归并排序
 func mergeSort(a []*models.Comparable) {

@@ -1,5 +1,7 @@
 ---
 title: kiali 源码解析
+tags: kiali
+date: {{ date }}
 ---
 
 

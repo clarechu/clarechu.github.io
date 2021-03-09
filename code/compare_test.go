@@ -1,7 +1,7 @@
 package compare
 
 import (
-	"github.com/clarechu/algorithms/source/code/testdata"
+	"github.com/clarechu/algorithms/code/testdata"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

@@ -1,7 +1,7 @@
 package testdata
 
 import (
-	"github.com/clarechu/algorithms/source/code/models"
+	"github.com/clarechu/algorithms/code/models"
 )
 
 var data []*models.Comparable

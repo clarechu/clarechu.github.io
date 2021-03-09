@@ -1,7 +1,7 @@
 package compare
 
 import (
-	"github.com/clarechu/algorithms/source/code/models"
+	"github.com/clarechu/algorithms/code/models"
 	"math/rand"
 )
 

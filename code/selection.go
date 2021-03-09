@@ -1,6 +1,6 @@
 package compare
 
-import "github.com/clarechu/algorithms/source/code/models"
+import "github.com/clarechu/algorithms/code/models"
 
 func selectSort(a []*models.Comparable) {
 	n := len(a)

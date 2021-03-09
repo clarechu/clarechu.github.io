@@ -1,5 +1,6 @@
 ---
 title: Compare
+date: 2021-03-09 18:36:28
 ---
 
 # Compare
@@ -11,7 +12,7 @@ package compare
 
 import (
 	"fmt"
-	"github.com/clarechu/algorithms/source/code/models"
+	"github.com/clarechu/algorithms/code/models"
 )
 
 func show(comparable []*models.Comparable) {
