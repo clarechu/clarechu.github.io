@@ -1,6 +1,9 @@
 ---
 title: iptables 详解
+date: 2021-03-09 19:03:03
+tags:
 ---
+
 
 # iptables 详解
 
@@ -11,7 +14,7 @@ netfilter才是防火墙真正的安全框架（framework），netfilter位于�
 iptables其实是一个命令行工具，位于用户空间，我们用这个工具操作真正的框架。
 
 iptables 的表（tables） 和链（chains）
-   描述完iptables术语后、相信大家对iptables的表和链有了初步的了解了、默认情况下。Iptables，根据功能和表的定义划分、最常用的有三个表，分别是filter,nat mangle.其中每个表又有各自包含不同的操作链（chains）
+描述完iptables术语后、相信大家对iptables的表和链有了初步的了解了、默认情况下。Iptables，根据功能和表的定义划分、最常用的有三个表，分别是filter,nat mangle.其中每个表又有各自包含不同的操作链（chains）
 
 ![](analysis/2020-11-26-22-33-55.png)
 
