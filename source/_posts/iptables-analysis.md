@@ -13,7 +13,7 @@ iptables其实是一个命令行工具，位于用户空间，我们用这个工
 iptables 的表（tables） 和链（chains）
    描述完iptables术语后、相信大家对iptables的表和链有了初步的了解了、默认情况下。Iptables，根据功能和表的定义划分、最常用的有三个表，分别是filter,nat mangle.其中每个表又有各自包含不同的操作链（chains）
 
-![](2020-11-26-22-33-55.png)
+![](iptables-analysis/2020-11-26-22-33-55.png)
 
 #### 处理动作
 处理动作在iptables中被称为target（这样说并不准确，我们暂且这样称呼），动作也可以分为基本动作和扩展动作。
