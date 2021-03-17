@@ -5,7 +5,8 @@ tags:
 - kubernetes
 ---
 
-有时候需要快速搭建一个k8s教程来帮助 省去很多时间 把更多的时间都放到写代码的时候，我觉得这也是很有必要的。
+有时候需要快速搭建一个k8s集群帮组我测试代码的功能，这样可以帮我省去很多时间，把更多的时间都投入到写代码中，我觉得这也是很有必要的。
+接下来我就讲解如何快速搭建k8s集群。
 
 首先准备若干个机器，这里我只是举例子 
 
@@ -88,7 +89,7 @@ ezctl new k8s-01
 2021-01-19 10:48:23 DEBUG cluster k8s-01: files successfully created.
 2021-01-19 10:48:23 INFO next steps 1: to config '/etc/kubeasz/clusters/k8s-01/hosts'
 2021-01-19 10:48:23 INFO next steps 2: to config '/etc/kubeasz/clusters/k8s-01/config.yml'
-然后根据提示配置'/etc/kubeasz/clusters/k8s-01/hosts' 和 '/etc/kubeasz/clusters/k8s-01/config.yml'：根据前面节点规划修改hosts 文件和其他集群层面的主要配置选项；其他集群组件等配置项可以在config.yml 文件中修改。
+然后根据提示配置'/etc/kubeasz/clusters/k8s-01/hosts' 和 '/etc/kubeasz/clusters/k8s-01/config.yml': 根据前面节点规划修改hosts 文件和其他集群层面的主要配置选项；其他集群组件等配置项可以在config.yml 文件中修改。
 ```
 
 4.3 开始安装 如果你对集群安装流程不熟悉，请阅读项目首页 安装步骤 讲解后分步安装，并对 每步都进行验证
@@ -104,3 +105,5 @@ $ ezctl setup k8s-01 all
 # ezctl setup k8s-01 03
 # ezctl setup k8s-01 04
 ```
+
+

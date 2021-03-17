@@ -3,6 +3,8 @@
 
 node_modules/
 
-.deploy_git
+.deploy_git/
+
+publish/
 
 vscode
