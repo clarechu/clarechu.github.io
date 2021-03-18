@@ -5,6 +5,4 @@ node_modules/
 
 .deploy_git/
 
-publish/
-
 vscode
