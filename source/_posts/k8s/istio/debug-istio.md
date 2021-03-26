@@ -6,12 +6,14 @@ tags:
 
 本文档主要是帮助我们如何在本地使用调试istio
 
-因为我们使用的istio都是在1.6.0上面做的,所以我在下面的讲解的版本也是在istio release-1.6.0版本上面进行
+因为我们使用的istio都是在1.8.4上面做的,所以我在下面的讲解的版本也是在istio release-1.8.4版本上面进行
 
 istio 核心模块有两个
 
 * pilot-discovery: 这个模块就是我们的istiod istio/pilot/pilot-discovery 目录下
 * pilot-agent: 这个模块 就是proxy istio/pilot/pilot-discovery 目录下
+
+![img.png](img.png)
 
 如果我们使用kind 则需要 --config trustworthy-jwt.yaml
 
@@ -41,38 +43,17 @@ containerdConfigPatches:
 ### 运行kind
 
 ```bash
-$ kind create cluster --image  registry.cn-shenzhen.aliyuncs.com/solar-mesh/node:v1.17.5 --config trustworthy-jwt.yaml  --name kind-2
+$ kind create cluster --image  docker.io/kindest/node:v1.17.5 --config trustworthy-jwt.yaml  --name kind-2
 ```
 
 ### 本地代理`pilot-discovery`
 
-接下来我们来启动 `pilot-discovery` 我们会遇到
-
-* Failed to write secret to CA (error: namespaces "istio-system" not found). Abort.
-* Failed to get secret (error: secrets "istio-ca-secret" not found), will create one
-
 ```bash
-$ kubectl create ns istio-system 
-
-$ go run ./pilot/cmd/pilot-discovery discovery
-
-2021-03-22T06:00:42.409218Z     info    Use self-signed certificate as the CA certificate
-2021-03-22T06:00:42.414628Z     info    pkica   Failed to get secret (error: secrets "istio-ca-secret" not found), will create one
-2021-03-22T06:00:42.667904Z     error   pkica   Failed to write secret to CA (error: namespaces "istio-system" not found). Abort.
-Error: failed to create discovery service: failed to create CA: failed to create a self-signed istiod CA: failed to create CA due to secret write error
-2021-03-22T06:00:42.667972Z     error   failed to create discovery service: failed to create CA: failed to create a self-signed istiod CA: failed to create CA due to secret write error
-
+# 安装istio
+$ istioctl install
 ```
 
-```bash
-proxy-local-bootstrap() {
-    mkdir -p ./var/run/secrets/tokens ./var/run/secrets/istio
-    echo '{"kind":"TokenRequest","apiVersion":"authentication.k8s.io/v1","spec":{"audiences":["istio-ca"], "expirationSeconds":2592000}}' | \
-        kubectl create --raw /api/v1/namespaces/${1:-default}/serviceaccounts/${2:-default}/token -f - | jq -j '.status.token' > ./var/run/secrets/tokens/istio-token
-    kubectl -n istio-system get secret istio-ca-secret -ojsonpath='{.data.ca-cert\.pem}' | base64 -d > ./var/run/secrets/istio/root-cert.pem
-}
-proxy-local-bootstrap
-```
+等待istio 安装完成以后我们将 istiod的流量转到本地，主要目的是为了更改endpoint 
 
 使用外部 istiod
 
