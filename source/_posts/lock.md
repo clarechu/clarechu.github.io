@@ -31,7 +31,8 @@ func (rw *RWMutex) RUnlock    //读解锁
 
 ## 互斥锁(Mutex)
 
-使用互斥锁（Mutex，全称 mutual exclusion）是为了来保护一个资源不会因为并发操作而引起冲突导致数据不准确。
+使用互斥锁（Mutex，全称 mutual exclusion）是为了来保护一个资源不会因为并发操作而引起冲突导致
+数据不准确。
 
 ```go
 package main
