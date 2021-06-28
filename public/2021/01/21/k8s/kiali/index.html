@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            kiali 源码解析 |
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">kiali 源码解析</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-01-21 18:36:28
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/istio/">istio</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/kiali/">kiali</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/istio/">istio</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>kiali 源码解析</p>
+<p>前言: </p>
+<p>Kiali是用于基于Istio的服务网格的管理控制台。它提供仪表板，可观察性，并允许您使用强大的配置和验证功能来操作网格。它通过推断流量拓扑来显示服务网格的结构，并显示网格的运行状况。Kiali提供了详细的指标，强大的验证，Grafana访问以及与Jaeger进行分布式跟踪的强大集成。</p>
+<p>以下就是kiali的流量试图 界面</p>
+<p><img src="https://kiali.io/images/documentation/features/graph-health-v1.22.0.png" alt="kiali"></p>
+<p>Kiali是用于基于Istio的服务网格的管理控制台 所以得使用istio来安装kiali插件</p>
+<p>如何istio 来安装kiali</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ istioctl manifest apply --<span class="built_in">set</span> values.kiali.enabled=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>kiali 的默认 用户名与密码是 admin/admin</p>
+<h2 id="kiali-流量试图"><a href="#kiali-流量试图" class="headerlink" title="kiali 流量试图"></a>kiali 流量试图</h2><h3 id="kiali-route-路由"><a href="#kiali-route-路由" class="headerlink" title="kiali route 路由"></a>kiali route 路由</h3><p>routing/router</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根路由 指向 静态页面</span></span><br><span class="line"><span class="keyword">if</span> webRoot != <span class="string">&quot;/&quot;</span> &#123;</span><br><span class="line">		rootRouter.HandleFunc(webRoot, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">			http.Redirect(w, r, webRootWithSlash, http.StatusFound)</span><br><span class="line">		&#125;)</span><br><span class="line"></span><br><span class="line">		<span class="comment">// help the user out - if a request comes in for &quot;/&quot;, redirect to our true webroot</span></span><br><span class="line">		rootRouter.HandleFunc(<span class="string">&quot;/&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">			http.Redirect(w, r, webRootWithSlash, http.StatusFound)</span><br><span class="line">		&#125;)</span><br><span class="line"></span><br><span class="line">		appRouter = rootRouter.PathPrefix(conf.Server.WebRoot).Subrouter()</span><br><span class="line">	&#125;</span><br><span class="line">	appRouter = appRouter.StrictSlash(<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 路由指向代理的function </span></span><br><span class="line">	r.Routes = []Route&#123;</span><br><span class="line">		<span class="comment">// swagger:route GET /healthz kiali healthz</span></span><br><span class="line">		<span class="comment">// ---</span></span><br><span class="line">		<span class="comment">// Endpoint to get the health of Kiali</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">//     Produces:</span></span><br><span class="line">		<span class="comment">//     - application/json</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">//     Schemes: http, https</span></span><br><span class="line">		<span class="comment">// responses:</span></span><br><span class="line">		<span class="comment">//		500: internalError</span></span><br><span class="line">		<span class="comment">//		200</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="string">&quot;Healthz&quot;</span>,</span><br><span class="line">			<span class="string">&quot;GET&quot;</span>,</span><br><span class="line">			<span class="string">&quot;/healthz&quot;</span>,</span><br><span class="line">			handlers.Healthz,</span><br><span class="line">			<span class="literal">false</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="comment">// swagger:route GET / kiali root</span></span><br><span class="line">		<span class="comment">// ---</span></span><br><span class="line">		<span class="comment">// Endpoint to get the status of Kiali</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">//     Produces:</span></span><br><span class="line">		<span class="comment">//     - application/json</span></span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		<span class="comment">//     Schemes: http, https</span></span><br><span class="line">		<span class="comment">// responses:</span></span><br><span class="line">		<span class="comment">//      500: internalError</span></span><br><span class="line">		<span class="comment">//      200: statusInfo</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="string">&quot;Root&quot;</span>,</span><br><span class="line">			<span class="string">&quot;GET&quot;</span>,</span><br><span class="line">			<span class="string">&quot;/api&quot;</span>,</span><br><span class="line">			handlers.Root,</span><br><span class="line">			<span class="literal">false</span>,</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>kiali里面最复杂的就是流量视图了 现在我们看看kiali是怎么做的</p>
+<p>/graph/api/api</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GraphNamespaces</span><span class="params">(business *business.Layer, o graph.Options)</span> <span class="params">(code <span class="keyword">int</span>, config <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	<span class="comment">// time how long it takes to generate this graph</span></span><br><span class="line">	promtimer := internalmetrics.GetGraphGenerationTimePrometheusTimer(o.GetGraphKind(), o.TelemetryOptions.GraphType, o.InjectServiceNodes)</span><br><span class="line">	<span class="keyword">defer</span> promtimer.ObserveDuration()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> o.TelemetryVendor &#123;</span><br><span class="line">	<span class="keyword">case</span> graph.VendorIstio:</span><br><span class="line">		prom, err := prometheus.NewClientNoAuth(business.PromAddress)</span><br><span class="line">		graph.CheckError(err)</span><br><span class="line"><span class="comment">//获取config 蓝图信息</span></span><br><span class="line">		code, config = graphNamespacesIstio(business, prom, o)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		graph.Error(fmt.Sprintf(<span class="string">&quot;TelemetryVendor [%s] not supported&quot;</span>, o.TelemetryVendor))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// update metrics</span></span><br><span class="line">	internalmetrics.SetGraphNodes(o.GetGraphKind(), o.TelemetryOptions.GraphType, o.InjectServiceNodes, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> code, config</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>构造 TrafficMap</p>
+<p>graph/telemetry/istio/istio.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// BuildNamespacesTrafficMap is required by the graph/TelemtryVendor interface</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BuildNamespacesTrafficMap</span><span class="params">(o graph.TelemetryOptions, client *prometheus.Client, globalInfo *graph.AppenderGlobalInfo)</span> <span class="title">graph</span>.<span class="title">TrafficMap</span></span> &#123;</span><br><span class="line">	log.Tracef(<span class="string">&quot;Build [%s] graph for [%v] namespaces [%s]&quot;</span>, o.GraphType, <span class="built_in">len</span>(o.Namespaces), o.Namespaces)</span><br><span class="line"></span><br><span class="line">	setLabels()</span><br><span class="line">	appenders := appender.ParseAppenders(o)</span><br><span class="line">	trafficMap := graph.NewTrafficMap()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, namespace := <span class="keyword">range</span> o.Namespaces &#123;</span><br><span class="line">		log.Tracef(<span class="string">&quot;Build traffic map for namespace [%s]&quot;</span>, namespace)</span><br><span class="line">		<span class="comment">//生成一个 namespaceTrafficMap</span></span><br><span class="line">		namespaceTrafficMap := buildNamespaceTrafficMap(namespace.Name, o, client)</span><br><span class="line">		namespaceInfo := graph.NewAppenderNamespaceInfo(namespace.Name)</span><br><span class="line">		<span class="keyword">for</span> _, a := <span class="keyword">range</span> appenders &#123;</span><br><span class="line">			appenderTimer := internalmetrics.GetGraphAppenderTimePrometheusTimer(a.Name())</span><br><span class="line">			a.AppendGraph(namespaceTrafficMap, globalInfo, namespaceInfo)</span><br><span class="line">			appenderTimer.ObserveDuration()</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 将 namespaceTrafficMap merge ----&gt;  trafficMap 中</span></span><br><span class="line">		telemetry.MergeTrafficMaps(trafficMap, namespace.Name, namespaceTrafficMap)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// The appenders can add/remove/alter nodes. After the manipulations are complete</span></span><br><span class="line">	<span class="comment">// we can make some final adjustments:</span></span><br><span class="line">	<span class="comment">// - mark the outsiders (i.e. nodes not in the requested namespaces)</span></span><br><span class="line">	<span class="comment">// - mark the insider traffic generators (i.e. inside the namespace and only outgoing edges)</span></span><br><span class="line">	telemetry.MarkOutsideOrInaccessible(trafficMap, o)</span><br><span class="line">	telemetry.MarkTrafficGenerators(trafficMap)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> graph.GraphTypeService == o.GraphType &#123;</span><br><span class="line">		trafficMap = telemetry.ReduceToServiceGraph(trafficMap)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> trafficMap</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Appender 这个interface 主要负责获取和组装流量视图的节点信息和线的信息</p>
+<p>graph/appender.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Appender is implemented by any code offering to append a service graph with</span></span><br><span class="line"><span class="comment">// supplemental information.  On error the appender should panic and it will be</span></span><br><span class="line"><span class="comment">// handled as an error response.</span></span><br><span class="line"><span class="keyword">type</span> Appender <span class="keyword">interface</span> &#123;</span><br><span class="line">	<span class="comment">// AppendGraph performs the appender work on the provided traffic map. The map</span></span><br><span class="line">	<span class="comment">// may be initially empty. An appender is allowed to add or remove map entries.</span></span><br><span class="line">	AppendGraph(trafficMap TrafficMap, globalInfo *AppenderGlobalInfo, namespaceInfo *AppenderNamespaceInfo)</span><br><span class="line">	<span class="comment">// Name returns a unique appender name and which is the name used to identify the appender (e.g in &#x27;appenders&#x27; query param)</span></span><br><span class="line">	Name() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="appender中有几种实现"><a href="#appender中有几种实现" class="headerlink" title="appender中有几种实现"></a>appender中有几种实现</h4><ul>
+<li>istio: 负责标记具有特殊Istio意义的节点</li>
+<li>deadNode: 负责从图中删除不需要的节点</li>
+<li>serviceEntry: ServiceEntryAppender负责标识在Istio中定义为serviceEntry的服务节点。<br>单个serviceEntry可以定义多个主机，<br>因此多个服务节点可以<br>映射到单个serviceEntry的不同主机。我们将这些称为“ se-service”节点</li>
+<li>responseTime: ResponseTimeAppender负责将responseTime信息添加到图形中</li>
+<li>securityPolicy: SecurityPolicyAppender负责向图表添加securityPolicy信息。<br>尽管以通用方式编写，但该附加程序当前仅报告international_tls安全性。</li>
+<li>sidecarsCheck: SidecarsCheckAppender标记其后备工作负载缺少至少一个Envoy sidecar的节点。请注意，<br>没有后备工作负载的节点未标记。</li>
+<li>unusedNode: 调用函数成功时，函数处理时间指标的持续时间值。<br>如果不成功，则递增失败计数器。<br>如果围棋函数不在一个类型上（即是一个全局函数），请为goType传入一个空字符串。<br>当该函数返回时，定时器立即开始计时。</li>
+</ul>
+<p>appender中的实现必须得有先后顺序, service-entry –&gt; deadNode –&gt; responseTime —&gt; securityPolicy —&gt;  unusedNode –&gt; istio</p>
+<p>经过appender之后将trafficMap merge 到 traffic map中</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">trafficMap := graph.NewTrafficMap()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将 namespaceTrafficMap merge ----&gt;  trafficMap 中</span></span><br><span class="line"></span><br><span class="line">telemetry.MergeTrafficMaps(trafficMap, namespace.Name, namespaceTrafficMap)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/03/09/analysis/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">iptables 详解</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/01/21/k8s/istio-use/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">istio 流量管理使用说明</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

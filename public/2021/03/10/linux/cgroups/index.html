@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            cgroups Linux控制组 |
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">cgroups Linux控制组</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-03-10 18:06:35
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/linux/">linux</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/kernal/">kernal</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>实话实说,某些软件应用程序可能需要控制或限制-至少出于稳定性和某种程度上的安全性考虑。<br>错误或错误代码常常会破坏整个计算机,并可能破坏整个生态系统。<br>幸运的是,有一种方法可以检查那些相同的应用程序。<br>控制组（cgroups）是一项内核功能,可以限制,说明和隔离一个或多个进程的CPU,内存,磁盘I / O和网络使用情况。</p>
+<p>cgroups框架提供以下内容：</p>
+<p>资源限制： 可以将组配置为不超过指定的内存限制或使用的处理器数量不超过期望的数量,或者限制为特定的外围设备。<br>优先级： 可以将一个或多个组配置为利用更少或更多的CPU或磁盘 I/O 吞吐量。<br>监控： 监视和衡量组的资源使用情况。<br>控制： 可以冻结或停止并重新启动一组进程。</p>
+<p>一个<code>cgroup</code>可以包含一个或多个绑定到同一组限制的进程。这些组也可以是分层的,这意味着子组继承了对其父组管理的限制。</p>
+<p>Linux内核提供对cgroup技术的一系列控制器或子系统的访问。控制器负责将特定类型的系统资源分配给一组一个或多个进程。<br>例如,memory控制器是在cpuacct监视CPU使用率时限制内存使用率的。</p>
+<p>您可以直接和间接（使用LXC,libvirt或Docker）访问和管理cgroup,在此我将首先通过sysfs和libcgroups库来介绍和管理cgroup 。<br>要遵循此处的示例,您首先需要安装必要的软件包。在Red Hat Enterprise Linux或CentOS上,在命令行上键入以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">blkio：设置限制每个块设备的输入输出控制。例如:磁盘，光盘以及usb等等。</span><br><span class="line">cpu：使用调度程序为cgroup任务提供cpu的访问。</span><br><span class="line">cpuacct：产生cgroup任务的cpu资源报告。</span><br><span class="line">cpuset：如果是多核心的cpu，这个子系统会为cgroup任务分配单独的cpu和内存。</span><br><span class="line">devices：允许或拒绝cgroup任务对设备的访问。</span><br><span class="line">freezer：暂停和恢复cgroup任务。</span><br><span class="line">memory：设置每个cgroup的内存限制以及产生内存资源报告。</span><br><span class="line">net_cls：标记每个网络包以供cgroup方便使用。</span><br><span class="line">ns：命名空间子系统。</span><br><span class="line">perf_event：增加了对每group的监测跟踪的能力，即可以监测属于某个特定的group的所有线程以及运行在特定CPU上的线程。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="cgroups-对内存的限制"><a href="#cgroups-对内存的限制" class="headerlink" title="cgroups 对内存的限制"></a>cgroups 对内存的限制</h2><h3 id="手动方式"><a href="#手动方式" class="headerlink" title="手动方式"></a>手动方式</h3><p>安装了正确的软件包后，您可以直接通过sysfs层次结构配置cgroup。例如，要foo在memory子系统下创建一个名为cgroup 的目录，请在/ sys / fs / cgroup / memory中创建一个名为foo的目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mkdir /sys/fs/cgroup/memory/foo</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，每个新创建的cgroup都将继承对系统整个内存池的访问权限。对于某些应用程序，主要是那些继续分配更多内存但拒绝释放已经分配的内存的应用程序，可能不是一个好主意。要将应用程序限制在合理的范围内，您需要更新 memory.limit_in_bytes文件。</p>
+<p>将在cgroup下运行的任何内容的内存限制foo为50MB：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> 50000000 | sudo tee /sys/fs/cgroup/memory/foo/memory.limit_in_bytes</span><br></pre></td></tr></table></figure>
+
+<p>验证设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat memory.limit_in_bytes</span><br><span class="line">50003968</span><br></pre></td></tr></table></figure>
+
+<p>请注意，回读的值始终是内核页面大小的倍数（即4096字节或4KB）。该值是最小的可分配内存大小。</p>
+<p>启动应用程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh ~/test.sh &amp;</span><br></pre></td></tr></table></figure>
+
+<p>使用其进程ID（PID），将应用程序移动到控制器foo下的 cgroup memory：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> 2845 &gt; /sys/fs/cgroup/memory/foo/cgroup.procs</span><br></pre></td></tr></table></figure>
+
+<p>使用相同的PID编号，列出正在运行的进程并验证其是否在所需的cgroup中运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ps -o cgroup 2845</span><br><span class="line">CGROUP</span><br><span class="line">8:memory:/foo,1:name=systemd:/user.slice/user-0.slice/session-4.scope</span><br></pre></td></tr></table></figure>
+
+<p>您还可以通过读取所需的文件来监视该cgroup当前正在使用的内容。在这种情况下，您将需要查看由您的进程（和产生的子进程）分配的内存量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /sys/fs/cgroup/memory/foo/memory.usage_in_bytes</span><br><span class="line">253952</span><br></pre></td></tr></table></figure>
+
+<h3 id="当我改变limit"><a href="#当我改变limit" class="headerlink" title="当我改变limit"></a>当我改变limit</h3><p>现在，让我们重新创建相同的场景，但不要将cgroup限制 foo为50MB内存，而是将其限制为500个字节：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> 500 | sudo tee /sys/fs/cgroup/memory/foo/memory.limit_in_bytes</span><br></pre></td></tr></table></figure>
+
+<p>注意：如果一项任务超出其定义的限制，内核将进行干预，在某些情况下，将终止该任务。</p>
+<p>同样，当您读回该值时，该值将始终是内核页面大小的倍数。因此，尽管将其设置为500字节，但实际上设置为4 KB：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /sys/fs/cgroup/memory/foo/memory.limit_in_bytes</span><br><span class="line">4096</span><br></pre></td></tr></table></figure>
+
+<p>启动应用程序，将其移至cgroup并监视系统日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo tail -f /var/<span class="built_in">log</span>/messages</span><br><span class="line"></span><br><span class="line">Oct 14 10:22:40 localhost kernel: sh invoked oom-killer:</span><br><span class="line">↪gfp_mask=0xd0, order=0, oom_score_adj=0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: sh cpuset=/ mems_allowed=0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: CPU: 0 PID: 2687 Comm:</span><br><span class="line">↪sh Tainted: G</span><br><span class="line">OE  ------------   3.10.0-327.36.3.el7.x86_64 <span class="comment">#1</span></span><br><span class="line">Oct 14 10:22:40 localhost kernel: Hardware name: innotek GmbH</span><br><span class="line">VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006</span><br><span class="line">Oct 14 10:22:40 localhost kernel: ffff880036ea5c00</span><br><span class="line">↪0000000093314010 ffff88000002bcd0 ffffffff81636431</span><br><span class="line">Oct 14 10:22:40 localhost kernel: ffff88000002bd60</span><br><span class="line">↪ffffffff816313cc 01018800000000d0 ffff88000002bd68</span><br><span class="line">Oct 14 10:22:40 localhost kernel: ffffffffbc35e040</span><br><span class="line">↪fffeefff00000000 0000000000000001 ffff880036ea6103</span><br><span class="line">Oct 14 10:22:40 localhost kernel: Call Trace:</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff81636431&gt;]</span><br><span class="line">↪dump_stack+0x19/0x1b</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff816313cc&gt;]</span><br><span class="line">↪dump_header+0x8e/0x214</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff8116d21e&gt;]</span><br><span class="line">↪oom_kill_process+0x24e/0x3b0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff81088e4e&gt;] ?</span><br><span class="line">↪has_capability_noaudit+0x1e/0x30</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff811d4285&gt;]</span><br><span class="line">↪mem_cgroup_oom_synchronize+0x575/0x5a0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff811d3650&gt;] ?</span><br><span class="line">↪mem_cgroup_charge_common+0xc0/0xc0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff8116da94&gt;]</span><br><span class="line">↪pagefault_out_of_memory+0x14/0x90</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff8162f815&gt;]</span><br><span class="line">↪mm_fault_error+0x68/0x12b</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff816422d2&gt;]</span><br><span class="line">↪__do_page_fault+0x3e2/0x450</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff81642363&gt;]</span><br><span class="line">↪do_page_fault+0x23/0x80</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [&lt;ffffffff8163e648&gt;]</span><br><span class="line">↪page_fault+0x28/0x30</span><br><span class="line">Oct 14 10:22:40 localhost kernel: Task <span class="keyword">in</span> /foo killed as</span><br><span class="line">↪a result of <span class="built_in">limit</span> of /foo</span><br><span class="line">Oct 14 10:22:40 localhost kernel: memory: usage 4kB, <span class="built_in">limit</span></span><br><span class="line">↪4kB, failcnt 8</span><br><span class="line">Oct 14 10:22:40 localhost kernel: memory+swap: usage 4kB,</span><br><span class="line">↪<span class="built_in">limit</span> 9007199254740991kB, failcnt 0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: kmem: usage 0kB, <span class="built_in">limit</span></span><br><span class="line">↪9007199254740991kB, failcnt 0</span><br><span class="line">Oct 14 10:22:40 localhost kernel: Memory cgroup stats <span class="keyword">for</span> /foo:</span><br><span class="line">↪cache:0KB rss:4KB rss_huge:0KB mapped_file:0KB swap:0KB</span><br><span class="line">↪inactive_anon:0KB active_anon:0KB inactive_file:0KB</span><br><span class="line">↪active_file:0KB unevictable:0KB</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [ pid ]   uid  tgid total_vm</span><br><span class="line">↪rss nr_ptes swapents oom_score_adj name</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [ 2687]     0  2687    28281</span><br><span class="line">↪347     12        0             0 sh</span><br><span class="line">Oct 14 10:22:40 localhost kernel: [ 2702]     0  2702    28281</span><br><span class="line">↪50    7        0             0 sh</span><br><span class="line">Oct 14 10:22:40 localhost kernel: Memory cgroup out of memory:</span><br><span class="line">↪Kill process 2687 (sh) score 0 or sacrifice child</span><br><span class="line">Oct 14 10:22:40 localhost kernel: Killed process 2702 (sh)</span><br><span class="line">↪total-vm:113124kB, anon-rss:200kB, file-rss:0kB</span><br><span class="line">Oct 14 10:22:41 localhost kernel: sh invoked oom-killer:</span><br><span class="line">↪gfp_mask=0xd0, order=0, oom_score_adj=0</span><br><span class="line">[ ... ]</span><br></pre></td></tr></table></figure>
+
+<p>请注意，一旦应用程序达到4KB的限制，内核的“内存不足杀手”（或oom-killer）就会介入。它终止了该应用程序，并且不再运行。您可以通过键入以下内容进行验证：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ ps -o cgroup 2687</span><br><span class="line">CGROUP</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用libcgroup"><a href="#使用libcgroup" class="headerlink" title="使用libcgroup"></a>使用<code>libcgroup</code></h2><p>libcgroup软件包中 提供的管理实用程序简化了此处描述的许多早期步骤。例如，使用cgcreate二进制文件的单个命令调用将负责创建sysfs条目和文件的过程。</p>
+<p>要创建在 子系统foo下命名的组memory，请键入以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cgcreate -g memory:foo</span><br></pre></td></tr></table></figure>
+
+<p>注意：libcgroup提供了一种用于管理控制组中的任务的机制。</p>
+<p>使用与以前相同的方法，您可以开始设置阈值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> 50000000 | sudo tee</span><br><span class="line">↪/sys/fs/cgroup/memory/foo/memory.limit_in_bytes</span><br></pre></td></tr></table></figure>
+
+<p>验证新配置的设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat memory.limit_in_bytes</span><br><span class="line">50003968</span><br></pre></td></tr></table></figure>
+
+<p>foo使用 cgexec二进制文件 在cgroup中运行应用程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cgexec -g memory:foo ~/test.sh</span><br></pre></td></tr></table></figure>
+
+<p>使用其PID编号，验证应用程序正在cgroup中并在已定义的子系统（memory）下运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$  ps -o cgroup 2945</span><br><span class="line">CGROUP</span><br><span class="line">6:memory:/foo,1:name=systemd:/user.slice/user-0.slice/</span><br><span class="line">↪session-1.scope</span><br></pre></td></tr></table></figure>
+
+<p>如果您的应用程序不再运行，并且您想要清理并删除cgroup，则可以使用cgdelete二进制文件来完成。要从控制器foo 下面删除组memory，请键入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cgdelete memory:foo</span><br></pre></td></tr></table></figure>
+
+<p>持久群体<br>您还可以通过一个简单的配置文件和启动服务来完成上述所有操作。您可以在/etc/cgconfig.conf文件中定义所有cgroup名称和属性。以下内容为该组添加了一些属性foo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ cat /etc/cgconfig.conf</span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  Copyright IBM Corporation. 2007</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  Authors:     Balbir Singh &lt;balbir@linux.vnet.ibm.com&gt;</span></span><br><span class="line"><span class="comment">#  This program is free software; you can redistribute it</span></span><br><span class="line"><span class="comment">#  and/or modify it under the terms of version 2.1 of the GNU</span></span><br><span class="line"><span class="comment">#  Lesser General Public License as published by the Free</span></span><br><span class="line"><span class="comment">#  Software Foundation.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  This program is distributed in the hope that it would be</span></span><br><span class="line"><span class="comment">#  useful, but WITHOUT ANY WARRANTY; without even the implied</span></span><br><span class="line"><span class="comment">#  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR</span></span><br><span class="line"><span class="comment">#  PURPOSE.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default, we expect systemd mounts everything on boot,</span></span><br><span class="line"><span class="comment"># so there is not much to do.</span></span><br><span class="line"><span class="comment"># See man cgconfig.conf for further details, how to create</span></span><br><span class="line"><span class="comment"># groups on system boot using this file.</span></span><br><span class="line"></span><br><span class="line">group foo &#123;</span><br><span class="line">cpu &#123;</span><br><span class="line">cpu.shares = 100;</span><br><span class="line">&#125;</span><br><span class="line">memory &#123;</span><br><span class="line">memory.limit_in_bytes = 5000000;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些cpu.shares选项定义组的CPU优先级。默认情况下，所有组都继承1,024个份额或100％的CPU时间。通过将此值降低到较为保守的程度（例如100），该组将被限制为大约CPU时间的10％。</p>
+<p>如前所述，在cgroup中运行的进程也可以限制为它可以访问的CPU（核心）数量。将以下部分添加到相同的cgconfig.conf文件中，并在所需的组名称下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cpuset &#123;</span><br><span class="line">cpuset.cpus=<span class="string">&quot;0-5&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>有了这个限制，此cgroup会将应用程序绑定到核心0到5-也就是说，它将仅看到系统上的前六个CPU核心。</p>
+<p>接下来，您需要使用该cgconfig服务加载此配置。首先，启用cgconfig以在系统启动时加载以上配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl <span class="built_in">enable</span> cgconfig</span><br><span class="line">Create symlink from /etc/systemd/system/sysinit.target.wants/</span><br><span class="line">↪cgconfig.service</span><br><span class="line">to /usr/lib/systemd/system/cgconfig.service.</span><br></pre></td></tr></table></figure>
+
+<p>现在，启动cgconfig服务并手动加载相同的配置文件（或者您可以跳过此步骤并重新引导系统）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl start cgconfig</span><br></pre></td></tr></table></figure>
+
+<p>将应用程序启动到cgroup中，foo并将其绑定到您的 memory和cpu 限制：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cgexec -g memory,cpu,cpuset:foo ~/test.sh &amp;</span><br></pre></td></tr></table></figure>
+
+<p>除了将应用程序启动到预定义的cgroup中之外，其余所有内容将在系统重新引导后继续存在。但是，您可以通过定义依赖于cgconfig 服务的启动初始化脚本来启动该应用程序，从而自动执行该过程 。</p>
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/03/12/k8s/install-k8s/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">如何快速安装k8s集群</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/03/10/linux/namespace/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Linux 命名空间概述</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

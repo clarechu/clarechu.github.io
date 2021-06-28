@@ -11,3 +11,4 @@ deploy:
 
 
 
+post_asset_folder: true

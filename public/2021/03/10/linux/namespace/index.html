@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            Linux 命名空间概述 |
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">Linux 命名空间概述</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-03-10 17:12:47
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/linux/">linux</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/kernal/">kernal</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="namespace-的概念"><a href="#namespace-的概念" class="headerlink" title="namespace 的概念"></a>namespace 的概念</h2><p>namespace 是 Linux 内核用来隔离内核资源的方式。<br>通过 namespace 可以让一些进程只能看到与自己相关的一部分资源，而另外一些进程也只能看到与它们自己相关的资源，这两拨进程根本就感觉不到对方的存在。<br>具体的实现方式是把一个或多个进程的相关资源指定在同一个 namespace 中。</p>
+<h2 id="namespace-的比喻"><a href="#namespace-的比喻" class="headerlink" title="namespace 的比喻"></a>namespace 的比喻</h2><p>对于某些人来说，namespace这个定义有很多不能让人理解的地方，因此以下这种比方可能会对你有所帮助。<br>考虑一下我的公寓楼。从技术上讲，这是两座不同的建筑，都有自己的入口。<br>但是，停车场，健身房，游泳池和公共休息室是共享的。这些建筑物有自己的名称，城市广场和城市广场2。<br>他们有自己的街道地址，楼层和电梯。然而，它们依附于相同的物理复合体。</p>
+<p>物理复合体与计算机的想法相同。两个名称空间（或多个名称空间）可以驻留在同一台物理计算机上，<br>并且与公寓楼一样，名称空间可以共享对某些资源的访问权限，也可以具有独占访问权限。</p>
+<p>今天，有七种常见的名称空间被广泛使用。<br>以公寓为指导，让我们逐步总结每种类型的功能。<br>下面是每种名称空间类型的简要概述。在后续文章中，我们将通过示例展示每个命名空间的工作方式。</p>
+<h2 id="namespace-的类型有哪些"><a href="#namespace-的类型有哪些" class="headerlink" title="namespace 的类型有哪些"></a>namespace 的类型有哪些</h2><ul>
+<li>进程隔离（PID名称空间）</li>
+<li>网络接口（网络名称空间）</li>
+</ul>
+<ul>
+<li>Unix时间共享系统（uts名称空间）</li>
+<li>用户名称空间</li>
+<li>挂载（mnt名称空间）</li>
+<li>进程间通信（IPC）</li>
+<li>CGroups</li>
+</ul>
+<h2 id="linux-网络命名空间"><a href="#linux-网络命名空间" class="headerlink" title="linux 网络命名空间"></a>linux 网络命名空间</h2><ol>
+<li>ip netns add xx 建立一個 namespace</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ip netns add net1</span><br><span class="line">$ ip netns ls</span><br><span class="line">net1</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>ip netns exec <netns namespace> <BASH shell> 在新 namespace net1 中執行 BASH SHELL 命令</BASH></netns></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ip netns <span class="built_in">exec</span> net1 bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># exit 退出容器空间</span></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2021/03/10/linux/namespace/img.png" alt="img.png"></p>
+<p>每個 namespace 在建立的時候會自動建立一個迴環介面 lo ，預設不啟用，可以通過  啟用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ip link <span class="built_in">set</span> lo up</span><br></pre></td></tr></table></figure>
+
+<p>network namespace 之間的通訊<br>新建立的 namespace 預設不能和主機網路，以及其他 namespace 通訊。</p>
+<p>可以使用 Linux 提供的 veth pair 來完成通訊。下面顯示兩個 namespace 之间的网络拓扑图：</p>
+<p><img src="/2021/03/10/linux/namespace/img_2.png" alt="img_2.png"></p>
+<p>3.1 ip link add type veth 建立 veth pair</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看veth</span></span><br><span class="line"></span><br><span class="line">$ ip link</span><br><span class="line"></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">2: ens192: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:a9:e9:17 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether 02:42:8b:f3:61:ac brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    </span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<p>添加 link veth pair</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 veth pair</span></span><br><span class="line"></span><br><span class="line">$ ip link add <span class="built_in">type</span> veth</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用命令 ip link add xxx type veth peer name yyy 指定 veth pair 的名字。</span></span><br><span class="line"></span><br><span class="line">$ ip link add veth1 <span class="built_in">type</span> veth peer name veth2</span><br><span class="line"></span><br><span class="line">$ ip link</span><br><span class="line"></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">2: ens192: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:a9:e9:17 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether 02:42:8b:f3:61:ac brd ff:ff:ff:ff:ff:ff</span><br><span class="line">8: veth2@veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 6e:86:2f:10:5c:50 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">9: veth1@veth2: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 0a:b8:54:5b:9f:7d brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    </span><br><span class="line">veth pair 因为是成对出现的 所以 有8和9 </span><br><span class="line"></span><br><span class="line">分别是`veth1@veth2` -- `veth2@veth1` </span><br></pre></td></tr></table></figure>
+
+<p>3.2 ip link set xx netns yy 將 veth xx 加入到 namespace yy 中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ip link <span class="built_in">set</span> veth1 netns net1</span><br><span class="line"></span><br><span class="line">$ ip link <span class="built_in">set</span> veth2 netns net2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>加入到namespace 有以下现象</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ ip link</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">2: ens192: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:a9:e9:17 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether 02:42:8b:f3:61:ac brd ff:ff:ff:ff:ff:ff</span><br><span class="line">8: veth2@if9: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 6e:86:2f:10:5c:50 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    </span><br><span class="line">$ ip link <span class="built_in">set</span> veth2 netns net2</span><br><span class="line"></span><br><span class="line">$ ip link</span><br><span class="line"></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">2: ens192: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:a9:e9:17 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default</span><br><span class="line">    link/ether 02:42:8b:f3:61:ac brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure>
+
+<p>3.3 給 veth pair 配上 ip 地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给net0 namespace 空间 veth0 up</span></span><br><span class="line">$ ip netns <span class="built_in">exec</span> net1 ip link <span class="built_in">set</span> veth1 up</span><br><span class="line"></span><br><span class="line">$ ip addr add 10.1.1.1/24 dev veth1</span><br><span class="line"><span class="comment"># veth0 up 设置ip 启动起来</span></span><br><span class="line"></span><br><span class="line">$ ip route</span><br><span class="line">10.1.1.0/24 dev veth1 proto kernel scope link src 10.1.1.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 给net2 namespace 空间 veth2 up</span></span><br><span class="line"></span><br><span class="line">$ ip addr add 10.1.1.2/24 dev veth2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/03/10/linux/namespace/img_3.png" alt="img_3.png"></p>
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/03/10/linux/cgroups/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">cgroups Linux控制组</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/03/09/analysis/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">iptables 详解</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

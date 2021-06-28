@@ -1,3 +1,7 @@
+---
+title: Compare
+---
+
 # Compare
 
 比较大小的基本方法

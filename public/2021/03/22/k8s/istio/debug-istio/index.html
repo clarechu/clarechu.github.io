@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            如何在本地调试istio |
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">如何在本地调试istio</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-03-22 13:40:42
+    </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>本文档主要是帮助我们如何在本地使用调试istio</p>
+<p>因为我们使用的istio都是在1.8.4上面做的,所以我在下面的讲解的版本也是在istio release-1.8.4版本上面进行</p>
+<p>istio 核心模块有两个</p>
+<ul>
+<li>pilot-discovery: 这个模块就是我们的istiod istio/pilot/pilot-discovery 目录下</li>
+<li>pilot-agent: 这个模块 就是proxy istio/pilot/pilot-discovery 目录下</li>
+</ul>
+<p><img src="/2021/03/22/k8s/istio/debug-istio/img.png" alt="img.png"></p>
+<p>如果我们使用kind 则需要 –config trustworthy-jwt.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">kind.x-k8s.io/v1alpha4</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Cluster</span></span><br><span class="line"><span class="attr">kubeadmConfigPatches:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">|</span></span><br><span class="line">    <span class="attr">apiVersion:</span> <span class="string">kubeadm.k8s.io/v1beta2</span></span><br><span class="line">    <span class="attr">kind:</span> <span class="string">ClusterConfiguration</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">    <span class="attr">etcd:</span></span><br><span class="line">      <span class="attr">local:</span></span><br><span class="line">        <span class="comment"># Run etcd in a tmpfs (in RAM) for performance improvements</span></span><br><span class="line">        <span class="attr">dataDir:</span> <span class="string">/tmp/kind-cluster-etcd</span></span><br><span class="line">    <span class="attr">apiServer:</span></span><br><span class="line">      <span class="attr">extraArgs:</span></span><br><span class="line">        <span class="attr">&quot;service-account-issuer&quot;:</span> <span class="string">&quot;kubernetes.default.svc&quot;</span></span><br><span class="line">        <span class="attr">&quot;service-account-signing-key-file&quot;:</span> <span class="string">&quot;/etc/kubernetes/pki/sa.key&quot;</span></span><br><span class="line"><span class="attr">containerdConfigPatches:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">|-</span></span><br><span class="line">    [<span class="string">plugins.&quot;io.containerd.grpc.v1.cri&quot;.registry.mirrors.&quot;localhost:5000&quot;</span>]</span><br><span class="line">      <span class="string">endpoint</span> <span class="string">=</span> [<span class="string">&quot;http://kind-registry:5000&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行kind"><a href="#运行kind" class="headerlink" title="运行kind"></a>运行kind</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kind create cluster --image  docker.io/kindest/node:v1.17.5 --config trustworthy-jwt.yaml  --name kind-2</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地代理pilot-discovery"><a href="#本地代理pilot-discovery" class="headerlink" title="本地代理pilot-discovery"></a>本地代理<code>pilot-discovery</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装istio</span></span><br><span class="line">$ istioctl install</span><br></pre></td></tr></table></figure>
+
+<p>等待istio 安装完成以后我们将 istiod的流量转到本地，主要目的是为了更改endpoint </p>
+<p>使用外部 istiod</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置外部 IP</span></span><br><span class="line">$ <span class="built_in">export</span> ip=192.168.110.206</span><br><span class="line">$ kubectl -n istio-system delete svc istiod</span><br><span class="line">$ kubectl -n istio-system delete endpoints istiod</span><br><span class="line"></span><br><span class="line">$ cat &lt;&lt;<span class="string">EOF | kubectl apply -f -</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: istiod</span></span><br><span class="line"><span class="string">  namespace: istio-system</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">  - name: grpc-xds</span></span><br><span class="line"><span class="string">    port: 15010</span></span><br><span class="line"><span class="string">  - name: https-dns</span></span><br><span class="line"><span class="string">    port: 15012</span></span><br><span class="line"><span class="string">  - name: https-webhook</span></span><br><span class="line"><span class="string">    port: 443</span></span><br><span class="line"><span class="string">    targetPort: 15017</span></span><br><span class="line"><span class="string">  - name: http-monitoring</span></span><br><span class="line"><span class="string">    port: 15014</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Endpoints</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: istiod</span></span><br><span class="line"><span class="string">  namespace: istio-system</span></span><br><span class="line"><span class="string">subsets:</span></span><br><span class="line"><span class="string">- addresses:</span></span><br><span class="line"><span class="string">  - ip: $&#123;ip&#125;</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">  - name: https-dns</span></span><br><span class="line"><span class="string">    port: 15012</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">  - name: grpc-xds</span></span><br><span class="line"><span class="string">    port: 15010</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">  - name: https-webhook</span></span><br><span class="line"><span class="string">    port: 15017</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">  - name: http-monitoring</span></span><br><span class="line"><span class="string">    port: 15014</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<p>还原istio 的svc地址 使svc指向 集群内部 istiod.istio-system pod</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl -n istio-system delete svc istiod</span><br><span class="line">$ kubectl -n istio-system delete endpoints istiod</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;<span class="string">EOF | kubectl apply -f -</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  annotations:</span></span><br><span class="line"><span class="string">    kubectl.kubernetes.io/last-applied-configuration: |</span></span><br><span class="line"><span class="string">      &#123;&quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Service&quot;,&quot;metadata&quot;:&#123;&quot;annotations&quot;:&#123;&#125;,&quot;labels&quot;:&#123;&quot;app&quot;:&quot;istiod&quot;,&quot;install.operator.istio.io/owning-resource&quot;:&quot;unknown&quot;,&quot;install.operator.istio.io/owning-resource-namespace&quot;:&quot;istio-system&quot;,&quot;istio&quot;:&quot;pilot&quot;,&quot;istio.io/rev&quot;:&quot;default&quot;,&quot;operator.istio.io/component&quot;:&quot;Pilot&quot;,&quot;operator.istio.io/managed&quot;:&quot;Reconcile&quot;,&quot;operator.istio.io/version&quot;:&quot;1.8.4&quot;,&quot;release&quot;:&quot;istio&quot;&#125;,&quot;name&quot;:&quot;istiod&quot;,&quot;namespace&quot;:&quot;istio-system&quot;&#125;,&quot;spec&quot;:&#123;&quot;ports&quot;:[&#123;&quot;name&quot;:&quot;grpc-xds&quot;,&quot;port&quot;:15010,&quot;protocol&quot;:&quot;TCP&quot;&#125;,&#123;&quot;name&quot;:&quot;https-dns&quot;,&quot;port&quot;:15012,&quot;protocol&quot;:&quot;TCP&quot;&#125;,&#123;&quot;name&quot;:&quot;https-webhook&quot;,&quot;port&quot;:443,&quot;protocol&quot;:&quot;TCP&quot;,&quot;targetPort&quot;:15017&#125;,&#123;&quot;name&quot;:&quot;http-monitoring&quot;,&quot;port&quot;:15014,&quot;protocol&quot;:&quot;TCP&quot;&#125;],&quot;selector&quot;:&#123;&quot;app&quot;:&quot;istiod&quot;,&quot;istio&quot;:&quot;pilot&quot;&#125;&#125;&#125;</span></span><br><span class="line"><span class="string">  creationTimestamp: &quot;2021-03-22T07:08:32Z&quot;</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: istiod</span></span><br><span class="line"><span class="string">    install.operator.istio.io/owning-resource: unknown</span></span><br><span class="line"><span class="string">    install.operator.istio.io/owning-resource-namespace: istio-system</span></span><br><span class="line"><span class="string">    istio: pilot</span></span><br><span class="line"><span class="string">    istio.io/rev: default</span></span><br><span class="line"><span class="string">    operator.istio.io/component: Pilot</span></span><br><span class="line"><span class="string">    operator.istio.io/managed: Reconcile</span></span><br><span class="line"><span class="string">    operator.istio.io/version: 1.8.4</span></span><br><span class="line"><span class="string">    release: istio</span></span><br><span class="line"><span class="string">  name: istiod</span></span><br><span class="line"><span class="string">  namespace: istio-system</span></span><br><span class="line"><span class="string">  resourceVersion: &quot;826&quot;</span></span><br><span class="line"><span class="string">  selfLink: /api/v1/namespaces/istio-system/services/istiod</span></span><br><span class="line"><span class="string">  uid: 44ee44a6-9003-4f8d-9196-49e47b6667c1</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  clusterIP: 10.96.3.250</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">  - name: grpc-xds</span></span><br><span class="line"><span class="string">    port: 15010</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">    targetPort: 15010</span></span><br><span class="line"><span class="string">  - name: https-dns</span></span><br><span class="line"><span class="string">    port: 15012</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">    targetPort: 15012</span></span><br><span class="line"><span class="string">  - name: https-webhook</span></span><br><span class="line"><span class="string">    port: 443</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">    targetPort: 15017</span></span><br><span class="line"><span class="string">  - name: http-monitoring</span></span><br><span class="line"><span class="string">    port: 15014</span></span><br><span class="line"><span class="string">    protocol: TCP</span></span><br><span class="line"><span class="string">    targetPort: 15014</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    app: istiod</span></span><br><span class="line"><span class="string">    istio: pilot</span></span><br><span class="line"><span class="string">  sessionAffinity: None</span></span><br><span class="line"><span class="string">  type: ClusterIP</span></span><br><span class="line"><span class="string">status:</span></span><br><span class="line"><span class="string">  loadBalancer: &#123;&#125;</span></span><br><span class="line"><span class="string">EOF</span>  </span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/04/07/k8s/lb/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">集群内部负载均衡 lb</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/03/16/linux/lxc/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">lxc</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

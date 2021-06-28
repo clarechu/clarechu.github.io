@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class="active"
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="active"
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="home-content-container fade-in-down-animation">
+    <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2021/01/21/k8s/kiali/">
+                        kiali 源码解析
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        kiali 源码解析
+前言: 
+Kiali是用于基于Istio的服务网格的管理控制台。它提供仪表板，可观察性，并允许您使用强大的配置和验证功能来操作网格。它通过推断流量拓扑来显示服务网格的结构，并显示网格的运行状况。Kiali提供了详细的指标，强大的...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Thu Jan 21 2021 18:36:28 GMT+0800">2021-01-21</span></span>
+        
+        
+    </div>
+
+    <a href="/2021/01/21/k8s/kiali/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2021/01/21/k8s/istio-use/">
+                        istio 流量管理使用说明
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        istio 流量管理使用说明
+前提条件在开始之前，请检查以下先决条件：
+
+检查kubernetes 集群pod和 服务
+使用1.6 以上版本的istio,并检查 pod和服务
+设定 必要的平台设置
+
+部署测试服务 bookinfo我们就使用istio...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Thu Jan 21 2021 00:00:00 GMT+0800">2021-01-21</span></span>
+        
+        
+    </div>
+
+    <a href="/2021/01/21/k8s/istio-use/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2020/09/21/queue/">
+                        普通队列
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        普通队列
+普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。
+什么是堆堆是一颗具有特定性质的二叉树，堆的基本要求就是堆中所有结点的值必须大于或等于（或小于或等于）其孩子结点的值，这也称为堆的性质；堆还有另一个性质，就是当 h &g...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Sep 21 2020 00:00:00 GMT+0800">2020-09-21</span></span>
+        
+        
+    </div>
+
+    <a href="/2020/09/21/queue/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2020/09/21/docker/">
+                        更改docker默认挂载目录
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        更改docker默认挂载目录
+场景生产上运行了一段时间docker后，根分区使用量报警，由于根分区不是lvm类型的，所以无法做扩容，故采用新加一块硬盘，挂载到新目录/docker/，并将docker默认挂载目录改到这个目录的方法解决磁盘将满的问题。
+...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Sep 21 2020 00:00:00 GMT+0800">2020-09-21</span></span>
+        
+        
+    </div>
+
+    <a href="/2020/09/21/docker/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2020/03/09/compare/">
+                        Compare
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        Compare比较大小的基本方法
+1234567891011121314151617181920212223242526272829303132333435package compareimport (	&quot;fmt&quot;	&quot;g...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Mar 09 2020 18:36:28 GMT+0800">2020-03-09</span></span>
+        
+        
+    </div>
+
+    <a href="/2020/03/09/compare/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/ops/k8s-node/">
+                        阿里K8S节点初始化
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        修改默认DNS12345cd /etc/sysconfig/network-scripts# 增加默认搜索域为siss.aliyun,并配置DNS为内部的DNSecho -e  &quot;DOMAIN=siss.aliyun\nDNS1=172.1...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/ops/k8s-node/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/ops/standard/">
+                        操作系统标准化
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        使用内部DNS服务器123echo  &quot;nameserver 172.18.171.113&quot; &gt; /etc/resolv.confecho  &quot;nameserver 172.18.171.109&quot; &gt...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/ops/standard/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/ops/use_dns/">
+                        本地开发环境基础服务支持使用DNS设置方法
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        修改Windows设置进入控制面板—-&gt;网络连接—&gt;本地连接
+
+在弹出的菜单中，点击属性按钮
+弹出的菜单中，先选中Internet协议版本4—再点击属性
+将首选DNS修改为128.0.100.170
+再点击高级按钮,弹出的对话框切换到DN...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/ops/use_dns/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/ops/yum/">
+                        本地YUM源搭建
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        Linux系统的包管理是yum。默认刚安装好的系统一般都是从CentOS官方下载相关软件包，这样就会浪费很多带宽。
+服务端配置12345# 安装yum-utilsyum install yum-utils createrepo  nginx -y# ...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/ops/yum/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/standard/Swagger2/">
+                        SpringBoot整合Swagger2
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        前言手写Api文档的几个痛点：
+
+文档需要更新的时候，需要再次发送一份给前端，也就是文档更新交流不及时。
+接口返回结果不明确
+不能直接在线测试接口，通常需要使用工具，比如postman
+接口文档太多，不好管理
+Swagger也就是为了解决这个问题，当...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/standard/Swagger2/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+    </ul>
+
+    <div class="home-paginator">
+        <div class="paginator">
+    
+        <a class="prev btn"
+           href="/"
+        >Prev</a>
+    
+
+    
+        <a class="next btn"
+           href="/page/3/"
+        >Next</a>
+    
+</div>
+
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

@@ -60,7 +60,6 @@ func GetCompare() []*models.Comparable {
 	return data
 }
 
-
 func GetCompare1() []*models.Comparable {
 	return data1
 }

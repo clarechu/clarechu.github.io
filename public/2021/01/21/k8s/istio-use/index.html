@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            istio 流量管理使用说明 |
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">istio 流量管理使用说明</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-01-21 00:00:00
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/istio/">istio</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>istio 流量管理使用说明</p>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>在开始之前，请检查以下先决条件：</p>
+<ol>
+<li>检查kubernetes 集群pod和 <font face="黑体" color=green size=3>服务</font></li>
+<li>使用1.6 以上版本的istio,并检查 pod和服务</li>
+<li>设定 必要的平台设置</li>
+</ol>
+<h3 id="部署测试服务-bookinfo"><a href="#部署测试服务-bookinfo" class="headerlink" title="部署测试服务 bookinfo"></a>部署测试服务 bookinfo</h3><p>我们就使用istio 官方使用的测试服务<code>BookInfo</code></p>
+<p>Bookinfo应用程序分为四个单独的微服务：</p>
+<p>productpage。该productpage微服务调用details和reviews微服务来填充页面。<br>details。该details微服务包含图书信息。<br>reviews。该reviews微服务包含了书评。它还称为ratings微服务。<br>ratings。该ratings微服务包含预定伴随书评排名信息。<br>reviews微服务有3个版本：</p>
+<p>版本v1不会调用该ratings服务。<br>版本v2调用该ratings服务，并将每个等级显示为1到5个黑星。<br>版本v3调用该ratings服务，并将每个等级显示为1到5个红色星号。</p>
+<p>访问关系如下图</p>
+<p><img src="/uploads/istio/images/m_88841685b364bda18fb333e9acb97366_r.png" alt="bookInfo"></p>
+<p>首先部署bookinfo服务之前我们需要给 bookinfo 注入<br>sidecar,若给namespace打 <code>istio-injection=enabled</code>的labels 则istio会给当前namespace下的所有pod自动注入sidecar</p>
+<p>假设我们将bookinfo 部署到demo的这个namespace中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ kubectl label namespace demo istio-injection=enabled</span><br></pre></td></tr></table></figure>
+
+<p>查看labels是否设置成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get namespace demo --show-labels</span><br></pre></td></tr></table></figure>
+
+<p>然后你就看到一下的效果 如果最后一个字段上面显示<code>istio-injection=enabled</code>则代表labels 设置成功</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NAME   STATUS   AGE   LABELS</span><br><span class="line">demo   Active   24s   istio-injection=enabled</span><br></pre></td></tr></table></figure>
+
+<p>部署 BookInfo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f istio/bookinfo.yml</span><br></pre></td></tr></table></figure>
+
+<p>查看 服务是否正常部署且 成功注入sidecar</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get po -n demo</span><br></pre></td></tr></table></figure>
+
+<p>确认 所有的service 和pod 都Running </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get service -n demo </span><br><span class="line"></span><br><span class="line">NAME          TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE</span><br><span class="line">details       ClusterIP   10.0.0.31    &lt;none&gt;        9080/TCP   6m</span><br><span class="line">kubernetes    ClusterIP   10.0.0.1     &lt;none&gt;        443/TCP    7d</span><br><span class="line">productpage   ClusterIP   10.0.0.120   &lt;none&gt;        9080/TCP   6m</span><br><span class="line">ratings       ClusterIP   10.0.0.15    &lt;none&gt;        9080/TCP   6m</span><br><span class="line">reviews       ClusterIP   10.0.0.170   &lt;none&gt;        9080/TCP   6m</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ kubectl get pods -n demo</span><br><span class="line"></span><br><span class="line">NAME                             READY     STATUS    RESTARTS   AGE</span><br><span class="line">details-v1-1520924117-48z17      2/2       Running   0          6m</span><br><span class="line">productpage-v1-560495357-jk1lz   2/2       Running   0          6m</span><br><span class="line">ratings-v1-734492171-rnr5l       2/2       Running   0          6m</span><br><span class="line">reviews-v1-874083890-f0qf0       2/2       Running   0          6m</span><br><span class="line">reviews-v2-1343845940-b34q5      2/2       Running   0          6m</span><br><span class="line">reviews-v3-1813607990-8ch52      2/2       Running   0          6m</span><br></pre></td></tr></table></figure>
+
+<p>如果所有pod ready 显示 2/2 则 服务正确注入sidecar</p>
+<h3 id="流量管理"><a href="#流量管理" class="headerlink" title="流量管理"></a>流量管理</h3><h5 id="配置服务访问"><a href="#配置服务访问" class="headerlink" title="配置服务访问"></a>配置服务访问</h5><p>如何将请求动态路由到微服务的多个版本。</p>
+<p>istio Bookinfo示例包含四个单独的微服务，每个微服务具有多个版本。微服务之一的三种不同版本reviews已经部署并同时运行。为了说明此问题，请/productpage在浏览器中访问Bookinfo应用，然后刷新几次。您会注意到，有时书评输出中包含星级，有时则不。这是因为如果没有明确的默认服务版本可路由，Istio将以循环方式将请求路由到所有可用版本。</p>
+<p>配置方式如下所示</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Gateway</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">bookinfo-gateway</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">demo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">istio:</span> <span class="string">ingressgateway</span> <span class="comment"># istio-system 下面的istio-ingressgateway 的labels</span></span><br><span class="line">  <span class="attr">servers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*&#x27;</span> <span class="comment"># 指定访问域名</span></span><br><span class="line">    <span class="attr">port:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">http</span> </span><br><span class="line">      <span class="attr">number:</span> <span class="number">80</span> <span class="comment"># 访问端口</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">HTTP</span> <span class="comment"># 访问协议名称</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">bookinfo</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">demo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">gateways:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">bookinfo-gateway</span> <span class="comment"># 网关gateway的名称</span></span><br><span class="line">  <span class="attr">hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;*&#x27;</span> <span class="comment"># 访问的svc 的名称</span></span><br><span class="line">  <span class="attr">http:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">match:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uri:</span></span><br><span class="line">        <span class="attr">exact:</span> <span class="string">/productpage</span> <span class="comment"># 精确匹配 路径</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uri:</span></span><br><span class="line">        <span class="attr">prefix:</span> <span class="string">/static</span> <span class="comment"># 前缀匹配路径</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uri:</span></span><br><span class="line">        <span class="attr">exact:</span> <span class="string">/login</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uri:</span></span><br><span class="line">        <span class="attr">exact:</span> <span class="string">/logout</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uri:</span></span><br><span class="line">        <span class="attr">prefix:</span> <span class="string">/api/v1/products</span></span><br><span class="line">    <span class="attr">route:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">productpage</span> <span class="comment"># 目的服务 svc地址</span></span><br><span class="line">        <span class="attr">port:</span></span><br><span class="line">          <span class="attr">number:</span> <span class="number">9080</span> <span class="comment"># 目的端口</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上配置的名词解释</p>
+<p>网关配置 gateway 必要字段的解释</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>描述</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>selector</td>
+<td>map&lt;string, string&gt;</td>
+<td>一个或多个标签，指示应在其上应用此网关配置的一组特定的Pod / VM。 默认情况下，基于标签选择器在所有名称空间中搜索工作负载。 这意味着名称空间“ foo”中的网关资源可以基于标签选择名称空间“ bar”中的pod。 可以通过istiod中的<code>PILOTSCOPEGATEWAYTONAMESPACE</code>环境变量来控制此行为。 如果将此变量设置为true，则标签搜索的范围将限于存在资源的配置名称空间。 换句话说，网关资源必须与网关工作负载实例位于相同的名称空间中。 如果选择器为零，则网关将应用于所有工作负载。</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>hosts</td>
+<td>[]string</td>
+<td>此网关公开的一台或多台主机。 尽管通常适用于HTTP服务，但也可以将其用于使用TLS和SNI的TCP服务。 主机被指定为带有可选名称空间/前缀的dnsName。 dnsName应该使用FQDN格式指定，可以选择在最左侧的组件中包含通配符（例如prod / <em>.example.com）。 将dnsName设置为</em>，以从指定的名称空间（例如prod / <em>）中选择所有VirtualService主机。可以将名称空间设置为</em>或。，分别代表任意名称空间或当前名称空间。 例如，* / foo.example.com从任何可用的名称空间中选择服务，而./foo.example.com仅从Sidecar的名称空间中选择服务。 如果未指定名称空间/，则默认值为* /，即从任何名称空间中选择服务。 还将使用所选名称空间中的任何关联的DestinationRule。虚拟服务必须绑定到网关，并且必须具有一个或多个与服务器中指定的主机匹配的主机。 匹配可以是与服务器主机的完全匹配或后缀匹配。 例如，如果服务器的主机指定* .example.com，则具有主机dev.example.com或prod.example.com的VirtualService将匹配。 但是，带有主机example.com或newexample.com的VirtualService将不匹配。注意：仅可以引用导出到网关名称空间的虚拟服务（例如，exportTo值为*）。 私有配置（例如，exportTo设置为）将不可用。 有关详细信息，请参考VirtualService，DestinationRule和ServiceEntry配置中的exportTo设置。</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>port</td>
+<td>port</td>
+<td>代理应在其上侦听传入连接的端口和协议</td>
+<td>yes</td>
+</tr>
+</tbody></table>
+<p>获取效果如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">➜  ~ kubectl get gw -n demo</span><br><span class="line">NAME               AGE</span><br><span class="line">bookinfo-gateway   11m</span><br><span class="line">➜  ~ kubectl get vs -n demo</span><br><span class="line">NAME                         GATEWAYS             HOSTS                                  AGE</span><br><span class="line">bookinfo                     [bookinfo-gateway]   [*]                                    11m</span><br></pre></td></tr></table></figure>
+
+<h5 id="VirtualService"><a href="#VirtualService" class="headerlink" title="VirtualService"></a>VirtualService</h5><p>定义了一组寻址主机时要应用的流量路由规则。每个路由规则为特定协议的流量定义匹配条件。如果流量匹配，则将其发送到注册表中定义的命名目标服务（或其子集/版本）。</p>
+<p>以下为VirtualService 字段的名词解释</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>描述</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hosts</td>
+<td>string[]</td>
+<td>hosts字段适用于HTTP和TCP服务。网格内的服务（即在服务注册表中找到的服务）必须始终使用其字母数字名称进行引用。IP地址仅允许通过网关定义的服务使用。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>gateways</td>
+<td>string[]</td>
+<td>应应用这些路由的网关和sidecar的名称。其他名称空间中的网关可以由<gateway namespace>/<gateway name>;引用 。指定没有名称空间限定符的网关与指定VirtualService的名称空间相同</td>
+<td>no</td>
+</tr>
+<tr>
+<td>subset</td>
+<td>string</td>
+<td>服务中子集的名称。仅适用于网格内的服务。该子集必须在相应的DestinationRule中定义。</td>
+<td>node</td>
+</tr>
+<tr>
+<td>port</td>
+<td>PortSelector</td>
+<td>指定要寻址的主机上的端口。如果服务仅公开单个端口，则不需要显式选择端口。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>http</td>
+<td>HTTPRoute[]</td>
+<td>HTTP流量的路由规则的有序列表。HTTP路由将应用于名为“ http- ” /“ http2- ” /“ grpc- *”的平台服务端口，协议为HTTP / HTTP2 / GRPC / TLS终止的HTTPS的网关端口以及使用HTTP / HTTP2 /的服务入口端口GRPC协议。使用匹配传入请求的第一条规则。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>tls</td>
+<td>TLSRoute[]</td>
+<td>未终止的TLS和HTTPS流量的路由规则的有序列表。路由通常使用ClientHello消息显示的SNI值执行。TLS路由将应用于使用HTTPS / TLS协议（即采用“直通” TLS模式）的名为“ https- ”，“ tls- ”的平台服务端口，未终止的网关端口以及使用HTTPS / TLS协议的服务入口端口。使用匹配传入请求的第一条规则。注意：没有关联虚拟服务的流量“ https- ”或“ tls- ”端口将被视为不透明的TCP流量。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>tcp</td>
+<td>TCPRoute[]</td>
+<td>不透明TCP流量的路由规则的有序列表。TCP路由将应用于不是HTTP或TLS端口的任何端口。使用匹配传入请求的第一条规则。</td>
+<td>no</td>
+</tr>
+</tbody></table>
+<h5 id="HTTP路由"><a href="#HTTP路由" class="headerlink" title="HTTP路由"></a>HTTP路由</h5><p>描述用于路由HTTP / 1.1，HTTP2和gRPC通信的匹配条件和操作。有关用法示例，请参见VirtualService。</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>描述</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>string</td>
+<td>分配给路由以进行调试的名称。路由名称将与匹配名称串联在一起，并将被记录在访问日志中，以查找与此路由/匹配匹配的请求。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>match</td>
+<td>HTTPMatchRequest[]</td>
+<td>匹配要激活的规则要满足的条件。单个匹配块内的所有条件都具有AND语义，而匹配块列表具有OR语义。如果任何一个匹配块成功，则匹配该规则。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>route</td>
+<td>HTTPRouteDestination[]</td>
+<td>HTTP规则可以重定向或转发（默认）流量。转发目标可以是服务的多个版本之一（请参阅文档开头的词汇表）。与服务版本关联的权重决定了它接收的流量比例。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>redirect</td>
+<td>HTTPRedirect</td>
+<td>HTTP规则可以重定向或转发（默认）流量。如果在规则中指定了流量通过选项，则将忽略路由/重定向。重定向原语可用于将HTTP 301重定向发送到其他URI或Authority。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>rewrite</td>
+<td>HTTPRewrite</td>
+<td>重写HTTP URI和Authority标头。重写不能与重定向原语一起使用。重写将在转发之前执行。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>Duration</td>
+<td>HTTP请求超时，默认为禁用。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>retries</td>
+<td>HTTPRetry</td>
+<td>重试HTTP请求的策略。</td>
+<td>no</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>Headers</td>
+<td>标头操作规则</td>
+<td>no</td>
+</tr>
+<tr>
+<td>fault</td>
+<td>HTTPFaultInjection</td>
+<td>故障注入策略，适用于客户端的HTTP通信。请注意，如果在客户端启用了错误，则不会启用超时或重试。</td>
+<td>没有</td>
+</tr>
+<tr>
+<td>mirror</td>
+<td>Destination</td>
+<td>除了将请求转发到预期目标之外，还将HTTP流量镜像到另一个目标。镜像流量是基于尽力而为的，在这种情况下，边车/网关在从原始目的地返回响应之前不会等待镜像集群响应。将为镜像目标生成统计信息。</td>
+<td>no</td>
+</tr>
+</tbody></table>
+<p>http 和tcp 、tls 基本上类似 就不重复说明了</p>
+<p>访问页面即可看到页面效果如下:</p>
+<p><img src="/uploads/istio/images/m_f048c09d102e39ddf43a9d3e0ae81d47_r.png"></p>
+<p>红色框的地方就是不同版本的 <code>reviews</code> 服务</p>
+<h5 id="请求超时"><a href="#请求超时" class="headerlink" title="请求超时"></a>请求超时</h5><p>要测试Bookinfo应用程序微服务的弹性，请为用户reviews:v2和的ratings微服务之间注入7s的延迟jason。此测试将发现故意引入Bookinfo应用程序的错误。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">$</span> <span class="string">kubectl</span> <span class="string">get</span> <span class="string">virtualservice</span> <span class="string">ratings</span> <span class="string">-o</span> <span class="string">yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">VirtualService</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">bookinfo-fault-injection</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">demo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">hosts:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ratings</span></span><br><span class="line">  <span class="attr">http:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">fault:</span></span><br><span class="line">      <span class="attr">delay:</span></span><br><span class="line">        <span class="attr">fixedDelay:</span> <span class="string">7s</span></span><br><span class="line">        <span class="attr">percentage:</span></span><br><span class="line">          <span class="attr">value:</span> <span class="number">100</span></span><br><span class="line">    <span class="attr">match:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">headers:</span></span><br><span class="line">        <span class="attr">end-user:</span></span><br><span class="line">          <span class="attr">exact:</span> <span class="string">jason</span></span><br><span class="line">    <span class="attr">route:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">ratings</span></span><br><span class="line">        <span class="attr">subset:</span> <span class="string">v1</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">route:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">destination:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">ratings</span></span><br><span class="line">        <span class="attr">subset:</span> <span class="string">v1</span></span><br></pre></td></tr></table></figure>
+
+<p>产生的效果如下所示：</p>
+<p>重新加载<code>productpage</code>网页。您将看到该页面实际上在大约6秒钟内加载完成。</p>
+<p><font face="黑体" color=red size=3>意义:</font>Istio启用协议特定的故障注入到网络中，而不是杀死pod，延迟或在TCP层破坏数据包。我们的理由是，无论网络级别的故障如何，应用层观察到的故障都是一样的，并且可以在应用层注入更有意义的故障（例如，HTTP错误代码），以锻炼应用的弹性。</p>
+<p>运维人员可以为符合特定条件的请求配置故障。运维人员可以进一步限制应该遭受故障的请求的百分比。可以注入两种类型的故障：延迟和中止。延迟是计时故障，模拟增加的网络延迟或过载的上游服务。中止是模拟上游服务的崩溃故障。中止通常以HTTP错误代码或TCP连接失败的形式表现。</p>
+<h5 id="流量分配"><a href="#流量分配" class="headerlink" title="流量分配"></a>流量分配</h5><p>一个常见的用例是将流量逐渐从一种微服务版本迁移到另一种。在Istio中，您可以通过配置一系列规则以将一定百分比的流量路由到一项服务或另一项服务来实现此目标。在此任务中，您将发送流量的10％reviews:v1和90％ reviews:v3。然后，您将100％的流量发送到来完成迁移reviews:v3。</p>
+<p>现在来创建我的配置吧</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1beta1</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: bookinfo-traffic-injection</span><br><span class="line">  namespace: demo</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - reviews</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v1 <span class="comment"># 需要和DestinationRule 资源的名字对应起来</span></span><br><span class="line">      weight: 10</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v3</span><br><span class="line">      weight: 90</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: DestinationRule</span><br><span class="line">metadata:</span><br><span class="line">  name: bookinfo-traffic-injection</span><br><span class="line">  namespace: demo</span><br><span class="line">spec:</span><br><span class="line">  host: reviews</span><br><span class="line">  subsets:</span><br><span class="line">  - name: v1 <span class="comment"># subset指向的名称</span></span><br><span class="line">    labels:</span><br><span class="line">      version: v1 <span class="comment"># 需要路由到pod labels中的version版本对应的值</span></span><br><span class="line">  - name: v2</span><br><span class="line">    labels:</span><br><span class="line">      version: v2</span><br><span class="line">  - name: v3</span><br><span class="line">    labels:</span><br><span class="line">      version: v3</span><br></pre></td></tr></table></figure>
+
+<p>创建以上配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">$</span> <span class="string">kubectl</span> <span class="string">apply</span> <span class="string">-f</span> <span class="string">bookinfo-traffic-injection.yaml</span></span><br></pre></td></tr></table></figure>
+
+
+<p>将istio-system下面的kiali的svc地址改成<code>nodeport</code> 访问即可， 默认登陆的用户名密码是 admin/admin</p>
+<p><img src="/uploads/istio/images/m_2d6a4a0feac0159ee65ac3aee53ecaaf_r.png"></p>
+<p>以上是我们还没有配置分配流量时的流量视图，我们可以看到<code>reviews</code>这个服务的三个不同版本的pod都是平均分配的 大约所占比例是33%左右。</p>
+<p>现在我们配置了流量分配再看看是什么样子的。</p>
+<p>我们会发现红色星的次数明显要多余没有星的次数多很多</p>
+<p>我们现在可以借助kiali来看看我们请求的流量视图</p>
+<p><img src="/uploads/istio/images/m_010ffca5e15ec7eb30397a2e97db1268_r.png"></p>
+<p>可以看到<code>reviews</code>不同版本的服务所占比例分别是</p>
+<p><code>v1 ---&gt;14.3% ，v2 ---&gt; 0% ,  v3 ---&gt; 85.7%</code></p>
+<p>现在我们istio的流量分配的设置已经成功了，那么istio的流量分配的意义在哪里，有什么作用呢?</p>
+<p><font face="黑体" color=red size=3>意义:</font>您可以通过 istio 指定特定服务按照你的设定指定转到金丝雀版本，而不必考虑金丝雀部署的大小，或根据请求的内容将流量发送到特定版本。</p>
+<h5 id="给服务注入故障"><a href="#给服务注入故障" class="headerlink" title="给服务注入故障"></a>给服务注入故障</h5><h5 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h5><h5 id="流量镜像"><a href="#流量镜像" class="headerlink" title="流量镜像"></a>流量镜像</h5><h5 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h5><p>在istio中有一个很麻烦的问题 就是配置出错以后很难定位是什么配置错误导致访问出错的问题，所以我们需要专门的工具来定位是什么导致的配置问题。</p>
+<h4 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h4><h5 id="证书管理"><a href="#证书管理" class="headerlink" title="证书管理"></a>证书管理</h5><h5 id="认证方式"><a href="#认证方式" class="headerlink" title="认证方式"></a>认证方式</h5><h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3>
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/01/21/k8s/kiali/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">kiali 源码解析</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/09/21/queue/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">普通队列</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

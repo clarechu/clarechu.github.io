@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            2 GIT 的使用 |
+        
+        ClareChu
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/images/golang.svg">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">2 GIT 的使用</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2018-02-20 00:00:00
+    </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="2-1-概述"><a href="#2-1-概述" class="headerlink" title="2.1 概述"></a>2.1 概述</h2><p>如果你严肃对待编程，就必定会使用”版本管理系统”（Version Control System）。<br>眼下最流行的”版本管理系统”，非Git莫属。</p>
+<p><img src="https://git-scm.com/images/logos/logomark-orange@2x.png"></p>
+<p>相比同类软件，Git有很多优点。其中很显著的一点，就是版本的分支（branch）和合并（merge）十分方便。有些传统的版本管理软件，分支操作实际上会生成一份现有代码的物理拷贝，而Git只生成一个指向当前版本（又称”快照”）的指针，因此非常快捷易用。<br>但是，太方便了也会产生副作用。如果你不加注意，很可能会留下一个枝节蔓生、四处开放的版本库，到处都是分支，完全看不出主干发展的脉络。</p>
+<p><img src="https://git-scm.com/images/branching-illustration@2x.png"></p>
+<p>Vincent Driessen提出了一个分支管理的策略，我觉得非常值得借鉴。它可以使得版本库的演进保持简洁，主干清晰，各个分支各司其职、井井有条。理论上，这些策略对所有的版本管理系统都适用，Git只是用来举例而已。如果你不熟悉Git，跳过举例部分就可以了。</p>
+<h2 id="2-2-Git-的安装"><a href="#2-2-Git-的安装" class="headerlink" title="2.2 Git 的安装"></a>2.2 Git 的安装</h2><p><a class="link"   target="_blank" rel="noopener" href="https://github.com/git-for-windows/git/releases/download/v2.20.1.windows.1/Git-2.20.1-64-bit.exe" >Git 下载<i class="fas fa-external-link-alt"></i></a></p>
+<p>下载成功后直接点击安装即可。</p>
+<h2 id="2-3-Git-注册及配置"><a href="#2-3-Git-注册及配置" class="headerlink" title="2.3 Git 注册及配置"></a>2.3 Git 注册及配置</h2><p>在浏览器输入<code>https://gitlab.sissyun.com.cn</code> 打开Gitlab客户端</p>
+<h2 id="2-4-注册"><a href="#2-4-注册" class="headerlink" title="2.4 注册"></a>2.4 注册</h2><p>特别注意下面的格式，名字用中文，用户名使用全小写拼音,  并使用公司邮箱。<br>如果你的名字是：张三，</p>
+<ul>
+<li>姓名（name）填写中文名：张三</li>
+<li>用户名（username）填写你的全名拼音：zhangsan</li>
+<li>邮箱是使用公司邮箱，不要用私人邮箱：<a class="link"   href="mailto:&#122;&#x68;&#97;&#x6e;&#x67;&#x2e;&#115;&#x61;&#110;&#x40;&#115;&#x73;&#105;&#46;&#x63;&#111;&#109;" >&#122;&#x68;&#97;&#x6e;&#x67;&#x2e;&#115;&#x61;&#110;&#x40;&#115;&#x73;&#105;&#46;&#x63;&#111;&#109;<i class="fas fa-external-link-alt"></i></a>.</li>
+</ul>
+<p>请记住自己设置的密码，要求8位，并包含英文字母大、小写及数字，如：pA5wOldy，如果你没安装要求注册，你将无法登录Gitlab。</p>
+<p><img src="/assets/gitlab-register.png"></p>
+<h2 id="2-5-激活用户"><a href="#2-5-激活用户" class="headerlink" title="2.5 激活用户"></a>2.5 激活用户</h2><p>激活你的账户</p>
+<p>接下来去邮箱查看你的邮件，你很快会收到来自 Gitlab 的邮件,按照提示激活你的账户。（如果没收到激活邮件，请联系你的项目经理）</p>
+<h2 id="2-6-设置密钥"><a href="#2-6-设置密钥" class="headerlink" title="2.6 设置密钥"></a>2.6 设置密钥</h2><p>回到操作系统命令提示符下（windows用户请用git bash终端）生成ssh密钥及设置git用户信息, 注意如果你在运行ssh-keygen是设置了密码，那么你以后的git操作也要输入密码，否则这里可以直接回车，即运行ssh-keygen不使用密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;zhang.san@ssi.com&quot;</span> </span><br><span class="line">git config --global user.name <span class="string">&quot;Zhang San&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;zhang.san@ssi.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-7-上传公钥"><a href="#2-7-上传公钥" class="headerlink" title="2.7 上传公钥"></a>2.7 上传公钥</h3><p>登录gitlab后，先点击 Profile Settings &gt;  </p>
+<p><img src="img/gitlab_settings.png"></p>
+<p>创建<code>rsa</code> 密钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;youname@ssi.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>最好打开密钥管理页面</p>
+<p> 在git bash下，复制刚才生成好的ssh公共密钥的文本内容并粘贴到下面文本框内</p>
+<ul>
+<li>Windows：c:\Users\yourname.ssh\id_rsa.pub; </li>
+<li>Linux/Mac: ~/.ssh/id_rsa.pub</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p><img src="img/gitlab_profile_keys_new.png" alt="ssh_key"></p>
+<h3 id="2-8-编辑Git配置文件"><a href="#2-8-编辑Git配置文件" class="headerlink" title="2.8 编辑Git配置文件"></a>2.8 编辑Git配置文件</h3><p>我们来克隆一个演示应用代码下来测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> ssh://git@gitlab.sissyun.com.cn:8022/frameworks/spring-boot-utils.git</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-9-Git-使用入门"><a href="#2-9-Git-使用入门" class="headerlink" title="2.9 Git 使用入门"></a>2.9 Git 使用入门</h3><p>说明：</p>
+<p>以下所有git命令行都在终端下操作。</p>
+<p><strong>创建分支</strong></p>
+<p>创建一个名称叫 demo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b demo</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看创建的分支</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch –a</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看本地文件修改状态</strong></p>
+<p>接下来就可以开发了，开发完成后查看更改过的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<p><strong>代码提交</strong><br>审查没有问题后提交代码到 feature 分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line"></span><br><span class="line">git status</span><br><span class="line"></span><br><span class="line">git commit</span><br><span class="line"></span><br><span class="line">(press i to input below text)</span><br><span class="line"></span><br><span class="line">[Description]: Your comments.</span><br><span class="line"></span><br><span class="line">[Reviewer]: The name of reviewer</span><br><span class="line"></span><br><span class="line">(press esc and :wq to commit )</span><br></pre></td></tr></table></figure>
+
+<p>把提交到代码推到远程服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin demo</span><br></pre></td></tr></table></figure>
+
+<p><strong>主分支master</strong></p>
+<p>首先，代码库应该有一个、且仅有一个主分支。所有提供给用户使用的正式版本，都在这个主分支上发布。</p>
+<p>Git主分支的名字，默认叫做master。它是自动建立的，版本库初始化以后，默认就是在主分支在进行开发。</p>
+<p><strong>开发分支development</strong></p>
+<p>主分支只用来分布重大版本，日常开发应该在另一条分支上完成。我们把开发用的分支，叫做development, 开发功能模块应该新建feature分支，单元测试通过后合并到development分支，合并完成后feature分支到生命周期结束，应该删除该分支。</p>
+<p>这个分支可以用来生成代码的最新隔夜版本（nightly）。如果想正式对外发布，就在Master分支上，对Development分支进行”合并”（merge）。<br>Git创建Development分支的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b development</span><br></pre></td></tr></table></figure>
+
+<p>将Development分支发布到Master分支的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 切换到Master分支</span></span><br><span class="line">git checkout master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对Development分支进行合并</span></span><br><span class="line">git merge --no-ff development</span><br></pre></td></tr></table></figure>
+
+<p>这里稍微解释一下，上一条命令的–no-ff参数是什么意思。默认情况下，Git执行”快进式合并”（fast-farward merge），会直接将Master分支指向Develop分支。</p>
+<p>使用–no-ff参数后，会执行正常合并，在Master分支上生成一个新节点。为了保证版本演进的清晰，我们希望采用这种做法。关于合并的更多解释，请参考Benjamin Sandofsky的《Understanding the Git Workflow》。</p>
+<p><strong>临时性分支</strong></p>
+<p>前面讲到版本库的两条主要分支：Master和Development。前者用于正式发布，后者用于日常开发。其实，常设分支只需要这两条就够了，不需要其他了。<br>但是，除了常设分支以外，还有一些临时性分支，用于应对一些特定目的的版本开发。临时性分支主要有三种：</p>
+<ul>
+<li>功能（feature）分支</li>
+<li>预发布（release）分支</li>
+<li>修补bug（fixbug）分支</li>
+</ul>
+<p>这三种分支都属于临时性需要，使用完以后，应该删除，使得代码库的常设分支始终只有Master和Development。</p>
+<p><strong>功能分支</strong></p>
+<p>接下来，一个个来看这三种”临时性分支”。<br>第一种是功能分支，它是为了开发某种特定功能，从Development分支上面分出来的。开发完成后，要再并入Development。</p>
+<p>功能分支的名字，可以采用feature-*的形式命名。<br>创建一个功能分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature-x development</span><br></pre></td></tr></table></figure>
+
+<p>开发完成后，将功能分支合并到development分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout development</span><br><span class="line">git merge --no-ff feature-x</span><br></pre></td></tr></table></figure>
+
+<p>删除feature分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d feature-x</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.2.3.5 预发布分支</strong></p>
+<p>第二种是预发布分支，它是指发布正式版本之前（即合并到Master分支之前），我们可能需要有一个预发布的版本进行测试。<br>预发布分支是从Development分支上面分出来的，预发布结束以后，必须合并进Development和Master分支。它的命名，可以采用release-*的形式。<br>创建一个预发布分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b release-1.0.0 development</span><br></pre></td></tr></table></figure>
+
+<p>确认没有问题后，合并到master分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge --no-ff release-1.0.0</span><br><span class="line"><span class="comment"># 对合并生成的新节点，做一个标签</span></span><br><span class="line">git tag -a 1.0.0</span><br></pre></td></tr></table></figure>
+
+<p>再合并到development分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout development</span><br><span class="line">git merge --no-ff release-1.0.0</span><br></pre></td></tr></table></figure>
+
+<p>最后，删除预发布分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d release-1.0.0</span><br></pre></td></tr></table></figure>
+
+<p><strong>修补bug分支</strong></p>
+<p>第三种是修补bug分支。软件正式发布以后，难免会出现bug。这时就需要创建一个分支，进行bug修补。<br>修补bug分支是从Master分支上面分出来的。修补结束以后，再合并进Master和Development分支。它的命名，可以采用fixbug-*的形式。</p>
+<p>创建一个修补bug分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　git checkout -b fixbug-0.1 master</span><br></pre></td></tr></table></figure>
+
+<p>修补结束后，合并到master分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　git checkout master</span><br><span class="line">　　git merge --no-ff fixbug-0.1</span><br><span class="line">　　git tag -a 0.1.1</span><br></pre></td></tr></table></figure>
+
+<p>再合并到development分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　git checkout development</span><br><span class="line">　　git merge --no-ff fixbug-0.1</span><br></pre></td></tr></table></figure>
+
+<p>最后，删除”修补bug分支”：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　git branch -d fixbug-0.1</span><br></pre></td></tr></table></figure>
+
+<p><strong>客户稳定版分支</strong></p>
+<p>当应用发布给多个客户上线时，我们需要从master创建客户分支 abc-xxx<br>分支是从 master 分支上面分出来的，它的命名，可以采用abc-xxx的形式（abc为客户项目代码, xxx为版本号）。</p>
+<p>创建一个预发布分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　git checkout -b abc-1.0.0 master</span><br></pre></td></tr></table></figure>
+
+<p>测试有问题就在这个分支收敛再提交测试，最后测试没有问题，以此版本发布。</p>
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2018/02/20/doc-dev/basics/kafka/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">使用SpringBoot 整合 消息中间件Kafka</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2018/02/20/doc-dev/basics/grpc/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">GRPC的使用</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>
