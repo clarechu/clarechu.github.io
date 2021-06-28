@@ -17,7 +17,7 @@
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
     KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpeg","description":"没有写过足够代码量的，想成为高手是不可能的，只能纸上谈兵 ."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -26,6 +26,8 @@
 
 <body>
 <div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
     
 
     
@@ -129,68 +131,6 @@
                 
 
                 <h3 class="home-article-title">
-                    <a href="/2019/03/12/doc-dev/ops/k8s-node/">
-                        阿里K8S节点初始化
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        修改默认DNS12345cd /etc/sysconfig/network-scripts# 增加默认搜索域为siss.aliyun,并配置DNS为内部的DNSecho -e  &quot;DOMAIN=siss.aliyun\nDNS1=172.1...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
-        
-        
-    </div>
-
-    <a href="/2019/03/12/doc-dev/ops/k8s-node/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2019/03/12/doc-dev/standard/Swagger2/">
-                        SpringBoot整合Swagger2
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        前言手写Api文档的几个痛点：
-
-文档需要更新的时候，需要再次发送一份给前端，也就是文档更新交流不及时。
-接口返回结果不明确
-不能直接在线测试接口，通常需要使用工具，比如postman
-接口文档太多，不好管理
-Swagger也就是为了解决这个问题，当...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
-        
-        
-    </div>
-
-    <a href="/2019/03/12/doc-dev/standard/Swagger2/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                <h3 class="home-article-title">
                     <a href="/2018/03/12/doc-dev/basics/sharding-jdbc/">
                         Sharding-JDBC 的使用
                     </a>
@@ -268,34 +208,6 @@ Sharding-JDBC是当当应用框架ddframe中，从关系型数据库模块dd-rdb
     </div>
 
     <a href="/2018/03/12/doc-dev/basics/transactional/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2018/02/26/doc-dev/basics/rabiit/">
-                        使用 Spring Boot集成 RabbitMq
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        简介 AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。消息中间件主要用于组件之间的解耦，消息的发送者无需知道消息使用者的存在，反之亦然。 AMQP的...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Feb 26 2018 00:00:00 GMT+0800">2018-02-26</span></span>
-        
-        
-    </div>
-
-    <a href="/2018/02/26/doc-dev/basics/rabiit/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -395,6 +307,34 @@ TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷
                 
 
                 <h3 class="home-article-title">
+                    <a href="/2018/02/26/doc-dev/basics/rabiit/">
+                        使用 Spring Boot集成 RabbitMq
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        简介 AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。消息中间件主要用于组件之间的解耦，消息的发送者无需知道消息使用者的存在，反之亦然。 AMQP的...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Feb 26 2018 00:00:00 GMT+0800">2018-02-26</span></span>
+        
+        
+    </div>
+
+    <a href="/2018/02/26/doc-dev/basics/rabiit/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
                     <a href="/2018/02/23/doc-dev/basics/mybatis-plus/">
                         结合Mybatis-Plus 使用读写分离
                     </a>
@@ -414,6 +354,64 @@ TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷
     </div>
 
     <a href="/2018/02/23/doc-dev/basics/mybatis-plus/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2018/02/20/doc-dev/basics/kafka/">
+                        使用SpringBoot 整合 消息中间件Kafka
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        简介Kafka is a distributed,partitioned,replicated commit logservice。它提供了类似于JMS的特性，但是在设计实现上完全不同，此外它并不是JMS规范的实现。kafka对消息保存时根据Topi...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Feb 20 2018 00:00:00 GMT+0800">2018-02-20</span></span>
+        
+        
+    </div>
+
+    <a href="/2018/02/20/doc-dev/basics/kafka/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2018/02/20/doc-dev/basics/git/">
+                        2 GIT 的使用
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        2.1 概述如果你严肃对待编程，就必定会使用”版本管理系统”（Version Control System）。眼下最流行的”版本管理系统”，非Git莫属。
+
+相比同类软件，Git有很多优点。其中很显著的一点，就是版本的分支（branch）和合并（me...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Feb 20 2018 00:00:00 GMT+0800">2018-02-20</span></span>
+        
+        
+    </div>
+
+    <a href="/2018/02/20/doc-dev/basics/git/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -490,10 +488,6 @@ TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷
         
 
         
-            <li class="tools-item tool-scroll-to-top flex-center">
-                <i class="fas fa-arrow-up"></i>
-            </li>
-        
 
         <li class="tools-item tool-scroll-to-bottom flex-center">
             <i class="fas fa-arrow-down"></i>
@@ -504,6 +498,11 @@ TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷
         <li class="tools-item tool-toggle-show flex-center">
             <i class="fas fa-cog fa-spin"></i>
         </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
         
     </ul>
 </div>

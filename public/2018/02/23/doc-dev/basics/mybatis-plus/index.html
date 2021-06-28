@@ -19,7 +19,7 @@
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
     KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpeg","description":"没有写过足够代码量的，想成为高手是不可能的，只能纸上谈兵 ."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -28,6 +28,8 @@
 
 <body>
 <div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
     
 
     
@@ -139,7 +141,7 @@
                     <div class="author">
                         <span class="name">Lei Chu</span>
                         
-                            <span class="author-label">Lv4</span>
+                            <span class="author-label">Lv3</span>
                         
                     </div>
                     <div class="meta-info">
@@ -177,7 +179,7 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">app:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">demo</span> <span class="comment">#数据库名称</span></span><br><span class="line">    <span class="attr">read:</span></span><br><span class="line">      <span class="attr">host:</span> <span class="string">mysql-ro-local</span> <span class="comment"># 读 数据库的 host 默认为： mysql-ro-$&#123;spring.active.profile&#125;</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">3306</span> <span class="comment"># 读 数据库的 port 默认为： 3306</span></span><br><span class="line">    <span class="attr">write:</span></span><br><span class="line">      <span class="attr">host:</span> <span class="string">mysql-local</span> <span class="comment"># 写 数据库的 host 默认为： mysql-$&#123;spring.active.profile&#125;</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">3307</span> <span class="comment"># 写 数据库的 port 默认为： 3306</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">gUa7c4GulFZluORvMIEdC5Jm6P7UMs0VfCHErThG2AUz/DOvb/e0dHkcBGmtmzyURYQXTxxQngjR4+ccYc/J1Q==</span></span><br><span class="line">    <span class="attr">druid:</span></span><br><span class="line">      <span class="attr">public-key:</span> <span class="string">MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJc1VMKK8to2/8IjwA/7QG8qASZl0PWGnZKgNruPAJxAmQQtEMvsFGu6uD3rTfCbFrD4CtNuNz0B3bX067oQZI0CAwEAAQ==</span></span><br></pre></td></tr></table></figure>
 
 <p>这里数据库密码需要加密，禁止使用明文密码：</p>
-<p>下载durid.jar包 <a class="link" target="_blank" rel="noopener" href="http://central.maven.org/maven2/com/alibaba/druid/1.1.9/druid-1.1.9.jar">druid.jar<i class="fas fa-external-link-alt"></i></a><br>下载成功后在当前目录执行</p>
+<p>下载durid.jar包 <a class="link"   target="_blank" rel="noopener" href="http://central.maven.org/maven2/com/alibaba/druid/1.1.9/druid-1.1.9.jar" >druid.jar<i class="fas fa-external-link-alt"></i></a><br>下载成功后在当前目录执行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java -cp  druid-1.1.9.jar com.alibaba.druid.filter.config.ConfigTools yourpassword</span><br><span class="line"></span><br><span class="line">privateKey:MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAiVDuSXMyYybL6zxlGvOwAOuxTyWeOKCXWYv5+Kfwz2CE08+UczVi07GmMlUT5Z3RxpEuDKKqVYylAgpC7D8QwQIDAQABAkBRDwxLIYyKCVnxGCra+SVZtchqX1uCNBKEEuRSC9lUoNaAhSzUrS6uX9eqlGYaFB11iRUmO33PFX2tJe4ez3nRAiEA2ittzLPt9kbh8t3ZAysr5KUpG4m7Xclfij+pvMbrJU0CIQChIGg0CD2CUtdSwXMlv34VzVuWdNglNFZdSoWqJSiPRQIgL/hgmiPt7LrFL6uL7eBuNEYEdeOg6QxAD5vT7IgoZ/kCIQCBQ391ptq5z/4A3UOkmADuOsbsaKbzCg7zXxLm0lK8xQIhAL1hb6D4zkzDhMXBuWKXX1sf+yPXr5uqNOk7Qd1DyFzo</span><br><span class="line">publicKey:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIlQ7klzMmMmy+s8ZRrzsADrsU8lnjigl1mL+fin8M9ghNPPlHM1YtOxpjJVE+Wd0caRLgyiqlWMpQIKQuw/EMECAwEAAQ==</span><br><span class="line">password:IAsFFJu/MU7b3yXUp+v3AiGzxRxp3C/C6W2CXUPyrfH8V52CloF/JAoV4gNvEWUunQkBFYDX6KwgF+7KYJopjg==</span><br></pre></td></tr></table></figure>
 
 <p>把上面的<code>publicKey</code>和<code>password</code>分别粘贴到application.yml中</p>
@@ -199,13 +201,13 @@
                     <div class="article-prev">
                         <a class="prev"
                            rel="prev"
-                           href="/2018/02/26/doc-dev/basics/mock/"
+                           href="/2018/02/26/doc-dev/basics/rabiit/"
                         >
                             <span class="left arrow-icon flex-center">
                               <i class="fas fa-chevron-left"></i>
                             </span>
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">面向测试驱动开发（TDD）</span>
+                                <span class="post-nav-title-item">使用 Spring Boot集成 RabbitMq</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -299,10 +301,6 @@
         
 
         
-            <li class="tools-item tool-scroll-to-top flex-center">
-                <i class="fas fa-arrow-up"></i>
-            </li>
-        
 
         <li class="tools-item tool-scroll-to-bottom flex-center">
             <i class="fas fa-arrow-down"></i>
@@ -313,6 +311,11 @@
         <li class="tools-item tool-toggle-show flex-center">
             <i class="fas fa-cog fa-spin"></i>
         </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
         
     </ul>
 </div>

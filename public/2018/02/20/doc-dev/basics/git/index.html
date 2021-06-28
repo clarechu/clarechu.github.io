@@ -19,7 +19,7 @@
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
     KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpeg","description":"没有写过足够代码量的，想成为高手是不可能的，只能纸上谈兵 ."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -28,6 +28,8 @@
 
 <body>
 <div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
     
 
     
@@ -139,7 +141,7 @@
                     <div class="author">
                         <span class="name">Lei Chu</span>
                         
-                            <span class="author-label">Lv4</span>
+                            <span class="author-label">Lv3</span>
                         
                     </div>
                     <div class="meta-info">
@@ -167,14 +169,14 @@
 <p>相比同类软件，Git有很多优点。其中很显著的一点，就是版本的分支（branch）和合并（merge）十分方便。有些传统的版本管理软件，分支操作实际上会生成一份现有代码的物理拷贝，而Git只生成一个指向当前版本（又称”快照”）的指针，因此非常快捷易用。<br>但是，太方便了也会产生副作用。如果你不加注意，很可能会留下一个枝节蔓生、四处开放的版本库，到处都是分支，完全看不出主干发展的脉络。</p>
 <p><img src="https://git-scm.com/images/branching-illustration@2x.png"></p>
 <p>Vincent Driessen提出了一个分支管理的策略，我觉得非常值得借鉴。它可以使得版本库的演进保持简洁，主干清晰，各个分支各司其职、井井有条。理论上，这些策略对所有的版本管理系统都适用，Git只是用来举例而已。如果你不熟悉Git，跳过举例部分就可以了。</p>
-<h2 id="2-2-Git-的安装"><a href="#2-2-Git-的安装" class="headerlink" title="2.2 Git 的安装"></a>2.2 Git 的安装</h2><p><a class="link" target="_blank" rel="noopener" href="https://github.com/git-for-windows/git/releases/download/v2.20.1.windows.1/Git-2.20.1-64-bit.exe">Git 下载<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="2-2-Git-的安装"><a href="#2-2-Git-的安装" class="headerlink" title="2.2 Git 的安装"></a>2.2 Git 的安装</h2><p><a class="link"   target="_blank" rel="noopener" href="https://github.com/git-for-windows/git/releases/download/v2.20.1.windows.1/Git-2.20.1-64-bit.exe" >Git 下载<i class="fas fa-external-link-alt"></i></a></p>
 <p>下载成功后直接点击安装即可。</p>
 <h2 id="2-3-Git-注册及配置"><a href="#2-3-Git-注册及配置" class="headerlink" title="2.3 Git 注册及配置"></a>2.3 Git 注册及配置</h2><p>在浏览器输入<code>https://gitlab.sissyun.com.cn</code> 打开Gitlab客户端</p>
 <h2 id="2-4-注册"><a href="#2-4-注册" class="headerlink" title="2.4 注册"></a>2.4 注册</h2><p>特别注意下面的格式，名字用中文，用户名使用全小写拼音,  并使用公司邮箱。<br>如果你的名字是：张三，</p>
 <ul>
 <li>姓名（name）填写中文名：张三</li>
 <li>用户名（username）填写你的全名拼音：zhangsan</li>
-<li>邮箱是使用公司邮箱，不要用私人邮箱：<a class="link" href="mailto:&#122;&#x68;&#97;&#x6e;&#x67;&#46;&#115;&#x61;&#110;&#x40;&#115;&#x73;&#105;&#46;&#99;&#111;&#x6d;">&#122;&#x68;&#97;&#x6e;&#x67;&#46;&#115;&#x61;&#110;&#x40;&#115;&#x73;&#105;&#46;&#99;&#111;&#x6d;<i class="fas fa-external-link-alt"></i></a>.</li>
+<li>邮箱是使用公司邮箱，不要用私人邮箱：<a class="link"   href="mailto:&#122;&#x68;&#97;&#x6e;&#x67;&#x2e;&#115;&#x61;&#110;&#x40;&#115;&#x73;&#105;&#46;&#x63;&#111;&#109;" >&#122;&#x68;&#97;&#x6e;&#x67;&#x2e;&#115;&#x61;&#110;&#x40;&#115;&#x73;&#105;&#46;&#x63;&#111;&#109;<i class="fas fa-external-link-alt"></i></a>.</li>
 </ul>
 <p>请记住自己设置的密码，要求8位，并包含英文字母大、小写及数字，如：pA5wOldy，如果你没安装要求注册，你将无法登录Gitlab。</p>
 <p><img src="/assets/gitlab-register.png"></p>
@@ -184,7 +186,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;zhang.san@ssi.com&quot;</span> </span><br><span class="line">git config --global user.name <span class="string">&quot;Zhang San&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;zhang.san@ssi.com&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-7-上传公钥"><a href="#2-7-上传公钥" class="headerlink" title="2.7 上传公钥"></a>2.7 上传公钥</h3><p>登录gitlab后，先点击 Profile Settings &gt;  </p>
-<p><img src="/2018/02/20/doc-dev/basics/git/gitlab_settings.png"></p>
+<p><img src="img/gitlab_settings.png"></p>
 <p>创建<code>rsa</code> 密钥</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;youname@ssi.com&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -196,7 +198,7 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2018/02/20/doc-dev/basics/git/gitlab_profile_keys_new.png" alt="ssh_key"></p>
+<p><img src="img/gitlab_profile_keys_new.png" alt="ssh_key"></p>
 <h3 id="2-8-编辑Git配置文件"><a href="#2-8-编辑Git配置文件" class="headerlink" title="2.8 编辑Git配置文件"></a>2.8 编辑Git配置文件</h3><p>我们来克隆一个演示应用代码下来测试</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> ssh://git@gitlab.sissyun.com.cn:8022/frameworks/spring-boot-utils.git</span><br></pre></td></tr></table></figure>
 
@@ -395,10 +397,6 @@
         
 
         
-            <li class="tools-item tool-scroll-to-top flex-center">
-                <i class="fas fa-arrow-up"></i>
-            </li>
-        
 
         <li class="tools-item tool-scroll-to-bottom flex-center">
             <i class="fas fa-arrow-down"></i>
@@ -409,6 +407,11 @@
         <li class="tools-item tool-toggle-show flex-center">
             <i class="fas fa-cog fa-spin"></i>
         </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
         
     </ul>
 </div>

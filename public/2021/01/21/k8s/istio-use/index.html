@@ -19,7 +19,7 @@
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
     KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpeg","description":"没有写过足够代码量的，想成为高手是不可能的，只能纸上谈兵 ."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -28,6 +28,8 @@
 
 <body>
 <div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
     
 
     
@@ -139,7 +141,7 @@
                     <div class="author">
                         <span class="name">Lei Chu</span>
                         
-                            <span class="author-label">Lv4</span>
+                            <span class="author-label">Lv3</span>
                         
                     </div>
                     <div class="meta-info">
@@ -176,7 +178,7 @@
             <p>istio 流量管理使用说明</p>
 <h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>在开始之前，请检查以下先决条件：</p>
 <ol>
-<li>检查kubernetes 集群pod和 <font face="黑体" color="green" size="3">服务</font></li>
+<li>检查kubernetes 集群pod和 <font face="黑体" color=green size=3>服务</font></li>
 <li>使用1.6 以上版本的istio,并检查 pod和服务</li>
 <li>设定 必要的平台设置</li>
 </ol>
@@ -264,7 +266,7 @@
 <tr>
 <td>gateways</td>
 <td>string[]</td>
-<td>应应用这些路由的网关和sidecar的名称。其他名称空间中的网关可以由<gateway namespace>/<gateway name>;引用 。指定没有名称空间限定符的网关与指定VirtualService的名称空间相同</gateway></gateway></td>
+<td>应应用这些路由的网关和sidecar的名称。其他名称空间中的网关可以由<gateway namespace>/<gateway name>;引用 。指定没有名称空间限定符的网关与指定VirtualService的名称空间相同</td>
 <td>no</td>
 </tr>
 <tr>
@@ -378,7 +380,7 @@
 
 <p>产生的效果如下所示：</p>
 <p>重新加载<code>productpage</code>网页。您将看到该页面实际上在大约6秒钟内加载完成。</p>
-<p><font face="黑体" color="red" size="3">意义:</font>Istio启用协议特定的故障注入到网络中，而不是杀死pod，延迟或在TCP层破坏数据包。我们的理由是，无论网络级别的故障如何，应用层观察到的故障都是一样的，并且可以在应用层注入更有意义的故障（例如，HTTP错误代码），以锻炼应用的弹性。</p>
+<p><font face="黑体" color=red size=3>意义:</font>Istio启用协议特定的故障注入到网络中，而不是杀死pod，延迟或在TCP层破坏数据包。我们的理由是，无论网络级别的故障如何，应用层观察到的故障都是一样的，并且可以在应用层注入更有意义的故障（例如，HTTP错误代码），以锻炼应用的弹性。</p>
 <p>运维人员可以为符合特定条件的请求配置故障。运维人员可以进一步限制应该遭受故障的请求的百分比。可以注入两种类型的故障：延迟和中止。延迟是计时故障，模拟增加的网络延迟或过载的上游服务。中止是模拟上游服务的崩溃故障。中止通常以HTTP错误代码或TCP连接失败的形式表现。</p>
 <h5 id="流量分配"><a href="#流量分配" class="headerlink" title="流量分配"></a>流量分配</h5><p>一个常见的用例是将流量逐渐从一种微服务版本迁移到另一种。在Istio中，您可以通过配置一系列规则以将一定百分比的流量路由到一项服务或另一项服务来实现此目标。在此任务中，您将发送流量的10％reviews:v1和90％ reviews:v3。然后，您将100％的流量发送到来完成迁移reviews:v3。</p>
 <p>现在来创建我的配置吧</p>
@@ -398,7 +400,7 @@
 <p>可以看到<code>reviews</code>不同版本的服务所占比例分别是</p>
 <p><code>v1 ---&gt;14.3% ，v2 ---&gt; 0% ,  v3 ---&gt; 85.7%</code></p>
 <p>现在我们istio的流量分配的设置已经成功了，那么istio的流量分配的意义在哪里，有什么作用呢?</p>
-<p><font face="黑体" color="red" size="3">意义:</font>您可以通过 istio 指定特定服务按照你的设定指定转到金丝雀版本，而不必考虑金丝雀部署的大小，或根据请求的内容将流量发送到特定版本。</p>
+<p><font face="黑体" color=red size=3>意义:</font>您可以通过 istio 指定特定服务按照你的设定指定转到金丝雀版本，而不必考虑金丝雀部署的大小，或根据请求的内容将流量发送到特定版本。</p>
 <h5 id="给服务注入故障"><a href="#给服务注入故障" class="headerlink" title="给服务注入故障"></a>给服务注入故障</h5><h5 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h5><h5 id="流量镜像"><a href="#流量镜像" class="headerlink" title="流量镜像"></a>流量镜像</h5><h5 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h5><p>在istio中有一个很麻烦的问题 就是配置出错以后很难定位是什么配置错误导致访问出错的问题，所以我们需要专门的工具来定位是什么导致的配置问题。</p>
 <h4 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h4><h5 id="证书管理"><a href="#证书管理" class="headerlink" title="证书管理"></a>证书管理</h5><h5 id="认证方式"><a href="#认证方式" class="headerlink" title="认证方式"></a>认证方式</h5><h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3>
         </div>
@@ -427,10 +429,10 @@
                     <div class="article-next">
                         <a class="next"
                            rel="next"
-                           href="/2020/09/21/docker/"
+                           href="/2020/09/21/queue/"
                         >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">更改docker默认挂载目录</span>
+                                <span class="post-nav-title-item">普通队列</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex-center">
@@ -511,10 +513,6 @@
         
 
         
-            <li class="tools-item tool-scroll-to-top flex-center">
-                <i class="fas fa-arrow-up"></i>
-            </li>
-        
 
         <li class="tools-item tool-scroll-to-bottom flex-center">
             <i class="fas fa-arrow-down"></i>
@@ -525,6 +523,11 @@
         <li class="tools-item tool-toggle-show flex-center">
             <i class="fas fa-cog fa-spin"></i>
         </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
         
     </ul>
 </div>

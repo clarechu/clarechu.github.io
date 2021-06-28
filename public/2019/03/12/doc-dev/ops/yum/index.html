@@ -19,7 +19,7 @@
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
     KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpeg","description":"没有写过足够代码量的，想成为高手是不可能的，只能纸上谈兵 ."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -28,6 +28,8 @@
 
 <body>
 <div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
     
 
     
@@ -139,7 +141,7 @@
                     <div class="author">
                         <span class="name">Lei Chu</span>
                         
-                            <span class="author-label">Lv4</span>
+                            <span class="author-label">Lv3</span>
                         
                     </div>
                     <div class="meta-info">
@@ -169,7 +171,7 @@
 <p><a href="./pkg/syncRepo.sh">syncRepo.sh</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum repolist</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/03/12/doc-dev/ops/yum/yumlist.png" alt="yum repolist"></p>
+<p><img src="img/yumlist.png" alt="yum repolist"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行脚本，同步yum源以及生成yum源数据</span></span><br><span class="line"><span class="built_in">cd</span> /data/yumdata</span><br><span class="line">chmod +x syncRepo.sh</span><br><span class="line">sh syncRepos.h</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改NGINX配置文件,将同步至本地的YUM通过HTTP给内部使用</span></span><br><span class="line">vi /etc/nginx/nginx.conf</span><br><span class="line">...</span><br><span class="line">location / &#123;</span><br><span class="line">    autoindex on;</span><br><span class="line">    root /data/yumdata/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启NGINX</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nginx &amp;&amp; systemctl start nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入定时任务，每天自动同上层yu</span></span><br><span class="line">vim /etc/crontab</span><br><span class="line">2 3 * * * root /data/yumdata/syncRepo.sh</span><br></pre></td></tr></table></figure>
 
 <h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><ol>
@@ -189,13 +191,13 @@
                     <div class="article-prev">
                         <a class="prev"
                            rel="prev"
-                           href="/2020/03/09/compare/"
+                           href="/2019/03/12/doc-dev/ops/use_dns/"
                         >
                             <span class="left arrow-icon flex-center">
                               <i class="fas fa-chevron-left"></i>
                             </span>
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">Compare</span>
+                                <span class="post-nav-title-item">本地开发环境基础服务支持使用DNS设置方法</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -205,10 +207,10 @@
                     <div class="article-next">
                         <a class="next"
                            rel="next"
-                           href="/2019/03/12/doc-dev/ops/use_dns/"
+                           href="/2019/03/12/doc-dev/standard/Swagger2/"
                         >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">本地开发环境基础服务支持使用DNS设置方法</span>
+                                <span class="post-nav-title-item">SpringBoot整合Swagger2</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex-center">
@@ -289,10 +291,6 @@
         
 
         
-            <li class="tools-item tool-scroll-to-top flex-center">
-                <i class="fas fa-arrow-up"></i>
-            </li>
-        
 
         <li class="tools-item tool-scroll-to-bottom flex-center">
             <i class="fas fa-arrow-down"></i>
@@ -303,6 +301,11 @@
         <li class="tools-item tool-toggle-show flex-center">
             <i class="fas fa-cog fa-spin"></i>
         </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
         
     </ul>
 </div>
