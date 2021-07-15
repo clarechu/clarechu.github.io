@@ -9,7 +9,7 @@
     
     <title>
         
-            lxc |
+            golang 中的读写锁与互斥锁、自旋锁 |
         
         ClareChu
     </title>
@@ -129,7 +129,7 @@
     <div class="article-content-container">
 
         <div class="article-title">
-            <span class="title-hover-animation">lxc</span>
+            <span class="title-hover-animation">golang 中的读写锁与互斥锁、自旋锁</span>
         </div>
 
         
@@ -147,7 +147,7 @@
                     <div class="meta-info">
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
-        <i class="fas fa-edit"></i>&nbsp;2021-03-16 22:29:22
+        <i class="fas fa-edit"></i>&nbsp;2021-06-28 14:43:55
     </span>
     
     
@@ -156,11 +156,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/linux/">linux</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/kernel/">kernel</a>&nbsp;
+                        <a href="/tags/golang/">golang</a>&nbsp;
                     </li>
                 
             </ul>
@@ -179,23 +175,14 @@
         
 
         <div class="article-content markdown-body">
-            <p>运行虚拟机时，容器几乎接近裸机。托管虚拟实例时，它们几乎没有开销。<br>LXC于2008年首次引入，从其之前的Solaris Containers（或Solaris Zones）和FreeBSD jail中采用了其大部分功能。<br>LXC无需创建完整的虚拟机，而是可以通过自己的进程和网络空间来实现虚拟环境。<br>通过使用命名空间来强制执行进程隔离，并利用内核本身的控制组（cgroup）功能，该功能可以限制，说明和隔离一个或多个进程的CPU，内存，磁盘I / O和网络使用情况。<br>将此用户空间框架视为的一种非常高级的形式 chroot。</p>
-<p>注意：LXC使用名称空间来实现进程隔离，同时使用内核自己的cgroup来解决并限制一个或多个进程中的CPU，内存，磁盘I / O和网络使用情况。</p>
-<h3 id="但是容器到底是什么？"><a href="#但是容器到底是什么？" class="headerlink" title="但是容器到底是什么？"></a>但是容器到底是什么？</h3><p>简短的答案是，容器使软件应用程序与操作系统脱钩，从而为用户提供了一个干净而最小的Linux环境，同时在一个或多个隔离的“容器”中运行其他所有内容。容器的目的是启动一组有限的应用程序或服务（通常称为微服务），并使它们在独立的沙盒环境中运行。</p>
-<p>这种隔离可防止在给定容器中运行的进程监视或影响在另一个容器中运行的进程。同样，这些容器化服务不会影响或干扰主机。能够将分散在多个物理服务器上的许多服务整合为一个的想法是数据中心选择采用该技术的众多原因之一。</p>
-<h3 id="容器功能包括："><a href="#容器功能包括：" class="headerlink" title="容器功能包括："></a>容器功能包括：</h3><ul>
-<li>安全性：网络服务可以在容器中运行，从而限制了由于安全漏洞或违反而造成的损害。入侵者成功利用该容器中运行的一个应用程序上的安全漏洞，仅限于该容器中可能采取的一系列操作。</li>
-<li>隔离：容器允许在同一台物理计算机上部署一个或多个应用程序，即使这些应用程序必须在不同的域下运行，每个域都需要对其各自资源的独占访问权。例如，在不同容器中运行的多个应用程序可以通过使用与每个容器关联的不同IP地址绑定到同一物理网络接口。</li>
-<li>虚拟化和透明性：容器为系统提供了虚拟化的环境，可以隐藏或限制其下的物理设备或系统配置的可见性。容器背后的一般原则是，除了解决安全性或隔离性问题之外，避免更改运行应用程序的环境。</li>
-</ul>
-<p>Docker主要致力于：</p>
-<ul>
-<li>可移植性：Docker提供了基于映像的部署模型。这种类型的可移植性提供了一种跨多个环境共享应用程序或服务集（及其所有依赖项）的简便方法。</li>
-<li>版本控制：单个Docker映像由一系列组合的层组成。每当更改图像时，都会创建一个新层。例如，每次用户指定命令（例如run或）时 ，都会创建一个新层 copy。Docker将这些层重用于新的容器构建。与Docker分层是它自己的版本控制方法。</li>
-<li>回滚：同样，每个Docker映像都有层。如果您不想使用当前运行的图层，则可以回滚到以前的版本。这种敏捷性使软件开发人员可以更轻松地连续集成和部署他们的软件技术。</li>
-<li>快速部署：置备新硬件通常可能需要几天的时间。而且，安装和配置它的工作量和开销非常重。使用Docker，您可以通过将启动和运行映像所需的时间减少到几秒钟来避免所有这些情况。用完容器后，就可以轻松销毁它。</li>
-</ul>
-<p>*** 从根本上说，Docker和LXC都非常相似。它们都是用户空间和轻量级虚拟化平台，它们实现cgroup和名称空间来管理资源隔离。但是，两者之间存在许多明显的差异。</p>
+            <h2 id="读写锁-RWMutex"><a href="#读写锁-RWMutex" class="headerlink" title="读写锁(RWMutex)"></a>读写锁(RWMutex)</h2><p>读写锁是针对于读写操作的互斥锁。它与普通的互斥锁最大的不同就是，<br>它可以分别针对读操作和写操作进行锁定和解锁操作。<br>读写锁遵循的访问控制规则与互斥锁有所不同。<br>在读写锁管辖的范围内，它允许任意个读操作的同时进行。<br>但是，在同一时刻，它只允许有一个写操作在进行。<br>并且，在某一个写操作被进行的过程中，读操作的进行也是不被允许的。<br>也就是说，读写锁控制下的多个写操作之间都是互斥的，并且写操作与读操作之间也都是互斥的。<br>但是，多个读操作之间却不存在互斥关系。</p>
+<p>换句话说：</p>
+<p>1、 读锁: 所有的 goroutine 都可以同时读, 但不允许写。</p>
+<p>2、 写锁: 写锁 只允许一个goroutine 写, 其他的goroutine 不允许读也不允许写</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">Lock</span>       //写锁定</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">Unlock</span>     //写解锁</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">RLock</span>      //读锁定</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">RUnlock</span>    //读解锁</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="互斥锁-Mutex"><a href="#互斥锁-Mutex" class="headerlink" title="互斥锁(Mutex)"></a>互斥锁(Mutex)</h2><p>使用互斥锁（Mutex，全称 mutual exclusion）是为了来保护一个资源不会因为并发操作而引起冲突导致<br>数据不准确。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(count *<span class="keyword">int</span>, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		*count = *count + <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line">	wg.Done()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	count := <span class="number">0</span></span><br><span class="line">	wg.Add(<span class="number">3</span>)</span><br><span class="line">	<span class="keyword">go</span> add(&amp;count, &amp;wg)</span><br><span class="line">	<span class="keyword">go</span> add(&amp;count, &amp;wg)</span><br><span class="line">	<span class="keyword">go</span> add(&amp;count, &amp;wg)</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	fmt.Println(<span class="string">&quot;count 的值为：&quot;</span>, count)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
         </div>
 
@@ -204,29 +191,14 @@
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                           rel="prev"
-                           href="/2021/03/22/k8s/istio/debug-istio/"
-                        >
-                            <span class="left arrow-icon flex-center">
-                              <i class="fas fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex-center">
-                                <span class="post-nav-title-item">如何在本地调试istio</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next">
                         <a class="next"
                            rel="next"
-                           href="/2021/03/14/linux/route/"
+                           href="/2021/05/30/go-gc/"
                         >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">route</span>
+                                <span class="post-nav-title-item">Golang 内存分配之逃逸分析</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex-center">
