@@ -9,7 +9,7 @@
     
     <title>
         
-            本地YUM源搭建 |
+            ebpf |
         
         ClareChu
     </title>
@@ -129,7 +129,7 @@
     <div class="article-content-container">
 
         <div class="article-title">
-            <span class="title-hover-animation">本地YUM源搭建</span>
+            <span class="title-hover-animation">ebpf</span>
         </div>
 
         
@@ -147,9 +147,20 @@
                     <div class="meta-info">
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
-        <i class="fas fa-edit"></i>&nbsp;2019-03-12 00:00:00
+        <i class="fas fa-edit"></i>&nbsp;2021-07-12 13:31:12
     </span>
     
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/linux/">linux</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
     
 
     
@@ -164,23 +175,7 @@
         
 
         <div class="article-content markdown-body">
-            <p>Linux系统的包管理是<code>yum</code>。默认刚安装好的系统一般都是从CentOS官方下载相关软件包，这样就会浪费很多带宽。</p>
-<h2 id="服务端配置"><a href="#服务端配置" class="headerlink" title="服务端配置"></a>服务端配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装yum-utils</span></span><br><span class="line">yum install yum-utils createrepo  nginx -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备存储YUM源数据的文件夹</span></span><br><span class="line">mkdir -p /data/yumdata</span><br></pre></td></tr></table></figure>
-
-<p>同步脚本下载</p>
-<p><a href="./pkg/syncRepo.sh">syncRepo.sh</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum repolist</span><br></pre></td></tr></table></figure>
-
-<p><img src="img/yumlist.png" alt="yum repolist"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行脚本，同步yum源以及生成yum源数据</span></span><br><span class="line"><span class="built_in">cd</span> /data/yumdata</span><br><span class="line">chmod +x syncRepo.sh</span><br><span class="line">sh syncRepos.h</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改NGINX配置文件,将同步至本地的YUM通过HTTP给内部使用</span></span><br><span class="line">vi /etc/nginx/nginx.conf</span><br><span class="line">...</span><br><span class="line">location / &#123;</span><br><span class="line">    autoindex on;</span><br><span class="line">    root /data/yumdata/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启NGINX</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nginx &amp;&amp; systemctl start nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入定时任务，每天自动同上层yu</span></span><br><span class="line">vim /etc/crontab</span><br><span class="line">2 3 * * * root /data/yumdata/syncRepo.sh</span><br></pre></td></tr></table></figure>
-
-<h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><ol>
-<li><p>先备份系统原有的repo文件</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/yum.repos.d &amp;&amp; mkdir backup</span><br><span class="line">mv *.repo backup</span><br></pre></td></tr></table></figure></li>
-<li><p>在/etc/yum.repos.d/目录下新建本地YUM源的文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.repos.d/local.repo</span><br><span class="line"></span><br><span class="line">[centos-base]</span><br><span class="line">name=CentOS-Base</span><br><span class="line">baseurl=http://128.0.100.170/base/</span><br><span class="line"><span class="built_in">enable</span>=1</span><br><span class="line">gpgcheck=0</span><br><span class="line"></span><br><span class="line">[centos-update]</span><br><span class="line">name=CentOS-Update</span><br><span class="line">baseurl=http://128.0.100.170/updates/</span><br><span class="line"><span class="built_in">enable</span>=1</span><br><span class="line">gpgcheck=0</span><br><span class="line"></span><br><span class="line">[centos-extrals]</span><br><span class="line">name=CentOS-Extrals</span><br><span class="line">baseurl=http://128.0.100.170/extras/</span><br><span class="line"><span class="built_in">enable</span>=1</span><br><span class="line">gpgcheck=0</span><br><span class="line"></span><br><span class="line">[centos-epel]</span><br><span class="line">name=CentOS-EPEL</span><br><span class="line">baseurl=http://128.0.100.170/epel/</span><br><span class="line"><span class="built_in">enable</span>=1</span><br><span class="line">gpgcheck=0</span><br><span class="line"></span><br><span class="line">[docker-ce]</span><br><span class="line">name=Docker-CE</span><br><span class="line">baseurl=http://128.0.100.170/docker-ce/</span><br><span class="line"><span class="built_in">enable</span>=1</span><br><span class="line">gpgcheck=0</span><br></pre></td></tr></table></figure></li>
-</ol>
-
+            
         </div>
 
         
@@ -191,13 +186,13 @@
                     <div class="article-prev">
                         <a class="prev"
                            rel="prev"
-                           href="/2020/03/09/compare/"
+                           href="/2021/07/12/dale/"
                         >
                             <span class="left arrow-icon flex-center">
                               <i class="fas fa-chevron-left"></i>
                             </span>
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">Compare</span>
+                                <span class="post-nav-title-item">孤儿进程与僵尸进程</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -207,10 +202,10 @@
                     <div class="article-next">
                         <a class="next"
                            rel="next"
-                           href="/2019/03/12/doc-dev/ops/standard/"
+                           href="/2021/06/28/lock/"
                         >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">操作系统标准化</span>
+                                <span class="post-nav-title-item">golang 中的读写锁与互斥锁、自旋锁</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex-center">

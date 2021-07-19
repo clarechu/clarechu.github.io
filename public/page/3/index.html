@@ -131,20 +131,15 @@
                 
 
                 <h3 class="home-article-title">
-                    <a href="/2019/03/12/doc-dev/standard/Swagger2/">
-                        SpringBoot整合Swagger2
+                    <a href="/2019/03/12/doc-dev/ops/yum/">
+                        本地YUM源搭建
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        前言手写Api文档的几个痛点：
-
-文档需要更新的时候，需要再次发送一份给前端，也就是文档更新交流不及时。
-接口返回结果不明确
-不能直接在线测试接口，通常需要使用工具，比如postman
-接口文档太多，不好管理
-Swagger也就是为了解决这个问题，当...
+                        Linux系统的包管理是yum。默认刚安装好的系统一般都是从CentOS官方下载相关软件包，这样就会浪费很多带宽。
+服务端配置12345# 安装yum-utilsyum install yum-utils createrepo  nginx -y# ...
                     
                 </div>
 
@@ -155,7 +150,7 @@ Swagger也就是为了解决这个问题，当...
         
     </div>
 
-    <a href="/2019/03/12/doc-dev/standard/Swagger2/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+    <a href="/2019/03/12/doc-dev/ops/yum/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -184,6 +179,101 @@ Swagger也就是为了解决这个问题，当...
     </div>
 
     <a href="/2019/03/12/doc-dev/ops/standard/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/ops/use_dns/">
+                        本地开发环境基础服务支持使用DNS设置方法
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        修改Windows设置进入控制面板—-&gt;网络连接—&gt;本地连接
+
+在弹出的菜单中，点击属性按钮
+弹出的菜单中，先选中Internet协议版本4—再点击属性
+将首选DNS修改为128.0.100.170
+再点击高级按钮,弹出的对话框切换到DN...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/ops/use_dns/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/ops/k8s-node/">
+                        阿里K8S节点初始化
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        修改默认DNS12345cd /etc/sysconfig/network-scripts# 增加默认搜索域为siss.aliyun,并配置DNS为内部的DNSecho -e  &quot;DOMAIN=siss.aliyun\nDNS1=172.1...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/ops/k8s-node/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2019/03/12/doc-dev/standard/Swagger2/">
+                        SpringBoot整合Swagger2
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        前言手写Api文档的几个痛点：
+
+文档需要更新的时候，需要再次发送一份给前端，也就是文档更新交流不及时。
+接口返回结果不明确
+不能直接在线测试接口，通常需要使用工具，比如postman
+接口文档太多，不好管理
+Swagger也就是为了解决这个问题，当...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Mar 12 2019 00:00:00 GMT+0800">2019-03-12</span></span>
+        
+        
+    </div>
+
+    <a href="/2019/03/12/doc-dev/standard/Swagger2/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -222,35 +312,6 @@ Swagger也就是为了解决这个问题，当...
                 
 
                 <h3 class="home-article-title">
-                    <a href="/2018/03/12/doc-dev/basics/sharding-jdbc/">
-                        Sharding-JDBC 的使用
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        简介
-Sharding-JDBC是当当应用框架ddframe中，从关系型数据库模块dd-rdb中分离出来的数据库水平分片框架，实现透明化数据库分库分表访问。Sharding-JDBC是继dubbox和elastic-job之后，ddframe系列开源...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Mar 12 2018 00:00:00 GMT+0800">2018-03-12</span></span>
-        
-        
-    </div>
-
-    <a href="/2018/03/12/doc-dev/basics/sharding-jdbc/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                <h3 class="home-article-title">
                     <a href="/2018/03/12/doc-dev/basics/transactional/">
                         SpringBoot 事务的管理
                     </a>
@@ -279,87 +340,26 @@ Sharding-JDBC是当当应用框架ddframe中，从关系型数据库模块dd-rdb
                 
 
                 <h3 class="home-article-title">
-                    <a href="/2018/02/26/doc-dev/basics/redis/">
-                        Redis的使用
+                    <a href="/2018/03/12/doc-dev/basics/sharding-jdbc/">
+                        Sharding-JDBC 的使用
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        简介Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。
-Redis 与其他 key - value 缓存产品有以下三个特点：
-
-Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行...
+                        简介
+Sharding-JDBC是当当应用框架ddframe中，从关系型数据库模块dd-rdb中分离出来的数据库水平分片框架，实现透明化数据库分库分表访问。Sharding-JDBC是继dubbox和elastic-job之后，ddframe系列开源...
                     
                 </div>
 
                 <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Feb 26 2018 00:00:00 GMT+0800">2018-02-26</span></span>
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Mar 12 2018 00:00:00 GMT+0800">2018-03-12</span></span>
         
         
     </div>
 
-    <a href="/2018/02/26/doc-dev/basics/redis/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2018/02/26/doc-dev/basics/mongo/">
-                        MongoDB的使用
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        
-简介MongoDB（来自于英文单词“Humongous”，中文含义为“庞大”）是可以应用于各种规模的企业、各个行业以及各类应用程序的开源数据库。作为一个适用于敏捷开发的数据库，MongoDB的数据模式可以随着应用程序的发展而灵活地更新。与此同时，它...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Feb 26 2018 00:00:00 GMT+0800">2018-02-26</span></span>
-        
-        
-    </div>
-
-    <a href="/2018/02/26/doc-dev/basics/mongo/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2018/02/26/doc-dev/basics/mock/">
-                        面向测试驱动开发（TDD）
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        简介首先讲讲三个开发模式分别代表什么意思？
-
-TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷开发中的一项核心实践和技术，也是一种设计方法论。TDD的原理是在开发功能代码之前，先编写单元测试用例代码，测试代码确...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Feb 26 2018 00:00:00 GMT+0800">2018-02-26</span></span>
-        
-        
-    </div>
-
-    <a href="/2018/02/26/doc-dev/basics/mock/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+    <a href="/2018/03/12/doc-dev/basics/sharding-jdbc/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -397,25 +397,27 @@ TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷
                 
 
                 <h3 class="home-article-title">
-                    <a href="/2018/02/23/doc-dev/basics/mybatis-plus/">
-                        结合Mybatis-Plus 使用读写分离
+                    <a href="/2018/02/26/doc-dev/basics/mock/">
+                        面向测试驱动开发（TDD）
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        简介Mybatis-Plus（简称MP）是一个 Mybatis 的增强工具，在 Mybatis 的基础上只做增强不做改变，为简化开发、提高效率而生。这是官方给的定义，关于mybatis-plus的更多介绍及特性，可以参考mybatis-plus官网。...
+                        简介首先讲讲三个开发模式分别代表什么意思？
+
+TDD：测试驱动开发（Test-Driven Development）测试驱动开发是敏捷开发中的一项核心实践和技术，也是一种设计方法论。TDD的原理是在开发功能代码之前，先编写单元测试用例代码，测试代码确...
                     
                 </div>
 
                 <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Fri Feb 23 2018 00:00:00 GMT+0800">2018-02-23</span></span>
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Feb 26 2018 00:00:00 GMT+0800">2018-02-26</span></span>
         
         
     </div>
 
-    <a href="/2018/02/23/doc-dev/basics/mybatis-plus/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
+    <a href="/2018/02/26/doc-dev/basics/mock/">Read more&nbsp;<i class="fas fa-angle-right"></i></a>
 </div>
 
             </li>

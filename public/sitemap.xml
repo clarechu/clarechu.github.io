@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2021/07/12/wasm/</loc>
+    
+    <lastmod>2021-07-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/2021/07/12/dale/</loc>
+    
+    <lastmod>2021-07-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/2021/07/12/ebpf/</loc>
+    
+    <lastmod>2021-07-15</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2021/05/30/go-gc/</loc>
     
     <lastmod>2021-06-28</lastmod>
@@ -242,7 +263,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -250,70 +271,70 @@
   
   <url>
     <loc>http://example.com/tags/kiali/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/iptables/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/docker/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/istio/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/linux/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/kernal/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/kubernetes/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/network/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/kernel/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/golang/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -322,7 +343,7 @@
   
   <url>
     <loc>http://example.com/categories/istio/</loc>
-    <lastmod>2021-06-28</lastmod>
+    <lastmod>2021-07-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
