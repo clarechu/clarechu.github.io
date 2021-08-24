@@ -13,7 +13,7 @@ istio 核心模块有两个
 * pilot-discovery: 这个模块就是我们的istiod istio/pilot/pilot-discovery 目录下
 * pilot-agent: 这个模块 就是proxy istio/pilot/pilot-discovery 目录下
 
-![img.png](img.png)
+![img.png](debug-istio/img_2.png)
 
 如果我们使用kind 则需要 --config trustworthy-jwt.yaml
 
