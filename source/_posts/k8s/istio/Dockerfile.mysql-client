@@ -1,0 +1,15 @@
+FROM alpine
+
+ENV APP_BIN=/bin \
+    PATH=${APP_BIN}:$PATH \
+    TZ='Asia/Shanghai'
+
+RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
+     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
+     && apk update \
+     && apk upgrade \
+     && apk --no-cache add ca-certificates iputils mysql-client\
+     && apk add -U tzdata ttf-dejavu busybox-extras curl bash\
+     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+CMD ["sleep", "100000000"]
