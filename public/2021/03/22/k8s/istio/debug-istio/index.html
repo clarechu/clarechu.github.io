@@ -13,13 +13,17 @@
         
         ClareChu
     </title>
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/css/style.css">
+
     <link rel="shortcut icon" href="/images/golang.svg">
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
     KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.1"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.3"};
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -47,6 +51,7 @@
 
     <div class="header-content">
         <div class="left">
+            
             <a class="logo-title" href="/">
                 ClareChu
             </a>
@@ -171,7 +176,7 @@
 <li>pilot-discovery: 这个模块就是我们的istiod istio/pilot/pilot-discovery 目录下</li>
 <li>pilot-agent: 这个模块 就是proxy istio/pilot/pilot-discovery 目录下</li>
 </ul>
-<p><img src="/2021/03/22/k8s/istio/debug-istio/img.png" alt="img.png"></p>
+<p><img src="/2021/03/22/k8s/istio/debug-istio/img_2.png" alt="img.png"></p>
 <p>如果我们使用kind 则需要 –config trustworthy-jwt.yaml</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">kind.x-k8s.io/v1alpha4</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Cluster</span></span><br><span class="line"><span class="attr">kubeadmConfigPatches:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">|</span></span><br><span class="line">    <span class="attr">apiVersion:</span> <span class="string">kubeadm.k8s.io/v1beta2</span></span><br><span class="line">    <span class="attr">kind:</span> <span class="string">ClusterConfiguration</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">    <span class="attr">etcd:</span></span><br><span class="line">      <span class="attr">local:</span></span><br><span class="line">        <span class="comment"># Run etcd in a tmpfs (in RAM) for performance improvements</span></span><br><span class="line">        <span class="attr">dataDir:</span> <span class="string">/tmp/kind-cluster-etcd</span></span><br><span class="line">    <span class="attr">apiServer:</span></span><br><span class="line">      <span class="attr">extraArgs:</span></span><br><span class="line">        <span class="attr">&quot;service-account-issuer&quot;:</span> <span class="string">&quot;kubernetes.default.svc&quot;</span></span><br><span class="line">        <span class="attr">&quot;service-account-signing-key-file&quot;:</span> <span class="string">&quot;/etc/kubernetes/pki/sa.key&quot;</span></span><br><span class="line"><span class="attr">containerdConfigPatches:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">|-</span></span><br><span class="line">    [<span class="string">plugins.&quot;io.containerd.grpc.v1.cri&quot;.registry.mirrors.&quot;localhost:5000&quot;</span>]</span><br><span class="line">      <span class="string">endpoint</span> <span class="string">=</span> [<span class="string">&quot;http://kind-registry:5000&quot;</span>]</span><br></pre></td></tr></table></figure>
 
@@ -250,7 +255,7 @@
         </div>
         
         <div class="theme-info info-item">
-            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.1</a>
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
         </div>
         
     </div>
@@ -331,7 +336,17 @@
 
 
 
-<script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/header-shrink.js"></script><script src="/js/back2top.js"></script><script src="/js/dark-light-toggle.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
 
 
 
