@@ -6,12 +6,12 @@ tags:
 - k8s
 ---
 
-前几天在客户环境出现了一个非常奇怪的问题, 集群内部环境无法访问集群外部的mysql, 好像redis也有类似的问题, 当时k8s版本1.11 istio 1.4,
+前几天在生产环境出现了一个非常奇怪的问题, 集群内部环境无法访问集群外部的mysql, 好像redis也有类似的问题, 当时k8s版本1.11 istio 1.4,
 istio和k8s 版本都比较低。后面 用istio1.6 貌似也有同样的问题。
 
-首先我们在集群内访问试一下
+首先我们在集群内访问试一下, 我使用一个mysql的client 端和server 来模拟这种情况
 
-mysql-client ----> mysql-server 
+mysql-client ----> mysql-server
 
 ```bash
 $ kubectl apply -f mysql-server.yaml
@@ -31,8 +31,7 @@ mysql-client-b7db8cc46-99cx5    2/2     Running   0          81s
 mysql-server-6c845f449b-525q6   2/2     Running   0          81s
 ```
 
-
-当我们注入sidecar 之后我们测试一下 client端能否访问的server mysql, 可以看到是可以正常访问mysql-server 的，我们现在看看其中到底发生了谢什么
+当我们注入sidecar 之后我们测试一下 client端能否访问的server mysql, 可以看到是可以正常访问mysql-server 的，我们现在看看其中到底发生了什么？ 在同一个ns下是可以正常的访问mysql-server的。
 
 ```bash
 
@@ -44,9 +43,7 @@ J
 8.0.26	*F?eZTM\�~h#DD#2)caching_sha2_password
 ```
 
-
-我们首先查看mysql-client 这个pod 出口的listener(监听器), 从下面的返回的监听器我们可以看出3306 端口只有一个mysql-server.demo1.svc.cluster.local
-的监听器, 然后我们看看这个监听器的cluster是什么？
+我们首先查看mysql-client 这个pod 出口的listener(监听器), 从下面的返回的监听器我们可以看出3306 端口只有一个`mysql-server.demo1.svc.cluster.local`的监听器, 然后我们看看这个监听器的cluster是什么？
 
 ```bash
 ➜  ~ istioctl  pc listener mysql-client-b7db8cc46-99cx5 --port 3306
@@ -220,19 +217,15 @@ $ stioctl pc cluster mysql-client-b7db8cc46-99cx5 --fqdn "outbound|3306||mysql-s
 
 使用EDS来找到destination 的pod, Envoy 将查找名为的服务的列表 `outbound|3306||mysql-server.demo1.svc.cluster.local`
 
-下面我们看看envoy 中endpoint `outbound|3306||mysql-server.demo1.svc.cluster.local` 列表, 然后我们查询了mysql-server 的pod ip
+下面我们看看envoy 中endpoint `outbound|3306||mysql-server.demo1.svc.cluster.local` 列表,  从而找到mysql-server 的pod ip
 --> `172.20.0.30` 看起来没有任何问题。所以我们从这个地方可以得出一个结论。
 
-
 我当时认为流量是这么路由的 但是通过我们对ep的查看流量是没有经过svc地址的 直接访问当前服务的`endpoint`地址
-![img.png](debug-istio/img_2.png)
+![img2.png](istio-network/img_2.png)
 
+此时是这个样子的, 当服务注入sidecar之后是不经过k8s 的svc的直接访问出口的pod ip。
 
-此时是这个样子的
-
-
-![img.png](debug-istio/img_1.png)
-
+![img1.png](istio-network/img_1.png)
 
 ```bash
 ➜  ~  istioctl pc ep mysql-client-b7db8cc46-99cx5 --port 3306
@@ -245,8 +238,7 @@ mysql-client-b7db8cc46-99cx5    2/2     Running   0          33m   172.20.0.31  
 mysql-server-6c845f449b-525q6   2/2     Running   0          33m   172.20.0.30   10.10.13.118   <none>           <none>
 ```
 
-集群里面的流量是正常的,现在我们在集群外面部署一个mysql 从集群内部pod(mysql-client-b7db8cc46-99cx5)访问集群外部的mysql, 
-此时我们看看能不能正常访问当前的mysql-server, 此时也可以访问的 这个时候我们在来看看listener
+集群里面的流量是正常的,现在我们在集群外面部署一个mysql 从集群内部pod(mysql-client-b7db8cc46-99cx5)访问集群外部的mysql, 此时我们看看能不能正常访问当前的mysql-server, 此时也可以访问的 这个时候我们在来看看listener
 
 ```bash
 $ ~ kubectl exec -it mysql-client-b7db8cc46-99cx5 telnet 10.10.13.110 3306
@@ -257,7 +249,8 @@ J
 8.0.26\r(Juh�5kguvqI2"}!caching_sha2_password
 ```
 
-我们现在在任意的命名空间创建一个serviceentry, 这个时候我们在来看发生来什么变化，我们不能正常访问集群外部的流量了, 我们看看这个流量到哪里去了
+我们现在在任意的命名空间创建一个serviceentry, 这个时候我们在来看发生来什么变化，从下面的例子我们可以看出我们不能正常访问集群外部的流量了, 此时我们看看这个流量到哪里去了呢？
+
 ```bash
 ➜  ~ kubectl exec -it mysql-client-b7db8cc46-99cx5 telnet 10.10.13.110 3306
 kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
@@ -267,8 +260,8 @@ Connection closed by foreign host
 command terminated with exit code 1
 ```
 
-我们获取client 的listener, 我们发现多了一个`0.0.0.0` 的监听器, 这个是我在别的ns下创建了一个se导致的,
-默认在所有监听器都匹配不上的时候就会默认去访问这个`0.0.0.0`的listener 
+我们获取client 的listener, 我们发现多了一个`0.0.0.0` 的监听器, 这个是由于我在别的ns下创建了一个se导致的,
+默认在所有监听器都匹配不上的时候就会默认去访问这个`0.0.0.0`的listener。
 
 ```bash
 ➜  ~ istioctl pc listener mysql-client-b7db8cc46-99cx5 --port 3306
@@ -300,5 +293,105 @@ ADDRESS       PORT MATCH DESTINATION
                                     }
 ```
 
+在别的命名空间下创建serviceentry 会影响当前namespace 下服务。
 
 ### 解决方案
+
+1. 使用sidecar crd资源
+
+
+在我们创建serviceentry 的namespace 中写入一个sidecar的资源，该例子是在demo1的
+命名空间中声明了一个全局默认配置，该配置在所有命名空间中配置sidecar以仅允许出口流量到同一命名空间中的其他工作负载以及命名空间中的服务 istio-system
+```yaml
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: default
+  namespace: demo1
+spec:
+  egress:
+  - hosts:
+    - "./*"
+    - "istio-system/*"
+
+```
+
+当我们创建了sidecar 资源后我们在观察mysql-client 这个pod的listener, 此时少了一个0.0.0.0 的监听器，我们在来求证一下mysql-client 是否能正常访问外部mysql服务。
+
+```yaml
+➜  ~ istioctl pc  listener mysql-client-b7db8cc46-99cx5 --port 3306
+ADDRESS       PORT MATCH DESTINATION
+10.68.228.107 3306 ALL   Cluster: outbound|3306||mysql-server.demo1.svc.cluster.local
+10.68.66.97   3306 ALL   Cluster: outbound|3306||mysql-client.demo1.svc.cluster.local
+
+➜  ~ kubectl exec -it mysql-client-b7db8cc46-99cx5 telnet 10.10.13.110 3306
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+Defaulted container "mysql" out of: mysql, istio-proxy, istio-init (init)
+Connected to 10.10.13.110
+J
+B5>�I=6s=E6,&M}Qcaching_sha2_password
+
+!#08S01Got packets out of orderConnection closed by foreign host
+command terminated with exit code 1
+```
+
+
+2. 更改其他的端口
+
+这种方式当创建了一个端口的se之后我们更改mysql的port 那么就不会匹配到0.0.0.0 3306 的端口这样就不会有这个问题。
+
+
+3. 开启智能dns
+
+在安装istio的时候开启istio 智能dns,不过这个功能是istio1.8才有的功能，如果版本偏低建议还是升级一下.
+
+在安装istio的过程中我们需要在iop资源中添加一下以下配置
+
+```yaml
+  meshConfig:
+    accessLogFile: /dev/stdout
+    defaultConfig:
+      proxyMetadata:
+        ISTIO_META_DNS_CAPTURE: "true"
+```
+
+在创建se的时候指定address 使 mysql.demo122 这个host指向这个ip
+
+```yaml
+- apiVersion: networking.istio.io/v1beta1
+  kind: ServiceEntry
+  metadata:
+    name: mysql
+    namespace: demo
+  spec:
+    addresses:
+    - 240.0.221.130
+    hosts:
+    - mysql.demo122
+    location: MESH_INTERNAL
+    ports:
+    - name: tcp
+      number: 3306
+      protocol: TCP
+      targetPort: 3306
+    resolution: STATIC
+```
+
+当我们创建了这个serviceentry 之后我们在mysql-client中在访问这个host的时候指向这个`240.0.221.130`的虚拟ip。
+
+```bash
+➜  ~ kubectl exec -it mysql-client-b7db8cc46-99cx5 ping mysql.demo122
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+Defaulted container "mysql" out of: mysql, istio-proxy, istio-init (init)
+PING mysql.demo122 (240.0.221.130) 56(84) bytes of data.
+```
+
+在来看mysql-client-b7db8cc46-99cx5的监听器少了0.0.0.0 的监听器 多了一条`240.0.221.130 3306 ALL   Cluster: outbound|3306||mysql.demo122`的监听器，我们在来访问外部的mysql的时候就不会冲突匹配到0.0.0.0的监听器
+
+```yaml
+➜  ~ istioctl pc  listener mysql-client-b7db8cc46-99cx5 --port 3306
+ADDRESS       PORT MATCH DESTINATION
+10.68.228.107 3306 ALL   Cluster: outbound|3306||mysql-server.demo1.svc.cluster.local
+10.68.66.97   3306 ALL   Cluster: outbound|3306||mysql-client.demo1.svc.cluster.local
+240.0.221.130 3306 ALL   Cluster: outbound|3306||mysql.demo122
+```
