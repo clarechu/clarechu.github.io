@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab9e8a69-a6a9-45d5-94ff-71ebe3cd281d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/debug-istio/mysql-client.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/debug-istio/mysql-server.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network/img_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network/img_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.json" beforeDir="false" afterPath="$PROJECT_DIR$/db.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/debug-istio.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/debug-istio.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/themes/keep" beforeDir="false" afterPath="$PROJECT_DIR$/themes/keep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/mysql-client.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/mysql-server.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,11 +42,16 @@
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

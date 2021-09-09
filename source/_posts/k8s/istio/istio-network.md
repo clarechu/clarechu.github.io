@@ -1,6 +1,6 @@
 ---
 title: istio无法访问外部tcp服务(一)
-date: 2021-08-24 13:40:42
+date: 2021-08-24
 tags:
 - istio
 - k8s
