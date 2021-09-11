@@ -2,6 +2,7 @@ package compare
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -48,14 +49,13 @@ func (p *Pool) Get() (CloseInterface, error) {
 	if p.closed {
 		return nil, ErrPoolClosed
 	}
-	for {
-		closer, err := p.getOrCreate()
-		if err != nil {
-			return nil, err
-		}
-		// todo maxLifttime处理
-		return closer, nil
+	var closer CloseInterface
+	if len(p.pool) > 1 {
+		closer = <-p.pool
+	} else {
+		return nil, fmt.Errorf("pool len == 0")
 	}
+	return closer, nil
 }
 
 func (p *Pool) Put() {
@@ -117,27 +117,4 @@ func NewPool(minOpen, maxOpen int32, factory factory) (PoolInterface, error) {
 		p.pool <- closer
 	}
 	return p, nil
-}
-
-func (p *Pool) getOrCreate() (CloseInterface, error) {
-	select {
-	case closer := <-p.pool:
-		return closer, nil
-	default:
-	}
-	p.Lock()
-	if p.numOpen >= p.maxOpen {
-		closer := <-p.pool
-		p.Unlock()
-		return closer, nil
-	}
-	// 新建连接
-	closer, err := p.factory()
-	if err != nil {
-		p.Unlock()
-		return nil, err
-	}
-	p.numOpen++
-	p.Unlock()
-	return closer, nil
 }

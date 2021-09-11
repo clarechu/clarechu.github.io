@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab9e8a69-a6a9-45d5-94ff-71ebe3cd281d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/code/pool.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/pool_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/pool.go" beforeDir="false" afterPath="$PROJECT_DIR$/code/pool.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/pool_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/code/pool_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +63,7 @@
       <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestPool in github.com/clarechu/algorithms/code">
+  <component name="RunManager" selected="Go Test.TestPoolClose in github.com/clarechu/algorithms/code">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$" />
@@ -94,6 +94,18 @@
       <pattern value="^\QTestPool\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestPoolClose in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="clarechu.github.io" />
+      <working_directory value="$PROJECT_DIR$/code" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/clarechu/algorithms/code" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestPoolClose\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestTokenBucket in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$/code" />
@@ -104,18 +116,6 @@
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
       <pattern value="^\QTestTokenBucket\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Test_cc in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTest_cc\E$" />
       <method v="2" />
     </configuration>
     <configuration name="Test_cc1 in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -142,11 +142,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestPoolClose in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.TestPool in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Build.go build pool.go" />
         <item itemvalue="Go Test.TestTokenBucket in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.Test_cc1 in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.Test_cc in github.com/clarechu/algorithms/code" />
       </list>
     </recent_temporary>
   </component>
@@ -157,7 +157,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="tokenbucket" />
     <MESSAGE value="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md" />
+    <MESSAGE value="连接池实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="连接池实现" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -167,12 +168,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/code/pool_test.go</url>
-          <line>25</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/code/pool_test.go</url>
-          <line>51</line>
+          <line>65</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
