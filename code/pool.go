@@ -18,7 +18,7 @@ type PoolInterface interface {
 	Get() (CloseInterface, error)
 	//Shutdown 关闭所有连接池
 	Shutdown() error
-	//Release 添加连接池信息
+	//Release 添加一个连接
 	Release(closer CloseInterface) error
 	//Close 关闭当前连接
 	Close(closer CloseInterface) error
