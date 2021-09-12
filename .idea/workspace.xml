@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab9e8a69-a6a9-45d5-94ff-71ebe3cd281d" name="Changes" comment="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md">
-      <change afterPath="$PROJECT_DIR$/code/chanel.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/chanel_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/tokenbucket.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/tokenbucket_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/chanel.go" beforeDir="false" afterPath="$PROJECT_DIR$/code/chanel.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,16 +60,19 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestTokenBucket in github.com/clarechu/algorithms/code">
+  <component name="RunManager" selected="Go Test.Test_cc in github.com/clarechu/algorithms/code">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$" />
@@ -128,9 +130,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.Test_cc in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.TestTokenBucket in github.com/clarechu/algorithms/code" />
         <item itemvalue="Go Test.Test_cc1 in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.Test_cc in github.com/clarechu/algorithms/code" />
       </list>
     </recent_temporary>
   </component>
