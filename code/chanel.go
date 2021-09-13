@@ -13,17 +13,12 @@ func cc() {
 		a <- 1
 		close(a)
 	}()
-
-	if a == nil {
-		fmt.Println("haode")
-		return
-	}
-	b := <-a
 	fmt.Println("sleep !!!")
 	time.Sleep(3 * time.Second)
-	c := make(chan int, 0)
-	c <- b
-
+	a = nil
+	b := <-a
+	fmt.Printf("b :%d \n", b)
+	fmt.Println("complete !!!")
 }
 
 func cc1() {
