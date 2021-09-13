@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab9e8a69-a6a9-45d5-94ff-71ebe3cd281d" name="Changes" comment="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md">
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/chanel.go" beforeDir="false" afterPath="$PROJECT_DIR$/code/chanel.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img4.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img5.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img6.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img8.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +66,7 @@
       <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap2" />
       <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
     </key>
   </component>

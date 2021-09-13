@@ -1,7 +1,7 @@
 ---
 title: 在go中查看代码的内存及cpu使用情况 (二)
-date: 2021-09-10 23:23:13 tags:
-
+date: 2021-09-13 00:20:13 
+tags:
 - go
 
 ---
@@ -16,16 +16,16 @@ date: 2021-09-10 23:23:13 tags:
 container_memory_usage_bytes{container="simple"}
 ```
 
-![img.png](go-heap/img4.png)
+![img.png](go-heap2/img4.png)
 
 当我们定位出了内存泄漏, 接下来我们怎么来定位代码中哪个地方内存泄漏了呢？ 接下来我们需要使用pprof来定位具体的原因,在上一个章节我们已经讲过如果使用 pprof 这里我就不在多余的赘述这个问题。 接下来我们具体看现象,
 在图中我们看到了一处异常的情况。当前服务使用了79399次gorouting。我不确定这个是不是引起内存泄漏的根本原因,但是出现这个问题 对于服务也是很严重的。我们首先看看为什么会产生这么多的gorouting吧。
 
-![img.png](go-heap/img5.png)
+![img.png](go-heap2/img5.png)
 
 接下来我们来看看具体是哪个代码导致的。在下图中我们可以看到是由于pipeline.go 61行导致的。 我们来看看代码吧。
 
-![img.png](go-heap/img6.png)
+![img.png](go-heap2/img6.png)
 
 ```go
 func FilterService(itemChan <-chan ingress.Access, services []string) <-chan ingress.Access {
@@ -147,7 +147,7 @@ func CalculateQPS(data <-chan ingress.Access, timeTick <-chan time.Time,
 
 当我看到这个消费能力很不错都控制在12us以内, 所以我猜想的这个想法是所务的。
 
-![img.png](go-heap/img8.png)
+![img.png](go-heap2/img8.png)
 
 
 改了这个问题后服务的内存恢复了正常, 这个时候我们需要回顾一下, 为什么那么多的gorouting 会产生内存 很高的情况，cpu 基本没有什么变化。

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            istio无法访问外部tcp服务(一) |
+        
+        ClareChu
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/golang.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">istio无法访问外部tcp服务(一)</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-08-24 00:00:00
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/istio/">istio</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/k8s/">k8s</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前几天在生产环境出现了一个非常奇怪的问题, 集群内部环境无法访问集群外部的mysql, 好像redis也有类似的问题, 当时k8s版本1.11 istio 1.4,<br>istio和k8s 版本都比较低。后面 用istio1.6 貌似也有同样的问题。</p>
+<h2 id="使用集群内部的mysql"><a href="#使用集群内部的mysql" class="headerlink" title="使用集群内部的mysql"></a>使用集群内部的mysql</h2><p>首先我们在集群内访问试一下, 我使用一个mysql的client 端和server 来模拟这种情况</p>
+<p>mysql-client —-&gt; mysql-server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f - &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: apps/v1</span></span><br><span class="line"><span class="string">kind: Deployment</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  generation: 2</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: mysql-server</span></span><br><span class="line"><span class="string">  name: mysql-server</span></span><br><span class="line"><span class="string">  namespace: demo1</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  progressDeadlineSeconds: 600</span></span><br><span class="line"><span class="string">  replicas: 1</span></span><br><span class="line"><span class="string">  revisionHistoryLimit: 10</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    matchLabels:</span></span><br><span class="line"><span class="string">      app: mysql-server</span></span><br><span class="line"><span class="string">  strategy:</span></span><br><span class="line"><span class="string">    rollingUpdate:</span></span><br><span class="line"><span class="string">      maxSurge: 25%</span></span><br><span class="line"><span class="string">      maxUnavailable: 25%</span></span><br><span class="line"><span class="string">    type: RollingUpdate</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      creationTimestamp: null</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: mysql-server</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">        - env:</span></span><br><span class="line"><span class="string">            - name: MYSQL_ROOT_PASSWORD</span></span><br><span class="line"><span class="string">              value: password</span></span><br><span class="line"><span class="string">          image: mysql</span></span><br><span class="line"><span class="string">          imagePullPolicy: Always</span></span><br><span class="line"><span class="string">          name: mysql</span></span><br><span class="line"><span class="string">          ports:</span></span><br><span class="line"><span class="string">            - containerPort: 3306</span></span><br><span class="line"><span class="string">              protocol: TCP</span></span><br><span class="line"><span class="string">          resources: &#123;&#125;</span></span><br><span class="line"><span class="string">          terminationMessagePath: /dev/termination-log</span></span><br><span class="line"><span class="string">          terminationMessagePolicy: File</span></span><br><span class="line"><span class="string">      dnsPolicy: ClusterFirst</span></span><br><span class="line"><span class="string">      restartPolicy: Always</span></span><br><span class="line"><span class="string">      schedulerName: default-scheduler</span></span><br><span class="line"><span class="string">      securityContext: &#123;&#125;</span></span><br><span class="line"><span class="string">      terminationGracePeriodSeconds: 30</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: mysql-server</span></span><br><span class="line"><span class="string">  name: mysql-server</span></span><br><span class="line"><span class="string">  namespace: demo1</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  clusterIP: 10.68.228.107</span></span><br><span class="line"><span class="string">  externalTrafficPolicy: Cluster</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">    - name: 3306-3306</span></span><br><span class="line"><span class="string">      nodePort: 32011</span></span><br><span class="line"><span class="string">      port: 3306</span></span><br><span class="line"><span class="string">      protocol: TCP</span></span><br><span class="line"><span class="string">      targetPort: 3306</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    app: mysql-server</span></span><br><span class="line"><span class="string">  sessionAffinity: None</span></span><br><span class="line"><span class="string">  type: NodePort</span></span><br><span class="line"><span class="string">EOF</span>  </span><br><span class="line"></span><br><span class="line">$ kubectl apply -f - &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: apps/v1</span></span><br><span class="line"><span class="string">kind: Deployment</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  generation: 2</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: mysql-client</span></span><br><span class="line"><span class="string">  name: mysql-client</span></span><br><span class="line"><span class="string">  namespace: demo1</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  progressDeadlineSeconds: 600</span></span><br><span class="line"><span class="string">  replicas: 1</span></span><br><span class="line"><span class="string">  revisionHistoryLimit: 10</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    matchLabels:</span></span><br><span class="line"><span class="string">      app: mysql-client</span></span><br><span class="line"><span class="string">  strategy:</span></span><br><span class="line"><span class="string">    rollingUpdate:</span></span><br><span class="line"><span class="string">      maxSurge: 25%</span></span><br><span class="line"><span class="string">      maxUnavailable: 25%</span></span><br><span class="line"><span class="string">    type: RollingUpdate</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      creationTimestamp: null</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: mysql-client</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">        - image: clarechu/mysql-client:v1</span></span><br><span class="line"><span class="string">          imagePullPolicy: Always</span></span><br><span class="line"><span class="string">          name: mysql</span></span><br><span class="line"><span class="string">          resources: &#123;&#125;</span></span><br><span class="line"><span class="string">          terminationMessagePath: /dev/termination-log</span></span><br><span class="line"><span class="string">          terminationMessagePolicy: File</span></span><br><span class="line"><span class="string">      dnsPolicy: ClusterFirst</span></span><br><span class="line"><span class="string">      restartPolicy: Always</span></span><br><span class="line"><span class="string">      schedulerName: default-scheduler</span></span><br><span class="line"><span class="string">      securityContext: &#123;&#125;</span></span><br><span class="line"><span class="string">      terminationGracePeriodSeconds: 30</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看pod状态并注入sidecar</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ kubectl get po</span><br><span class="line"> </span><br><span class="line">NAME                            READY   STATUS    RESTARTS   AGE</span><br><span class="line">mysql-client-b7db8cc46-99cx5    2/2     Running   0          81s</span><br><span class="line">mysql-server-6c845f449b-525q6   2/2     Running   0          81s</span><br></pre></td></tr></table></figure>
+
+<p>当我们注入sidecar 之后我们测试一下 client端能否访问的server mysql, 可以看到是可以正常访问mysql-server 的，我们现在看看其中到底发生了什么？ 在同一个ns下是可以正常的访问mysql-server的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ kubectl <span class="built_in">exec</span> -it mysql-client-b7db8cc46-99cx5 telnet mysql-server 3306</span><br><span class="line">kubectl <span class="built_in">exec</span> [POD] [COMMAND] is DEPRECATED and will be removed <span class="keyword">in</span> a future version. Use kubectl <span class="built_in">exec</span> [POD] -- [COMMAND] instead.</span><br><span class="line">Defaulted container <span class="string">&quot;mysql&quot;</span> out of: mysql, istio-proxy, istio-init (init)</span><br><span class="line">Connected to mysql-server</span><br><span class="line">J</span><br><span class="line">8.0.26	*F?eZTM\�~h<span class="comment">#DD#2)caching_sha2_password</span></span><br></pre></td></tr></table></figure>
+
+<p>我们首先查看mysql-client 这个pod 出口的listener(监听器), 从下面的返回的监听器我们可以看出3306 端口只有一个<code>mysql-server.demo1.svc.cluster.local</code>的监听器, 然后我们看看这个监听器的cluster是什么？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ istioctl  pc listener mysql-client-b7db8cc46-99cx5 --port 3306</span><br><span class="line">ADDRESS       PORT MATCH DESTINATION</span><br><span class="line">10.68.228.107 3306 ALL   Cluster: outbound|3306||mysql-server.demo1.svc.cluster.local</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>因为监听器的打印太多了 我就截了一小段, 可以看到3306出口cluster 为<code>outbound|3306||mysql-server.demo1.svc.cluster.local</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;envoy.filters.network.tcp_proxy&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typedConfig&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;statPrefix&quot;</span>: <span class="string">&quot;outbound|3306||mysql-server.demo1.svc.cluster.local&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;cluster&quot;</span>: <span class="string">&quot;outbound|3306||mysql-server.demo1.svc.cluster.local&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;accessLog&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;envoy.access_loggers.file&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;typedConfig&quot;</span>: &#123;</span><br><span class="line">                    <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;/dev/stdout&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;logFormat&quot;</span>: &#123;</span><br><span class="line">                        <span class="attr">&quot;textFormat&quot;</span>: <span class="string">&quot;[%START_TIME%] \&quot;%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\&quot; %RESPONSE_CODE% %RESPONSE_FLAGS% %RESPONSE_CODE_DETAILS% %CONNECTION_TERMINATION_DETAILS% \&quot;%UPSTREAM_TRANSPORT_FAILURE_REASON%\&quot; %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \&quot;%REQ(X-FORWARDED-FOR)%\&quot; \&quot;%REQ(USER-AGENT)%\&quot; \&quot;%REQ(X-REQUEST-ID)%\&quot; \&quot;%REQ(:AUTHORITY)%\&quot; \&quot;%UPSTREAM_HOST%\&quot; %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME% %ROUTE_NAME%\n&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>接下来我们查询当前pod的cluster</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line">$ stioctl pc cluster mysql-client-b7db8cc46-99cx5 --fqdn <span class="string">&quot;outbound|3306||mysql-server.demo1.svc.cluster.local&quot;</span> -o json</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;transportSocketMatches&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;tlsMode-istio&quot;</span>,</span><br><span class="line">                <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;tlsMode&quot;</span>: <span class="string">&quot;istio&quot;</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;transportSocket&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;envoy.transport_sockets.tls&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;typedConfig&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;@type&quot;</span>: <span class="string">&quot;type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;commonTlsContext&quot;</span>: &#123;</span><br><span class="line">                            <span class="string">&quot;tlsCertificateSdsSecretConfigs&quot;</span>: [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;default&quot;</span>,</span><br><span class="line">                                    <span class="string">&quot;sdsConfig&quot;</span>: &#123;</span><br><span class="line">                                        <span class="string">&quot;apiConfigSource&quot;</span>: &#123;</span><br><span class="line">                                            <span class="string">&quot;apiType&quot;</span>: <span class="string">&quot;GRPC&quot;</span>,</span><br><span class="line">                                            <span class="string">&quot;transportApiVersion&quot;</span>: <span class="string">&quot;V3&quot;</span>,</span><br><span class="line">                                            <span class="string">&quot;grpcServices&quot;</span>: [</span><br><span class="line">                                                &#123;</span><br><span class="line">                                                    <span class="string">&quot;envoyGrpc&quot;</span>: &#123;</span><br><span class="line">                                                        <span class="string">&quot;clusterName&quot;</span>: <span class="string">&quot;sds-grpc&quot;</span></span><br><span class="line">                                                    &#125;</span><br><span class="line">                                                &#125;</span><br><span class="line">                                            ],</span><br><span class="line">                                            <span class="string">&quot;setNodeOnFirstMessageOnly&quot;</span>: <span class="literal">true</span></span><br><span class="line">                                        &#125;,</span><br><span class="line">                                        <span class="string">&quot;initialFetchTimeout&quot;</span>: <span class="string">&quot;0s&quot;</span>,</span><br><span class="line">                                        <span class="string">&quot;resourceApiVersion&quot;</span>: <span class="string">&quot;V3&quot;</span></span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            ],</span><br><span class="line">                            <span class="string">&quot;combinedValidationContext&quot;</span>: &#123;</span><br><span class="line">                                <span class="string">&quot;defaultValidationContext&quot;</span>: &#123;</span><br><span class="line">                                    <span class="string">&quot;matchSubjectAltNames&quot;</span>: [</span><br><span class="line">                                        &#123;</span><br><span class="line">                                            <span class="string">&quot;exact&quot;</span>: <span class="string">&quot;spiffe://cluster.local/ns/demo1/sa/default&quot;</span></span><br><span class="line">                                        &#125;</span><br><span class="line">                                    ]</span><br><span class="line">                                &#125;,</span><br><span class="line">                                <span class="string">&quot;validationContextSdsSecretConfig&quot;</span>: &#123;</span><br><span class="line">                                    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;ROOTCA&quot;</span>,</span><br><span class="line">                                    <span class="string">&quot;sdsConfig&quot;</span>: &#123;</span><br><span class="line">                                        <span class="string">&quot;apiConfigSource&quot;</span>: &#123;</span><br><span class="line">                                            <span class="string">&quot;apiType&quot;</span>: <span class="string">&quot;GRPC&quot;</span>,</span><br><span class="line">                                            <span class="string">&quot;transportApiVersion&quot;</span>: <span class="string">&quot;V3&quot;</span>,</span><br><span class="line">                                            <span class="string">&quot;grpcServices&quot;</span>: [</span><br><span class="line">                                                &#123;</span><br><span class="line">                                                    <span class="string">&quot;envoyGrpc&quot;</span>: &#123;</span><br><span class="line">                                                        <span class="string">&quot;clusterName&quot;</span>: <span class="string">&quot;sds-grpc&quot;</span></span><br><span class="line">                                                    &#125;</span><br><span class="line">                                                &#125;</span><br><span class="line">                                            ],</span><br><span class="line">                                            <span class="string">&quot;setNodeOnFirstMessageOnly&quot;</span>: <span class="literal">true</span></span><br><span class="line">                                        &#125;,</span><br><span class="line">                                        <span class="string">&quot;initialFetchTimeout&quot;</span>: <span class="string">&quot;0s&quot;</span>,</span><br><span class="line">                                        <span class="string">&quot;resourceApiVersion&quot;</span>: <span class="string">&quot;V3&quot;</span></span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;,</span><br><span class="line">                            <span class="string">&quot;alpnProtocols&quot;</span>: [</span><br><span class="line">                                <span class="string">&quot;istio-peer-exchange&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;istio&quot;</span></span><br><span class="line">                            ]</span><br><span class="line">                        &#125;,</span><br><span class="line">                        <span class="string">&quot;sni&quot;</span>: <span class="string">&quot;outbound_.3306_._.mysql-server.demo1.svc.cluster.local&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;tlsMode-disabled&quot;</span>,</span><br><span class="line">                <span class="string">&quot;match&quot;</span>: &#123;&#125;,</span><br><span class="line">                <span class="string">&quot;transportSocket&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;envoy.transport_sockets.raw_buffer&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;outbound|3306||mysql-server.demo1.svc.cluster.local&quot;</span>,</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;EDS&quot;</span>,</span><br><span class="line">        <span class="string">&quot;edsClusterConfig&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;edsConfig&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;ads&quot;</span>: &#123;&#125;,</span><br><span class="line">                <span class="string">&quot;resourceApiVersion&quot;</span>: <span class="string">&quot;V3&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;serviceName&quot;</span>: <span class="string">&quot;outbound|3306||mysql-server.demo1.svc.cluster.local&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;connectTimeout&quot;</span>: <span class="string">&quot;10s&quot;</span>,</span><br><span class="line">        <span class="string">&quot;circuitBreakers&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;thresholds&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">&quot;maxConnections&quot;</span>: 4294967295,</span><br><span class="line">                    <span class="string">&quot;maxPendingRequests&quot;</span>: 4294967295,</span><br><span class="line">                    <span class="string">&quot;maxRequests&quot;</span>: 4294967295,</span><br><span class="line">                    <span class="string">&quot;maxRetries&quot;</span>: 4294967295</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;metadata&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;filterMetadata&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;istio&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;default_original_port&quot;</span>: 3306,</span><br><span class="line">                    <span class="string">&quot;services&quot;</span>: [</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="string">&quot;host&quot;</span>: <span class="string">&quot;mysql-server.demo1.svc.cluster.local&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;name&quot;</span>: <span class="string">&quot;mysql-server&quot;</span>,</span><br><span class="line">                            <span class="string">&quot;namespace&quot;</span>: <span class="string">&quot;demo1&quot;</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    ]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;filters&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;istio.metadata_exchange&quot;</span>,</span><br><span class="line">                <span class="string">&quot;typedConfig&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;@type&quot;</span>: <span class="string">&quot;type.googleapis.com/udpa.type.v1.TypedStruct&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;typeUrl&quot;</span>: <span class="string">&quot;type.googleapis.com/envoy.tcp.metadataexchange.config.MetadataExchange&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;value&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;protocol&quot;</span>: <span class="string">&quot;istio-peer-exchange&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>我们从cluster的配置我们知道</p>
+<p>使用EDS来找到destination 的pod, Envoy 将查找名为的服务的列表 <code>outbound|3306||mysql-server.demo1.svc.cluster.local</code></p>
+<p>下面我们看看envoy 中endpoint <code>outbound|3306||mysql-server.demo1.svc.cluster.local</code> 列表,  从而找到mysql-server 的pod ip<br>–&gt; <code>172.20.0.30</code> 看起来没有任何问题。所以我们从这个地方可以得出一个结论。</p>
+<p>我当时认为流量是这么路由的 但是通过我们对ep的查看流量是没有经过svc地址的 直接访问当前服务的<code>endpoint</code>地址<br><img src="/2021/08/24/k8s/istio/istio-network/img_2.png" alt="img2.png"></p>
+<p>此时是这个样子的, 当服务注入sidecar之后是不经过k8s 的svc的直接访问出口的pod ip。</p>
+<p><img src="/2021/08/24/k8s/istio/istio-network/img_1.png" alt="img1.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  ~  istioctl pc ep mysql-client-b7db8cc46-99cx5 --port 3306</span><br><span class="line">ENDPOINT             STATUS      OUTLIER CHECK     CLUSTER</span><br><span class="line">172.20.0.30:3306     HEALTHY     OK                outbound|3306||mysql-server.demo1.svc.cluster.local</span><br><span class="line"></span><br><span class="line">➜  ~ k get po -o wide</span><br><span class="line">NAME                            READY   STATUS    RESTARTS   AGE   IP            NODE           NOMINATED NODE   READINESS GATES</span><br><span class="line">mysql-client-b7db8cc46-99cx5    2/2     Running   0          33m   172.20.0.31   10.10.13.118   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">mysql-server-6c845f449b-525q6   2/2     Running   0          33m   172.20.0.30   10.10.13.118   &lt;none&gt;           &lt;none&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用集群外部mysql"><a href="#使用集群外部mysql" class="headerlink" title="使用集群外部mysql"></a>使用集群外部mysql</h2><p>集群里面的流量是正常的,现在我们在集群外面部署一个mysql 从集群内部pod(mysql-client-b7db8cc46-99cx5)访问集群外部的mysql, 此时我们看看能不能正常访问当前的mysql-server, 此时也可以访问的 这个时候我们在来看看listener</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ~ kubectl <span class="built_in">exec</span> -it mysql-client-b7db8cc46-99cx5 telnet 10.10.13.110 3306</span><br><span class="line">kubectl <span class="built_in">exec</span> [POD] [COMMAND] is DEPRECATED and will be removed <span class="keyword">in</span> a future version. Use kubectl <span class="built_in">exec</span> [POD] -- [COMMAND] instead.</span><br><span class="line">Defaulted container <span class="string">&quot;mysql&quot;</span> out of: mysql, istio-proxy, istio-init (init)</span><br><span class="line">Connected to 10.10.13.110</span><br><span class="line">J</span><br><span class="line">8.0.26\r(Juh�5kguvqI2<span class="string">&quot;&#125;!caching_sha2_password</span></span><br></pre></td></tr></table></figure>
+
+<p>我们现在在任意的命名空间创建一个serviceentry, 这个时候我们在来看发生来什么变化，从下面的例子我们可以看出我们不能正常访问集群外部的流量了, 此时我们看看这个流量到哪里去了呢？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ kubectl <span class="built_in">exec</span> -it mysql-client-b7db8cc46-99cx5 telnet 10.10.13.110 3306</span><br><span class="line">kubectl <span class="built_in">exec</span> [POD] [COMMAND] is DEPRECATED and will be removed <span class="keyword">in</span> a future version. Use kubectl <span class="built_in">exec</span> [POD] -- [COMMAND] instead.</span><br><span class="line">Defaulted container <span class="string">&quot;mysql&quot;</span> out of: mysql, istio-proxy, istio-init (init)</span><br><span class="line">Connected to 10.10.13.110</span><br><span class="line">Connection closed by foreign host</span><br><span class="line"><span class="built_in">command</span> terminated with <span class="built_in">exit</span> code 1</span><br></pre></td></tr></table></figure>
+
+<p>我们获取client 的listener, 我们发现多了一个<code>0.0.0.0</code> 的监听器, 这个是由于我在别的ns下创建了一个se导致的,<br>默认在所有监听器都匹配不上的时候就会默认去访问这个<code>0.0.0.0</code>的listener。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ istioctl pc listener mysql-client-b7db8cc46-99cx5 --port 3306</span><br><span class="line">ADDRESS       PORT MATCH DESTINATION</span><br><span class="line">0.0.0.0       3306 ALL   Cluster: outbound|3306||mysql.demo</span><br><span class="line">10.68.228.107 3306 ALL   Cluster: outbound|3306||mysql-server.demo1.svc.cluster.local</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们来看看cluster是什么, 默认访问的是<code>outbound|3306||mysql.demo</code>, 这个地址指向到一个空的svc上面, 所以我们访问不了外部的svc地址</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ istioctl pc listener mysql-client-b7db8cc46-99cx5 --port 3306 -o json</span><br><span class="line">        </span><br><span class="line">&#123;</span><br><span class="line">                        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;envoy.filters.network.tcp_proxy&quot;</span>,</span><br><span class="line">                        <span class="attr">&quot;typedConfig&quot;</span>: &#123;</span><br><span class="line">                            <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy&quot;</span>,</span><br><span class="line">                            <span class="attr">&quot;statPrefix&quot;</span>: <span class="string">&quot;outbound|3306||mysql.demo&quot;</span>,</span><br><span class="line">                            <span class="attr">&quot;cluster&quot;</span>: <span class="string">&quot;outbound|3306||mysql.demo&quot;</span>,</span><br><span class="line">                            <span class="attr">&quot;accessLog&quot;</span>: [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;envoy.access_loggers.file&quot;</span>,</span><br><span class="line">                                    <span class="attr">&quot;typedConfig&quot;</span>: &#123;</span><br><span class="line">                                        <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog&quot;</span>,</span><br><span class="line">                                        <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;/dev/stdout&quot;</span>,</span><br><span class="line">                                        <span class="attr">&quot;logFormat&quot;</span>: &#123;</span><br><span class="line">                                            <span class="attr">&quot;textFormat&quot;</span>: <span class="string">&quot;[%START_TIME%] \&quot;%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\&quot; %RESPONSE_CODE% %RESPONSE_FLAGS% %RESPONSE_CODE_DETAILS% %CONNECTION_TERMINATION_DETAILS% \&quot;%UPSTREAM_TRANSPORT_FAILURE_REASON%\&quot; %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \&quot;%REQ(X-FORWARDED-FOR)%\&quot; \&quot;%REQ(USER-AGENT)%\&quot; \&quot;%REQ(X-REQUEST-ID)%\&quot; \&quot;%REQ(:AUTHORITY)%\&quot; \&quot;%UPSTREAM_HOST%\&quot; %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME% %ROUTE_NAME%\n&quot;</span></span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在别的命名空间下创建serviceentry 会影响当前namespace 下服务。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
+<li>使用sidecar crd资源</li>
+</ol>
+<p>在我们创建serviceentry 的namespace 中写入一个sidecar的资源，该例子是在demo1的<br>命名空间中声明了一个全局默认配置，该配置在所有命名空间中配置sidecar以仅允许出口流量到同一命名空间中的其他工作负载以及命名空间中的服务 istio-system</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Sidecar</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">demo1</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">egress:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;./*&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;istio-system/*&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当我们创建了sidecar 资源后我们在观察mysql-client 这个pod的listener, 此时少了一个0.0.0.0 的监听器，我们在来求证一下mysql-client 是否能正常访问外部mysql服务。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">➜</span>  <span class="string">~</span> <span class="string">istioctl</span> <span class="string">pc</span>  <span class="string">listener</span> <span class="string">mysql-client-b7db8cc46-99cx5</span> <span class="string">--port</span> <span class="number">3306</span></span><br><span class="line"><span class="string">ADDRESS</span>       <span class="string">PORT</span> <span class="string">MATCH</span> <span class="string">DESTINATION</span></span><br><span class="line"><span class="attr">10.68.228.107 3306 ALL   Cluster:</span> <span class="string">outbound|3306||mysql-server.demo1.svc.cluster.local</span></span><br><span class="line"><span class="attr">10.68.66.97   3306 ALL   Cluster:</span> <span class="string">outbound|3306||mysql-client.demo1.svc.cluster.local</span></span><br><span class="line"></span><br><span class="line"><span class="string">➜</span>  <span class="string">~</span> <span class="string">kubectl</span> <span class="string">exec</span> <span class="string">-it</span> <span class="string">mysql-client-b7db8cc46-99cx5</span> <span class="string">telnet</span> <span class="number">10.10</span><span class="number">.13</span><span class="number">.110</span> <span class="number">3306</span></span><br><span class="line"><span class="string">kubectl</span> <span class="string">exec</span> [<span class="string">POD</span>] [<span class="string">COMMAND</span>] <span class="string">is</span> <span class="string">DEPRECATED</span> <span class="string">and</span> <span class="string">will</span> <span class="string">be</span> <span class="string">removed</span> <span class="string">in</span> <span class="string">a</span> <span class="string">future</span> <span class="string">version.</span> <span class="string">Use</span> <span class="string">kubectl</span> <span class="string">exec</span> [<span class="string">POD</span>] <span class="string">--</span> [<span class="string">COMMAND</span>] <span class="string">instead.</span></span><br><span class="line"><span class="string">Defaulted</span> <span class="string">container</span> <span class="string">&quot;mysql&quot;</span> <span class="attr">out of:</span> <span class="string">mysql,</span> <span class="string">istio-proxy,</span> <span class="string">istio-init</span> <span class="string">(init)</span></span><br><span class="line"><span class="string">Connected</span> <span class="string">to</span> <span class="number">10.10</span><span class="number">.13</span><span class="number">.110</span></span><br><span class="line"><span class="string">J</span></span><br><span class="line"><span class="string">B5&gt;�I=6s=E6,&amp;M&#125;Qcaching_sha2_password</span></span><br><span class="line"></span><br><span class="line"><span class="type">!#08S01Got</span> <span class="string">packets</span> <span class="string">out</span> <span class="string">of</span> <span class="string">orderConnection</span> <span class="string">closed</span> <span class="string">by</span> <span class="string">foreign</span> <span class="string">host</span></span><br><span class="line"><span class="string">command</span> <span class="string">terminated</span> <span class="string">with</span> <span class="string">exit</span> <span class="string">code</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>更改其他的端口</li>
+</ol>
+<p>这种方式当创建了一个端口的se之后我们更改mysql的port 那么就不会匹配到0.0.0.0 3306 的端口这样就不会有这个问题。</p>
+<ol start="3">
+<li>开启智能dns</li>
+</ol>
+<p>在安装istio的时候开启istio 智能dns,不过这个功能是istio1.8才有的功能，如果版本偏低建议还是升级一下.</p>
+<p>在安装istio的过程中我们需要在iop资源中添加一下以下配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">meshConfig:</span></span><br><span class="line">  <span class="attr">accessLogFile:</span> <span class="string">/dev/stdout</span></span><br><span class="line">  <span class="attr">defaultConfig:</span></span><br><span class="line">    <span class="attr">proxyMetadata:</span></span><br><span class="line">      <span class="attr">ISTIO_META_DNS_CAPTURE:</span> <span class="string">&quot;true&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在创建se的时候指定address 使 mysql.demo122 这个host指向这个ip</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">apiVersion:</span> <span class="string">networking.istio.io/v1beta1</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">ServiceEntry</span></span><br><span class="line">  <span class="attr">metadata:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">namespace:</span> <span class="string">demo</span></span><br><span class="line">  <span class="attr">spec:</span></span><br><span class="line">    <span class="attr">addresses:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">240.0</span><span class="number">.221</span><span class="number">.130</span></span><br><span class="line">    <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mysql.demo122</span></span><br><span class="line">    <span class="attr">location:</span> <span class="string">MESH_INTERNAL</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">tcp</span></span><br><span class="line">      <span class="attr">number:</span> <span class="number">3306</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">3306</span></span><br><span class="line">    <span class="attr">resolution:</span> <span class="string">STATIC</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们创建了这个serviceentry 之后我们在mysql-client中在访问这个host的时候指向这个<code>240.0.221.130</code>的虚拟ip。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ kubectl <span class="built_in">exec</span> -it mysql-client-b7db8cc46-99cx5 ping mysql.demo122</span><br><span class="line">kubectl <span class="built_in">exec</span> [POD] [COMMAND] is DEPRECATED and will be removed <span class="keyword">in</span> a future version. Use kubectl <span class="built_in">exec</span> [POD] -- [COMMAND] instead.</span><br><span class="line">Defaulted container <span class="string">&quot;mysql&quot;</span> out of: mysql, istio-proxy, istio-init (init)</span><br><span class="line">PING mysql.demo122 (240.0.221.130) 56(84) bytes of data.</span><br></pre></td></tr></table></figure>
+
+<p>在来看mysql-client-b7db8cc46-99cx5的监听器少了0.0.0.0 的监听器 多了一条<code>240.0.221.130 3306 ALL   Cluster: outbound|3306||mysql.demo122</code>的监听器，我们在来访问外部的mysql的时候就不会冲突匹配到0.0.0.0的监听器</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">➜</span>  <span class="string">~</span> <span class="string">istioctl</span> <span class="string">pc</span>  <span class="string">listener</span> <span class="string">mysql-client-b7db8cc46-99cx5</span> <span class="string">--port</span> <span class="number">3306</span></span><br><span class="line"><span class="string">ADDRESS</span>       <span class="string">PORT</span> <span class="string">MATCH</span> <span class="string">DESTINATION</span></span><br><span class="line"><span class="attr">10.68.228.107 3306 ALL   Cluster:</span> <span class="string">outbound|3306||mysql-server.demo1.svc.cluster.local</span></span><br><span class="line"><span class="attr">10.68.66.97   3306 ALL   Cluster:</span> <span class="string">outbound|3306||mysql-client.demo1.svc.cluster.local</span></span><br><span class="line"><span class="attr">240.0.221.130 3306 ALL   Cluster:</span> <span class="string">outbound|3306||mysql.demo122</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果存在集群内部访问集群外部的应用的时候, 我们应该做到以下几点</p>
+<ol>
+<li>在每个namespace 空间内部创建默认的sidecar, 这样即可降低envoy的内存, 也可以避免其他命名空间的干扰</li>
+<li>访问外部的服务的时候创建serivceentry</li>
+</ol>
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/09/10/go-gc/go-heap/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">在go中查看代码的内存及cpu使用情况 (一)</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/07/19/istio/istio-iptables/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">在istio1.9中iptables链规则的意义</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2021&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>
