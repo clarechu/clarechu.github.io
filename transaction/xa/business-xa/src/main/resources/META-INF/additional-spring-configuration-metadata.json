@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "application.feign.client.order.name",
+      "type": "java.lang.String",
+      "description": "xx.xxx.xxx wokaoaji as"
+    },
+    {
+      "name": "application.feign.client.order.url",
+      "type": "java.lang.String",
+      "description": "Description for application.feign.client.order.url."
+    },
+    {
+      "name": "application.feign.client.storage.name",
+      "type": "java.lang.String",
+      "description": "Description for application.feign.client.storage.name."
+    },
+    {
+      "name": "application.feign.client.storage.url",
+      "type": "java.lang.String",
+      "description": "Description for application.feign.client.storage.url."
+    }
+  ] }
