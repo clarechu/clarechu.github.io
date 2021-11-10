@@ -3,4 +3,6 @@ node_modules/
 
 .idea
 
+public/
+
 .deploy_git

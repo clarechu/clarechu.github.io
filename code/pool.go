@@ -18,6 +18,7 @@ type PoolInterface interface {
 	Get() (CloseInterface, error)
 	//Shutdown 关闭所有连接池
 	Shutdown() error
+	Set() error
 	//Release 添加一个连接
 	Release(closer CloseInterface) error
 	//Close 关闭当前连接
@@ -60,6 +61,25 @@ func (p *Pool) Get() (CloseInterface, error) {
 
 func (p *Pool) Put() {
 	panic("implement me")
+}
+
+func (p *Pool) Set() error {
+	p.Lock()
+	defer p.Unlock()
+	if p.closed {
+		return ErrPoolClosed
+	}
+	if p.maxOpen == p.numOpen {
+		return errors.New("poll to max curr number ")
+	}
+	closer, err := p.factory()
+	if err != nil {
+		return err
+	}
+	p.numOpen++
+	p.pool <- closer
+
+	return nil
 }
 
 //Shutdown 关闭连接池，释放所有资源
