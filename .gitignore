@@ -1,12 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 node_modules/
 
-<<<<<<< HEAD
 .idea
 
-.deploy_git
-=======
-.deploy_git/
+public/
 
-vscode
->>>>>>> dev
+.deploy_git

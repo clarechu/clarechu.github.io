@@ -29,21 +29,21 @@ container_memory_usage_bytes{container="simple"}
 
 ```go
 func FilterService(itemChan <-chan ingress.Access, services []string) <-chan ingress.Access {
-channel := make(chan ingress.Access)
-go func () {
-defer close(channel)
-data := <-itemChan
-if data == nil {
-return
-}
-for _, service := range services {
-if data.ServiceName() == service {
-// 主要是由于这行死锁导致这么多gorouting的
-channel <- data
-}
-}
-}()
-return channel
+    channel := make(chan ingress.Access)
+    go func () {
+        defer close(channel)
+        data := <-itemChan
+        if data == nil {
+            return
+        }
+        for _, service := range services {
+            if data.ServiceName() == service {
+                // 主要是由于这行死锁导致这么多gorouting的
+                channel <- data
+            }
+        }
+    }()
+    return channel
 }
 
 ```
@@ -59,13 +59,6 @@ return channel
 
 func cc() {
     a := make(chan int)
-    go func() {
-        time.Sleep(1 * time.Second)
-        a <- 1
-        close(a)
-    }()
-    fmt.Println("sleep !!!")
-    time.Sleep(3 * time.Second)
     a = nil
     b := <-a
     fmt.Printf("b :%d \n", b)

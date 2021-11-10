@@ -4,13 +4,179 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab9e8a69-a6a9-45d5-94ff-71ebe3cd281d" name="Changes" comment="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md">
+    <list default="true" id="bd88b9c2-146c-45a6-8cfa-49206e1adcea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img4.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img5.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img6.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img8.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/20/doc-dev/basics/git/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/20/doc-dev/basics/grpc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/20/doc-dev/basics/kafka/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/23/doc-dev/basics/mybatis-plus/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/26/doc-dev/basics/mock/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/26/doc-dev/basics/mongo/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/26/doc-dev/basics/rabiit/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/02/26/doc-dev/basics/redis/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/03/12/doc-dev/basics/sharding-jdbc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/03/12/doc-dev/basics/transactional/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2018/03/12/doc-dev/basics/validate/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2019/03/12/doc-dev/ops/k8s-node/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2019/03/12/doc-dev/ops/standard/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2019/03/12/doc-dev/ops/use_dns/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2019/03/12/doc-dev/ops/yum/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2019/03/12/doc-dev/standard/Swagger2/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2020/03/09/compare/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2020/09/21/docker/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2020/09/21/queue/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/01/21/k8s/istio-use/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/01/21/k8s/kiali/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/09/analysis/bookinfo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/09/analysis/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/09/analysis/iptables.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/10/linux/cgroups/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/10/linux/namespace/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/10/linux/namespace/img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/10/linux/namespace/img_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/10/linux/namespace/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/12/k8s/install-k8s/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/12/zsh/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/13/linux/bridge/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/14/linux/route/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/16/linux/lxc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/22/k8s/istio/debug-istio/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/java/serialization.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/22/k8s/istio/debug-istio/img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/22/k8s/istio/debug-istio/img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/03/22/k8s/istio/debug-istio/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/04/07/k8s/lb/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/openssl.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap/img1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap/img2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap2/img4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap2/img5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap2/img6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/go-heap2/img8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/05/30/go-gc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/06/28/lock/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/07/12/dale/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/07/12/ebpf/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/07/12/wasm/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/07/19/istio/istio-iptables/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/08/24/k8s/istio/istio-network/img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/08/24/k8s/istio/istio-network/img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/08/24/k8s/istio/istio-network/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/09/10/go-gc/go-heap/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/2021/09/13/go-gc/go-heap2/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/about/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2018/02/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2018/03/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2018/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2018/page/2/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2019/03/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2019/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2020/03/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2020/09/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2020/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/01/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/03/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/04/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/05/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/06/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/07/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/08/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/09/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/page/2/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/2021/page/3/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/page/2/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/page/3/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/archives/page/4/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/atom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/baidusitemap.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/categories/istio/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/content.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/animated.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/basic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/codeblock/code-theme.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/codeblock/copy-code.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/codeblock/highlight.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/keep-theme.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/markdown.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/common/variables.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/font-awesome.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/archive-content.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/article-content.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/category-content.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/category-list.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/home-content.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/page.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/layout/tag-content.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatar.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/bg.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/bp.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/bp.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/loading.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/back2top.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/code-copy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/dark-light-toggle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/header-shrink.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/lazyload.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/left-side-toggle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/libs/anime.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/libs/pjax.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/local-search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/toc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/page/2/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/page/3/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/page/4/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/sitemap.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/docker/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/go/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/golang/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/iptables/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/istio/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/k8s/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/kernal/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/kernel/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/kiali/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/kubernetes/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/linux/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/tags/network/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-brands-400.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-brands-400.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-brands-400.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-brands-400.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-brands-400.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-regular-400.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-regular-400.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-regular-400.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-regular-400.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-regular-400.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-solid-900.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-solid-900.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-solid-900.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-solid-900.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/webfonts/fa-solid-900.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img5.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img6.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/lock.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/lock.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,20 +193,11 @@
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="ROOT_SYNC" value="DONT_SYNC" />
-  </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
-  <component name="ProjectId" id="1xCQ4hIkzt9lWbbi0TVcSaRnTNR" />
+  <component name="ProjectId" id="1zMsUku624m4uoT3Zx8KAU46xVL" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -57,90 +214,19 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
-    <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/source/_posts/openssl" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
+      <recent name="$PROJECT_DIR$/source/_posts/openssl" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap2" />
-      <recent name="$PROJECT_DIR$/source/_posts/go-gc/go-heap" />
+      <recent name="$PROJECT_DIR$/source/_posts/openssl" />
     </key>
-  </component>
-  <component name="RunManager" selected="Go Test.Test_cc in github.com/clarechu/algorithms/code">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestTokenBucket in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestTokenBucket\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Test_cc in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTest_cc\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Test_cc1 in github.com/clarechu/algorithms/code" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$/code" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms/code" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTest_cc1\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <package value="github.com/clarechu/algorithms" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go Test.Test_cc in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.TestTokenBucket in github.com/clarechu/algorithms/code" />
-        <item itemvalue="Go Test.Test_cc1 in github.com/clarechu/algorithms/code" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'dev' into themes&#10;&#10;# Conflicts:&#10;#&#9;db.json&#10;#&#9;source/_posts/k8s/istio/istio-network.md" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
