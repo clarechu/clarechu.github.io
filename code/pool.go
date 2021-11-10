@@ -11,14 +11,17 @@ type CloseInterface interface {
 	Close() error
 }
 
-type factory func() (CloseInterface, error)
+type instance func() (CloseInterface, error)
 
 type PoolInterface interface {
 	//Get 获取连接池数据
 	Get() (CloseInterface, error)
 	//Shutdown 关闭所有连接池
 	Shutdown() error
+	// Set 开新的 factory
 	Set() error
+	// ReleaseNum 获取当前线程池的数量
+	GetPoolNum() int32
 	//Release 添加一个连接
 	Release(closer CloseInterface) error
 	//Close 关闭当前连接
@@ -43,7 +46,7 @@ type Pool struct {
 	numOpen int32
 	//maxLifetime 存活时间
 	maxLifetime time.Time
-	factory     factory
+	instance    instance
 }
 
 func (p *Pool) Get() (CloseInterface, error) {
@@ -72,7 +75,7 @@ func (p *Pool) Set() error {
 	if p.maxOpen == p.numOpen {
 		return errors.New("poll to max curr number ")
 	}
-	closer, err := p.factory()
+	closer, err := p.instance()
 	if err != nil {
 		return err
 	}
@@ -108,6 +111,10 @@ func (p *Pool) Release(closer CloseInterface) error {
 	return nil
 }
 
+func (p *Pool) GetPoolNum() int32 {
+	return p.numOpen
+}
+
 func (p *Pool) Close(closer CloseInterface) error {
 	p.Lock()
 	closer.Close()
@@ -116,7 +123,7 @@ func (p *Pool) Close(closer CloseInterface) error {
 	return nil
 }
 
-func NewPool(minOpen, maxOpen int32, factory factory) (PoolInterface, error) {
+func NewPool(minOpen, maxOpen int32, i instance) (PoolInterface, error) {
 	if maxOpen <= 0 || minOpen > maxOpen {
 		return nil, ErrInvalidConfig
 	}
@@ -124,12 +131,12 @@ func NewPool(minOpen, maxOpen int32, factory factory) (PoolInterface, error) {
 		maxOpen:     maxOpen,
 		minOpen:     minOpen,
 		maxLifetime: time.Now(),
-		factory:     factory,
+		instance:    i,
 		pool:        make(chan CloseInterface, maxOpen),
 	}
 
-	for i := int32(0); i < minOpen; i++ {
-		closer, err := factory()
+	for j := int32(0); j < minOpen; j++ {
+		closer, err := i()
 		if err != nil {
 			continue
 		}
