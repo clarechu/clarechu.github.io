@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: account-xa
+  name: account-xa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-xa
+  template:
+    metadata:
+      labels:
+        app: account-xa
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - account-xa-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: account-xa
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: account-xa
+  name: account-xa
+spec:
+  ports:
+    - name: http
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+  selector:
+    app: account-xa
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: account-xa
+  name: account-xa
+  namespace: xa
+spec:
+  addresses:
+    - 172.20.0.139
+  hosts:
+    - account-xa
+  location: MESH_INTERNAL
+  endpoints:
+    - address: 172.20.0.139
+      labels:
+        app: account-xa
+  ports:
+    - name: http-8083
+      number: 8083
+      protocol: TCP
+  resolution: STATIC

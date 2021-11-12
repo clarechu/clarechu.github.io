@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: business-xa
+  name: business-xa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: business-xa
+  template:
+    metadata:
+      labels:
+        app: business-xa
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - business-xa-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: business-xa
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: business-xa
+  name: business-xa
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: business-xa
+  sessionAffinity: None
+  type: NodePort
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: business-xa
+  name: business-xa
+  namespace: xa
+spec:
+  addresses:
+    - 172.20.0.140
+  hosts:
+    - business-xa
+  location: MESH_INTERNAL
+  endpoints:
+    - address: 172.20.0.140
+      labels:
+        app: business-xa
+  ports:
+    - name: http-8080
+      number: 8080
+      protocol: TCP
+  resolution: STATIC

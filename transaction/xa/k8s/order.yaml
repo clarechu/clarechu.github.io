@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: order-xa
+  name: order-xa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-xa
+  template:
+    metadata:
+      labels:
+        app: order-xa
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - order-xa-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: order-xa
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: order-xa
+  name: order-xa
+spec:
+  ports:
+    - name: http
+      port: 8082
+      protocol: TCP
+      targetPort: 8082
+  selector:
+    app: order-xa
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: order-xa
+  name: order-xa
+  namespace: xa
+spec:
+  addresses:
+    - 172.20.0.138
+  hosts:
+    - order-xa
+  location: MESH_INTERNAL
+  endpoints:
+    - address: 172.20.0.138
+      labels:
+        app: order-xa
+  ports:
+    - name: http-8082
+      number: 8082
+      protocol: TCP
+  resolution: STATIC
+
+---

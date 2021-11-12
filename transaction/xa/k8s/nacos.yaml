@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: nacos
+  name: nacos
+  namespace: xa
+spec:
+  addresses:
+    - 172.20.0.244
+  hosts:
+    - nacos
+  location: MESH_EXTERNAL
+  ports:
+    - name: http-8849
+      number: 8849
+      protocol: TCP
+  resolution: STATIC
+  workloadSelector:
+    labels:
+      app: nacos

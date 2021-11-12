@@ -37,4 +37,11 @@ public class BusinessServiceImpl implements BusinessService {
 
         orderService.create(userId, commodityCode, orderCount);
     }
+
+    @Override
+    public void health() {
+        storageService.health();
+
+        orderService.health();
+    }
 }

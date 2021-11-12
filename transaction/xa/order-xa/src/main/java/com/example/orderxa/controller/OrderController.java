@@ -1,6 +1,8 @@
 package com.example.orderxa.controller;
 
 import com.example.orderxa.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class OrderController {
+
+ final static Logger log = LoggerFactory.getLogger(OrderController.class);
 
     private final OrderService orderService;
 
@@ -23,6 +27,13 @@ public class OrderController {
             exx.printStackTrace();
             return "FAIL";
         }
+        return "SUCCESS";
+    }
+
+    @RequestMapping(value = "health", method = RequestMethod.GET)
+    public Object health() {
+        log.debug("health start");
+        log.debug("health end");
         return "SUCCESS";
     }
 

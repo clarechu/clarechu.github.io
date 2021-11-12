@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: storage-xa
+  name: storage-xa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-xa
+  template:
+    metadata:
+      labels:
+        app: storage-xa
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - storage-xa-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: storage-xa
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: storage-xa
+  name: storage-xa
+spec:
+  ports:
+    - name: http
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: storage-xa
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: storage-xa
+  name: storage-xa
+  namespace: xa
+spec:
+  addresses:
+    - 172.20.0.141
+  hosts:
+    - storage-xa
+  endpoints:
+    - address: 172.20.0.141
+      labels:
+        app: storage-xa
+  location: MESH_INTERNAL
+  ports:
+    - name: http-8081
+      number: 8081
+      protocol: TCP
+  resolution: STATIC
