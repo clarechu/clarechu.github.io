@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: storage-xa
-  name: storage-xa
+    version: v1
+  name: storage-xa-v1
 spec:
   replicas: 1
   selector:
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: storage-xa
+        version: v1
     spec:
       containers:
         - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
@@ -21,6 +23,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -39,47 +45,60 @@ spec:
       restartPolicy: Always
 
 ---
-
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: storage-xa
-  name: storage-xa
-spec:
-  ports:
-    - name: http
-      port: 8081
-      protocol: TCP
-      targetPort: 8081
-  selector:
-    app: storage-xa
-  sessionAffinity: None
-  type: ClusterIP
-
----
+#
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: storage-xa
+#  name: storage-xa
+#spec:
+#  ports:
+#    - name: http
+#      port: 8081
+#      protocol: TCP
+#      targetPort: 8081
+#  selector:
+#    app: storage-xa
+#  sessionAffinity: None
+#  type: ClusterIP
 
 ---
 
-apiVersion: networking.istio.io/v1beta1
-kind: ServiceEntry
+---
+
+#apiVersion: networking.istio.io/v1beta1
+#kind: ServiceEntry
+#metadata:
+#  labels:
+#    app: storage-xa
+#  name: storage-xa
+#  namespace: xa
+#spec:
+#  addresses:
+#    - 172.20.0.141
+#  hosts:
+#    - storage-xa
+#  endpoints:
+#    - address: 172.20.0.141
+#      labels:
+#        app: storage-xa
+#  location: MESH_INTERNAL
+#  ports:
+#    - name: http-8081
+#      number: 8081
+#      protocol: TCP
+#  resolution: STATIC
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
 metadata:
-  labels:
-    app: storage-xa
   name: storage-xa
-  namespace: xa
 spec:
-  addresses:
-    - 172.20.0.141
-  hosts:
-    - storage-xa
-  endpoints:
-    - address: 172.20.0.141
+  host: storage-xa
+  subsets:
+    - name: v1
       labels:
-        app: storage-xa
-  location: MESH_INTERNAL
-  ports:
-    - name: http-8081
-      number: 8081
-      protocol: TCP
-  resolution: STATIC
+        version: v1

@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: business-xa
-  name: business-xa
+    version: v1
+  name: business-xa-v1
 spec:
   replicas: 1
   selector:
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: business-xa
+        version: v1
     spec:
       containers:
         - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
@@ -21,6 +23,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -40,44 +46,56 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: business-xa
-  name: business-xa
-spec:
-  ports:
-    - name: http
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-  selector:
-    app: business-xa
-  sessionAffinity: None
-  type: NodePort
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: business-xa
+#  name: business-xa
+#spec:
+#  ports:
+#    - name: http
+#      port: 8080
+#      protocol: TCP
+#      targetPort: 8080
+#  selector:
+#    app: business-xa
+#  sessionAffinity: None
+#  type: NodePort
 
 ---
+#
+#apiVersion: networking.istio.io/v1beta1
+#kind: ServiceEntry
+#metadata:
+#  labels:
+#    app: business-xa
+#  name: business-xa
+#  namespace: xa
+#spec:
+#  addresses:
+#    - 172.20.0.140
+#  hosts:
+#    - business-xa
+#  location: MESH_INTERNAL
+#  endpoints:
+#    - address: 172.20.0.140
+#      labels:
+#        app: business-xa
+#  ports:
+#    - name: http-8080
+#      number: 8080
+#      protocol: TCP
+#  resolution: STATIC
+---
 
-apiVersion: networking.istio.io/v1beta1
-kind: ServiceEntry
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
 metadata:
-  labels:
-    app: business-xa
   name: business-xa
-  namespace: xa
 spec:
-  addresses:
-    - 172.20.0.140
-  hosts:
-    - business-xa
-  location: MESH_INTERNAL
-  endpoints:
-    - address: 172.20.0.140
+  host: business-xa
+  subsets:
+    - name: v1
       labels:
-        app: business-xa
-  ports:
-    - name: http-8080
-      number: 8080
-      protocol: TCP
-  resolution: STATIC
+        version: v1

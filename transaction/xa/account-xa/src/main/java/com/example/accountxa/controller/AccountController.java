@@ -5,6 +5,7 @@ import com.example.accountxa.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,14 @@ public class AccountController {
     static final String SUCCESS = "SUCCESS";
 
     static final Logger log = LoggerFactory.getLogger(AccountController.class);
+
+    @Value("${version}")
+    private String Version;
+
+    @Value("${spring.application.name}")
+    private String Name;
+
+
     @Autowired
     private AccountService accountService;
 
@@ -34,7 +43,7 @@ public class AccountController {
     public Object health() {
         log.debug("health start");
         log.debug("health end");
-        return "SUCCESS";
+        return " ====> " + Name + "-" + Version;
     }
 }
 

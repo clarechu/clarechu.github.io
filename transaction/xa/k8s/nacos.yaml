@@ -7,15 +7,41 @@ metadata:
   namespace: xa
 spec:
   addresses:
-    - 172.20.0.244
+    - 10.10.13.110
   hosts:
     - nacos
   location: MESH_EXTERNAL
+  endpoints:
+    - address: 10.10.13.110
+      labels:
+        app: nacos
   ports:
     - name: http-8849
       number: 8849
       protocol: TCP
   resolution: STATIC
-  workloadSelector:
-    labels:
-      app: nacos
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+  namespace: xa
+spec:
+  addresses:
+    - 10.10.13.110
+  hosts:
+    - mysql
+  location: MESH_EXTERNAL
+  endpoints:
+    - address: 10.10.13.110
+      labels:
+        app: mysql
+  ports:
+    - name: mysql-3306
+      number: 3306
+      protocol: TCP
+  resolution: STATIC

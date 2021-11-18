@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: order-xa
-  name: order-xa
+    version: v1
+  name: order-xa-v1
 spec:
   replicas: 1
   selector:
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: order-xa
+        version: v1
     spec:
       containers:
         - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
@@ -21,6 +23,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -40,46 +46,58 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: order-xa
-  name: order-xa
-spec:
-  ports:
-    - name: http
-      port: 8082
-      protocol: TCP
-      targetPort: 8082
-  selector:
-    app: order-xa
-  sessionAffinity: None
-  type: ClusterIP
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: order-xa
+#  name: order-xa
+#spec:
+#  ports:
+#    - name: http
+#      port: 8082
+#      protocol: TCP
+#      targetPort: 8082
+#  selector:
+#    app: order-xa
+#  sessionAffinity: None
+#  type: ClusterIP
+
+---
+#
+#apiVersion: networking.istio.io/v1beta1
+#kind: ServiceEntry
+#metadata:
+#  labels:
+#    app: order-xa
+#  name: order-xa
+#  namespace: xa
+#spec:
+#  addresses:
+#    - 172.20.0.138
+#  hosts:
+#    - order-xa
+#  location: MESH_INTERNAL
+#  endpoints:
+#    - address: 172.20.0.138
+#      labels:
+#        app: order-xa
+#  ports:
+#    - name: http-8082
+#      number: 8082
+#      protocol: TCP
+#  resolution: STATIC
 
 ---
 
-apiVersion: networking.istio.io/v1beta1
-kind: ServiceEntry
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
 metadata:
-  labels:
-    app: order-xa
   name: order-xa
-  namespace: xa
 spec:
-  addresses:
-    - 172.20.0.138
-  hosts:
-    - order-xa
-  location: MESH_INTERNAL
-  endpoints:
-    - address: 172.20.0.138
+  host: order-xa
+  subsets:
+    - name: v1
       labels:
-        app: order-xa
-  ports:
-    - name: http-8082
-      number: 8082
-      protocol: TCP
-  resolution: STATIC
-
----
+        version: v1

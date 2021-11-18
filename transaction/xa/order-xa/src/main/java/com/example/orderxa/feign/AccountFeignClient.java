@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AccountFeignClient {
     @GetMapping("/reduce")
     String reduce(@RequestParam("userId") String userId, @RequestParam("money") int money);
+
+    @GetMapping("/health")
+    String health();
 }

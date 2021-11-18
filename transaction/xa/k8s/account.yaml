@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: account-xa
-  name: account-xa
+    version: v1
+  name: account-xa-v1
 spec:
   replicas: 1
   selector:
@@ -13,10 +14,15 @@ spec:
     metadata:
       labels:
         app: account-xa
+        version: v1
     spec:
       containers:
         - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
           env:
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -52,10 +58,11 @@ spec:
       port: 8083
       protocol: TCP
       targetPort: 8083
-  selector:
-    app: account-xa
+#  selector:
+#    app: account-xa
   sessionAffinity: None
   type: ClusterIP
+  externalName: account-xa
 
 ---
 
@@ -68,16 +75,136 @@ metadata:
   namespace: xa
 spec:
   addresses:
-    - 172.20.0.139
+    - 172.20.0.44
+    - 172.20.0.47
+  endpoints:
+    - address: 172.20.0.44
+      labels:
+        version: v1
+        app: account-xa
+    - address: 172.20.0.47
+      labels:
+        version: v2
+        app: account-xa
   hosts:
     - account-xa
-  location: MESH_INTERNAL
-  endpoints:
-    - address: 172.20.0.139
-      labels:
-        app: account-xa
+  location: MESH_EXTERNAL
   ports:
     - name: http-8083
       number: 8083
       protocol: TCP
   resolution: STATIC
+#  workloadSelector:
+#    labels:
+#      app: account-xa
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: account-xa
+    version: v2
+  name: account-xa-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-xa
+  template:
+    metadata:
+      labels:
+        app: account-xa
+        version: v2
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - account-xa-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: account-xa
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: account-xa
+spec:
+  host: account-xa
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2
+
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: account-xa
+spec:
+  hosts:
+    - account-xa
+  http:
+    - route:
+        - destination:
+            host: account-xa
+            subset: v1
+          weight: 90
+        - destination:
+            host: account-xa
+            subset: v2
+          weight: 10
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: WorkloadEntry
+metadata:
+  name: account-xa-v1
+spec:
+  address: 172.20.0.44
+  labels:
+    app: account-xa
+    version: v1
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: WorkloadEntry
+metadata:
+  name: account-xa-v2
+spec:
+  address: 172.20.0.47
+  labels:
+    app: account-xa
+    version: v2

@@ -32,9 +32,10 @@ public class OrderController {
 
     @RequestMapping(value = "health", method = RequestMethod.GET)
     public Object health() {
-        log.debug("health start");
-        log.debug("health end");
-        return "SUCCESS";
+        log.info("health start");
+        String message = orderService.health();
+        log.info("health end");
+        return message;
     }
 
 }

@@ -19,5 +19,5 @@ public interface OrderService {
                  @RequestParam("orderCount") int orderCount);
 
     @GetMapping("/health")
-    void health();
+    String health();
 }

@@ -16,5 +16,5 @@ public interface StorageService {
                 @RequestParam("count") int count);
 
     @GetMapping("/health")
-    void health();
+    String health();
 }

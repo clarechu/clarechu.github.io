@@ -16,7 +16,6 @@ public class BusinessServiceImpl implements BusinessService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessService.class);
 
 
-
     @Autowired
     private StorageService storageService;
 
@@ -39,9 +38,11 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public void health() {
-        storageService.health();
+    public String health() {
+        String message = "";
+        message = storageService.health();
 
-        orderService.health();
+        message += orderService.health();
+        return message;
     }
 }
