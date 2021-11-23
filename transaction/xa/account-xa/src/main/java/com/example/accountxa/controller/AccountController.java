@@ -1,7 +1,7 @@
 package com.example.accountxa.controller;
 
 
-import com.example.accountxa.service.AccountService;
+import com.example.accountxa.service.impl.AccountServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AccountController {
 
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @RequestMapping(value = "/reduce", method = RequestMethod.GET, produces = "application/json")
     public String reduce(String userId, int money) {

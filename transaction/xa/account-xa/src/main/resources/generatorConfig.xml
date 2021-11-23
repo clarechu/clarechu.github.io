@@ -1,0 +1,91 @@
+﻿<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- Import external property file -->
+    <properties resource="application.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!--Configure whether to use universal Mapper Built in annotation extension, default true-->
+        <!--<property name="useMapperCommentGenerator" value="false"/>-->
+
+        <!-- Generate serialization method for model-->
+        <!--<plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>-->
+        <!-- Generated for Java Create a model toString method -->
+        <!--<plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+
+        <!-- currency Mapper Plug in, which can generate annotated entity classes -->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!-- Generated Mapper Interface will automatically inherit the interface configured here -->
+            <property name="mappers" value="com.example.accountxa.dao"/>
+            <!-- Case sensitive, default false. If the database is case sensitive, you need to configure true，So when the table name is USER When, the @Table(name = "USER") Annotation, otherwise use lowercase user The table will not be found. -->
+            <property name="caseSensitive" value="true"/>
+            <!-- Forced generation of annotation, default false，If set to true，Whether the database name and field name are consistent or not, an annotation (including @Table and @Column).  -->
+            <property name="forceAnnotation" value="true"/>
+            <!-- Generating model Add a constant to the field name for ease of use Example Used when splicing query conditions. -->
+            <property name="generateColumnConsts" value="true"/>
+            <!-- -->
+            <!--<property name="generateDefaultInstanceMethod" value="true"/>-->
+            <!-- Start and end separators, for those with keywords. -->
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
+            <!-- Configure whether to enable lombok, The following six annotations are supported -->
+            <!-- Note: when configuring Data After, Getter Setter ToString EqualsAndHashCode Will be ignored-->
+            <!--<property name="lombok" value="Getter,Setter,Data,ToString,Accessors,EqualsAndHashCode"/>-->
+            <!--<property name="lombokEqualsAndHashCodeCallSuper" value="true"/>-->
+            <!-- -->
+            <!--<property name="swagger" value="true"/>-->
+        </plugin>
+
+        <!-- General code generator plug-in: support based on Freemarker Template generates various codes (not measured) -->
+        <!-- mapper Interface -->
+        <!--<plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="spring-boot-dao/spring-boot-mybatis-tkmybatis/src/main/java"/>
+            <property name="targetPackage" value="com.cxy35.sample.springboot.mybatis.tkmybatis.mbg.mapper"/>
+            <property name="templatePath" value="generator/mapper.ftl"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.java"/>
+            <property name="mapperSuffix" value="Dao"/>
+        </plugin>-->
+
+        <!-- mapper.xml -->
+        <!--<plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="spring-boot-dao/spring-boot-mybatis-tkmybatis/src/main/java"/>
+            <property name="targetPackage" value="com.cxy35.sample.springboot.mybatis.tkmybatis.mbg.mapper"/>
+            <property name="templatePath" value="generator/mapperXml.ftl"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.xml"/>
+            <property name="mapperSuffix" value="Dao"/>
+            <property name="mapperPackage" value="com.cxy35.sample.springboot.mybatis.tkmybatis.mbg.mapper"/>
+        </plugin>-->
+
+        <!-- Configure database connection -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <!-- solve mysql Drive upgrade to 8.0 Do not generate the specified database code after -->
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <!-- Specify build model Path to -->
+        <javaModelGenerator targetPackage="com.example.accountxa.model" targetProject="spring-boot-dao/spring-boot-mybatis-tkmybatis/src/main/java"/>
+
+        <!-- Specify build mapper The path of the interface -->
+        <javaClientGenerator targetPackage="com.example.accountxa.dao" targetProject="spring-boot-dao/spring-boot-mybatis-tkmybatis/src/main/java" type="XMLMAPPER"/>
+
+        <!-- Not required -->
+        <!-- Specify build mapper.xml Path to -->
+        <!--<sqlMapGenerator targetPackage="com.cxy35.sample.springboot.mybatis.tkmybatis.mbg.mapper" targetProject="spring-boot-dao/spring-boot-mybatis-tkmybatis/src/main/java"/>-->
+
+        <!-- tableName have access to % wildcard -->
+        <table tableName="t_user">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="t_user_role">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+    </context>
+</generatorConfiguration>

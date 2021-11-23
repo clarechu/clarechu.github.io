@@ -75,17 +75,18 @@ metadata:
   namespace: xa
 spec:
   addresses:
-    - 172.20.0.44
-    - 172.20.0.47
-  endpoints:
-    - address: 172.20.0.44
-      labels:
-        version: v1
-        app: account-xa
-    - address: 172.20.0.47
-      labels:
-        version: v2
-        app: account-xa
+#    - 172.20.0.44
+#    - 172.20.0.47
+    - 192.168.0.10
+#  endpoints:
+#    - address: 172.20.0.44
+#      labels:
+#        version: v1
+#        app: account-xa
+#    - address: 172.20.0.47
+#      labels:
+#        version: v2
+#        app: account-xa
   hosts:
     - account-xa
   location: MESH_EXTERNAL
@@ -94,9 +95,9 @@ spec:
       number: 8083
       protocol: TCP
   resolution: STATIC
-#  workloadSelector:
-#    labels:
-#      app: account-xa
+  workloadSelector:
+    labels:
+      app: account-xa
 
 
 ---
