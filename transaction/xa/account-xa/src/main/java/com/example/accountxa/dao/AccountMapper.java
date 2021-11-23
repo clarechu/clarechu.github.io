@@ -3,6 +3,8 @@ package com.example.accountxa.dao;
 import com.example.api.Account;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 余额账户 DAO
  */
@@ -17,4 +19,6 @@ public interface AccountMapper {
     int updateFreezedAmount(Account account);
 
     Account getAccountForUpdate(String accountNo);
+
+    List<Account> list();
 }

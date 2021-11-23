@@ -10,18 +10,22 @@
     </resultMap>
 
     <select id="getAccountForUpdate" resultMap="baseResultMap">
-        select id,name,phone,email from account_tbl
+        select id,account_no,amount,freezed_amount from t_account
     </select>
 
     <insert id="addAccount">
-        insert into account_tbl (id,account_no,amount,freezed_amount) values (#{id}, #{account_no}, #{amount}, #{freezed_amount})
+        insert into t_account (id,account_no,amount,freezed_amount) values (#{id}, #{account_no}, #{amount}, #{freezed_amount})
     </insert>
 
     <update id="updateAmount" >
-        update account_tbl set amount = #{amount} where id = #{id}
+        update t_account set amount = #{amount} where id = #{id}
     </update>
 
     <update id="updateFreezedAmount">
-        update account_tbl set amount = #{amount} where id = #{id}
+        update t_account set amount = #{amount} where id = #{id}
     </update>
+
+    <select id="list" resultMap="baseResultMap" >
+        select id,account_no,amount,freezed_amount from t_account
+    </select>
 </mapper>

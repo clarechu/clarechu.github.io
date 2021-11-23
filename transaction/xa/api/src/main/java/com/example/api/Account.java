@@ -2,6 +2,8 @@ package com.example.api;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 账户
  *
@@ -27,6 +29,5 @@ public class Account {
      * 冻结金额
      */
     private double freezedAmount;
-
 
 }
