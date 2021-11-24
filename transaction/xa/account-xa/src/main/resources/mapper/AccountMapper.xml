@@ -10,7 +10,7 @@
     </resultMap>
 
     <select id="getAccountForUpdate" resultMap="baseResultMap">
-        select id,account_no,amount,freezed_amount from t_account
+        select id,account_no,amount,freezed_amount from t_account where account_no=#{accountNo}
     </select>
 
     <insert id="addAccount">
@@ -22,7 +22,7 @@
     </update>
 
     <update id="updateFreezedAmount">
-        update t_account set amount = #{amount} where id = #{id}
+        update t_account set amount = #{amount}, freezed_amount=#{freezedAmount} where id = #{id}
     </update>
 
     <select id="list" resultMap="baseResultMap" >

@@ -2,8 +2,6 @@ package com.example.api;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * 账户
  *
@@ -21,6 +19,9 @@ public class Account {
      * 账户
      */
     private String accountNo;
+
+    private String uid;
+
     /**
      * 余额
      */
