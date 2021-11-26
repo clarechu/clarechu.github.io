@@ -4,40 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd88b9c2-146c-45a6-8cfa-49206e1adcea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/source/_posts/java/serialization.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/openssl/img_6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="c4e35863-4586-499a-98fe-f67da23c8cf0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/source/_posts/java/Transaction.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/pool.go" beforeDir="false" afterPath="$PROJECT_DIR$/code/pool.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap/img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img5.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img6.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2/img8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/lock.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/lock.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Go File" />
-      </list>
-    </option>
   </component>
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
@@ -46,7 +21,7 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
-  <component name="ProjectId" id="1zMsUku624m4uoT3Zx8KAU46xVL" />
+  <component name="ProjectId" id="21RzOkGnnUDKE5Kzp2O1JKpjEDJ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -55,7 +30,6 @@
     <option name="sortByType" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -63,22 +37,13 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/source/_posts/openssl" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/source/_posts/openssl" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/source/_posts/openssl" />
-    </key>
+    <property name="last_opened_file_path" value="$USER_HOME$" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/clarechu/algorithms" />
+      <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
@@ -87,7 +52,6 @@
       <module name="clarechu.github.io" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="DIRECTORY" />
-      <package value="github.com/clarechu/algorithms" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
