@@ -12,9 +12,9 @@ spec:
     - nacos
   location: MESH_EXTERNAL
   endpoints:
-    - address: 10.10.13.110
-      labels:
-        app: nacos
+    - address: 192.168.110.185
+      ports:
+        http: 8080
   ports:
     - name: http-8849
       number: 8849
