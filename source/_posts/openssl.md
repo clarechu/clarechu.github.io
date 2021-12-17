@@ -1,5 +1,5 @@
 ---
-title: 证书的作用
+title: 如何使用openssl 生成私有证书
 date: 2021-10-12 14:43:55
 tags:
 - linux
@@ -166,9 +166,10 @@ openssl req -new -key server.key -out server.csr
 
 ```bash
 # generate certificate  
-openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key  
-# 或者使用
 openssl x509 -req -days 3650 -in server.csr -CA ca.pem -CAkey ca.key -passin pass:111111 -CAcreateserial -out server.crt
+# 或者使用 
+# 
+openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key  
 ```
 
 客户端用户证书：
@@ -177,6 +178,16 @@ openssl x509 -req -days 3650 -in server.csr -CA ca.pem -CAkey ca.key -passin pas
 openssl genrsa -des3 -out client.key 1024   
 
 openssl req -new -key client.key -out client.csr  
+
+openssl x509 -req -days 3650 -in client.csr -CA ca.pem -CAkey ca.key -passin pass:111111 -CAcreateserial -out client.crt
+
+# 或者使用 不过在使用的过程中有这个问题待解决, 以后在处理吧 
+# Using configuration from /private/etc/ssl/openssl.cnf
+# Enter pass phrase for ca.key:
+# No such file or directory
+# unable to open ''
+# 4508040876:error:02FFF002:system library:func(4095):No such file or directory:/System/Volumes/Data/SWE/macOS/BuildRoots/38cf1d983f/Library/Caches/com.apple.xbs/Sources/libressl/libressl-56.60.2/libressl-2.8/crypto/bio/bss_file.c:255:fopen('', 'r')
+# 4508040876:error:20FFF002:BIO routines:CRYPTO_internal:system lib:/System/Volumes/Data/SWE/macOS/BuildRoots/38cf1d983f/Library/Caches/com.apple.xbs/Sources/libressl/libressl-56.60.2/libressl-2.8/crypto/bio/bss_file.c:257:
 
 openssl ca -in client.csr -out client.crt -cert ca.crt -keyfile ca.key
 ```

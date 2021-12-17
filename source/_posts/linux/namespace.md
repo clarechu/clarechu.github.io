@@ -61,7 +61,7 @@ $ exit
 ```
 
 
-![img.png](img.png)
+![img.png](gitlab/img.png)
 
 每個 namespace 在建立的時候會自動建立一個迴環介面 lo ，預設不啟用，可以通過  啟用。
 

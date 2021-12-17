@@ -25,7 +25,9 @@
         <module>account-xa</module>
         <module>business-xa</module>
         <module>order-xa</module>
+        <module>eureka-provider</module>
         <module>api</module>
+        <module>eureka</module>
         <module>storage-xa</module>
     </modules>
     <dependencyManagement>
@@ -47,6 +49,20 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.spring.boot.starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>${seata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-commons</artifactId>
+                <version>2.1.3.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-seata</artifactId>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -89,15 +105,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.seata</groupId>
-            <artifactId>seata-all</artifactId>
-            <version>${seata.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-alibaba-seata</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

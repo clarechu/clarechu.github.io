@@ -5,7 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c4e35863-4586-499a-98fe-f67da23c8cf0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/source/_posts/linux/gitlab/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_posts/linux/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction/xa/eureka-provider/src/main/java/com/example/eurekaprovider/controller/ProviderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction/xa/eureka/src/main/java/com/example/eureka/controller/ConsumerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction/xa/eureka/src/main/java/com/example/eureka/controller/ProviderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction/xa/eureka/src/main/java/com/example/eureka/feign/DemoFeign.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction/xa/k8s/eureka.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/linux/namespace.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/linux/namespace.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/openssl.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/openssl.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/account-xa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/account-xa/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/business-xa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/business-xa/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/business-xa/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/business-xa/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/k8s/nacos.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/k8s/nacos.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/order-xa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/order-xa/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/xa/storage-xa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/xa/storage-xa/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +36,9 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="21RzOkGnnUDKE5Kzp2O1JKpjEDJ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -31,30 +51,19 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.format.on.save.advertiser.fired" value="true" />
     <property name="go.formatter.settings.were.checked" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="clarechu.github.io" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source/_posts/linux/gitlab" />
+      <recent name="$PROJECT_DIR$/source/_posts/linux" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">

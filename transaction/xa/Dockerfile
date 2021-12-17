@@ -20,5 +20,7 @@ COPY account-xa/target/*.jar /app/
 COPY business-xa/target/*.jar /app/
 COPY order-xa/target/*.jar /app/
 COPY storage-xa/target/*.jar /app/
+COPY eureka/target/*.jar /app/
+COPY eureka-provider/target/*.jar /app/
 
 MAINTAINER ["java", "-jar", "-Xms256m", "-Xmx256m"]

@@ -14,7 +14,7 @@ spec:
   endpoints:
     - address: 192.168.110.185
       ports:
-        http: 8080
+        http-8849: 8080
   ports:
     - name: http-8849
       number: 8849

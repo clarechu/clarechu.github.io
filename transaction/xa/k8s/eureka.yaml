@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eureka-demo
+    version: v1
+  name: eureka-demo-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-demo
+  template:
+    metadata:
+      labels:
+        app: eureka-demo
+        version: v1
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - eureka-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: eureka-demo
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  labels:
+    app: eureka
+  name: eureka
+  namespace: service-mesh
+spec:
+  addresses:
+    - 10.10.13.119
+  hosts:
+    - eureka
+  location: MESH_EXTERNAL
+  endpoints:
+    - address: 192.168.110.185
+      ports:
+        http: 8080
+  ports:
+    - name: http
+      number: 32761
+      protocol: TCP
+  resolution: STATIC
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eureka-provider
+    version: v1
+  name: eureka-provider-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-provider
+  template:
+    metadata:
+      labels:
+        app: eureka-provider
+        version: v1
+    spec:
+      containers:
+        - image: registry.cn-shenzhen.aliyuncs.com/solarmesh/demo-nacos:v1
+          env:
+            - name: VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['version']
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+          args:
+            - java
+            - -jar
+            - eureka-provider-0.0.1-SNAPSHOT.jar
+          imagePullPolicy: Always
+          name: eureka-provider
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
