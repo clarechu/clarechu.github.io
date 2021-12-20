@@ -224,18 +224,36 @@ cat server.crt server.key > server.pem
 
 ## 如何在自己的私有网站创建https的征书
 
+创建一个新的OpenSSL配置文件, server.csr.cnf以便在创建证书时可以导入这些设置,
+而不必在命令行上输入它们。
+
+```txt
+
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+
+[dn]
+C=US
+ST=RandomState
+L=RandomCity
+O=RandomOrganization
+OU=RandomOrganizationUnit
+emailAddress=hello@example.com
+CN = localhost
+
+```
+
 现在我们是所有设备上的 CA，我们可以为任何需要 HTTPS 的新开发站点签署证书。
 首先，我们创建一个私钥：
 
 ```bash
-openssl genrsa -out private.key 2048
-```
 
-然后我们创建一个CSR：
+openssl req -new -sha256 -nodes -out server.csr -newkey rsa:2048 \
+-keyout server.key -config <(cat server.csr.cnf)
 
-
-```bash
-openssl req -new -key private.key -out cert.csr
 ```
 
 您将得到与上述相同的所有步骤，而且您的输出证书的内容并不重要。
@@ -269,7 +287,7 @@ subjectAltName = @alt_names
 DNS.1 = www.baidu.com
 ```
 
-我现在有三个文件： private.key（私钥）、
+我现在有三个文件： server.key（私钥）、
 server.csr（证书签名请求）和  server.crt（签名证书）。
 
 ## 验证
