@@ -55,7 +55,7 @@ $ kind create cluster --image  docker.io/kindest/node:v1.17.5 --config trustwort
 $ istioctl install
 ```
 
-等待istio 安装完成以后我们将 istiod的流量转到本地，主要目的是为了更改endpoint 
+等待istio 安装完成以后我们将 istiod的流量转到本地,主要目的是为了更改endpoint 
 
 使用外部 istiod
 

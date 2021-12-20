@@ -10,7 +10,7 @@ tags:
 k8s的LoadBalancer类型的Service依赖云服务商的Load Balancer, 如阿里云的slb。
 
 
-当我们把k8s部署在私有云时，需要简单的LoadBalancer来验证工作，开源的metallb就是一个不错的选择。
+当我们把k8s部署在私有云时,需要简单的LoadBalancer来验证工作,开源的metallb就是一个不错的选择。
 
 MetalLB支持2种 一种是`Layer2` 、`BGP`
 
@@ -26,11 +26,11 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manife
 
 MetalLB需要以下功能才能发挥作用：
 
-* 一个 Kubernetes 运行Kubernetes 1.13.0或更高版本的集群，尚不具有网络负载平衡功能。
+* 一个 Kubernetes 运行Kubernetes 1.13.0或更高版本的集群,尚不具有网络负载平衡功能。
 * 一个 集群网络配置 可以与MetalLB共存。
 * 一些用于MetalLB的IPv4地址。
-* 使用BGP工作模式时，您将需要一台或多台能够讲话的路由器 BGP协议。
-* 节点之间必须允许端口7946（TCP＆UDP）上的流量，具体取决于 会员列表。
+* 使用BGP工作模式时,您将需要一台或多台能够讲话的路由器 BGP协议。
+* 节点之间必须允许端口7946（TCP＆UDP）上的流量,具体取决于 会员列表。
 
 
 GBP 配置

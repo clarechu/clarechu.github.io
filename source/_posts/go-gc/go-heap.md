@@ -33,9 +33,9 @@ cmdline： 当前程序的命令行调用
 goroutine： 所有当前 goroutine 的堆栈跟踪
 heap：活动对象的内存分配示例。您可以指定 gc GET 参数以在获取堆样本之前运行 GC。
 mutex： 竞争互斥锁持有者的堆栈跟踪
-profile：CPU 配置文件。您可以在 seconds GET 参数中指定持续时间。获取配置文件后，使用 go tool pprof 命令调查配置文件。
+profile：CPU 配置文件。您可以在 seconds GET 参数中指定持续时间。获取配置文件后,使用 go tool pprof 命令调查配置文件。
 threadcreate： 导致创建新操作系统线程的堆栈跟踪
-trace：当前程序的执行轨迹。您可以在 seconds GET 参数中指定持续时间。获取跟踪文件后，使用 go tool trace 命令调查跟踪。
+trace：当前程序的执行轨迹。您可以在 seconds GET 参数中指定持续时间。获取跟踪文件后,使用 go tool trace 命令调查跟踪。
 
 
 ## 火力图

@@ -6,7 +6,31 @@
   <component name="ChangeListManager">
     <list default="true" id="c4e35863-4586-499a-98fe-f67da23c8cf0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/analysis.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/analysis.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/dale.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/proccess.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/docker.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/docker.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/go-gc/go-heap2.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/istio/istio-iptables.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/istio/istio-iptables.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/java/Transaction.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/java/Transaction.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/java/serialization.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/java/serialization.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/install-k8s.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/install-k8s.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio-use.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio-use.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/debug-istio.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/debug-istio.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/istio/istio-network.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/kiali.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/kiali.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/k8s/lb.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/k8s/lb.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/linux/bridge.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/linux/bridge.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/linux/cgroups.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/linux/cgroups.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/linux/lxc.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/linux/lxc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/linux/namespace.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/linux/namespace.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/lock.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/lock.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/_posts/openssl.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/openssl.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/queue.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/queue.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/wasm.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/wasm.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/zsh.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/zsh.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/about/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/about/index.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +80,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="事务" />
     <MESSAGE value="gitlab 升级" />
-    <option name="LAST_COMMIT_MESSAGE" value="gitlab 升级" />
+    <MESSAGE value="修改证书生成不起作用的问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改证书生成不起作用的问题" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

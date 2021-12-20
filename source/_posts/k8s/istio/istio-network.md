@@ -141,7 +141,7 @@ mysql-client-b7db8cc46-99cx5    2/2     Running   0          81s
 mysql-server-6c845f449b-525q6   2/2     Running   0          81s
 ```
 
-当我们注入sidecar 之后我们测试一下 client端能否访问的server mysql, 可以看到是可以正常访问mysql-server 的，我们现在看看其中到底发生了什么？ 在同一个ns下是可以正常的访问mysql-server的。
+当我们注入sidecar 之后我们测试一下 client端能否访问的server mysql, 可以看到是可以正常访问mysql-server 的,我们现在看看其中到底发生了什么？ 在同一个ns下是可以正常的访问mysql-server的。
 
 ```bash
 
@@ -361,7 +361,7 @@ J
 8.0.26\r(Juh�5kguvqI2"}!caching_sha2_password
 ```
 
-我们现在在任意的命名空间创建一个serviceentry, 这个时候我们在来看发生来什么变化，从下面的例子我们可以看出我们不能正常访问集群外部的流量了, 此时我们看看这个流量到哪里去了呢？
+我们现在在任意的命名空间创建一个serviceentry, 这个时候我们在来看发生来什么变化,从下面的例子我们可以看出我们不能正常访问集群外部的流量了, 此时我们看看这个流量到哪里去了呢？
 
 ```bash
 ➜  ~ kubectl exec -it mysql-client-b7db8cc46-99cx5 telnet 10.10.13.110 3306
@@ -412,8 +412,8 @@ ADDRESS       PORT MATCH DESTINATION
 1. 使用sidecar crd资源
 
 
-在我们创建serviceentry 的namespace 中写入一个sidecar的资源，该例子是在demo1的
-命名空间中声明了一个全局默认配置，该配置在所有命名空间中配置sidecar以仅允许出口流量到同一命名空间中的其他工作负载以及命名空间中的服务 istio-system
+在我们创建serviceentry 的namespace 中写入一个sidecar的资源,该例子是在demo1的
+命名空间中声明了一个全局默认配置,该配置在所有命名空间中配置sidecar以仅允许出口流量到同一命名空间中的其他工作负载以及命名空间中的服务 istio-system
 ```yaml
 apiVersion: networking.istio.io/v1beta1
 kind: Sidecar
@@ -428,7 +428,7 @@ spec:
 
 ```
 
-当我们创建了sidecar 资源后我们在观察mysql-client 这个pod的listener, 此时少了一个0.0.0.0 的监听器，我们在来求证一下mysql-client 是否能正常访问外部mysql服务。
+当我们创建了sidecar 资源后我们在观察mysql-client 这个pod的listener, 此时少了一个0.0.0.0 的监听器,我们在来求证一下mysql-client 是否能正常访问外部mysql服务。
 
 ```yaml
 ➜  ~ istioctl pc  listener mysql-client-b7db8cc46-99cx5 --port 3306
@@ -455,7 +455,7 @@ command terminated with exit code 1
 
 3. 开启智能dns
 
-在安装istio的时候开启istio 智能dns,不过这个功能是istio1.8才有的功能，如果版本偏低建议还是升级一下.
+在安装istio的时候开启istio 智能dns,不过这个功能是istio1.8才有的功能,如果版本偏低建议还是升级一下.
 
 在安装istio的过程中我们需要在iop资源中添加一下以下配置
 
@@ -498,7 +498,7 @@ Defaulted container "mysql" out of: mysql, istio-proxy, istio-init (init)
 PING mysql.demo122 (240.0.221.130) 56(84) bytes of data.
 ```
 
-在来看mysql-client-b7db8cc46-99cx5的监听器少了0.0.0.0 的监听器 多了一条`240.0.221.130 3306 ALL   Cluster: outbound|3306||mysql.demo122`的监听器，我们在来访问外部的mysql的时候就不会冲突匹配到0.0.0.0的监听器
+在来看mysql-client-b7db8cc46-99cx5的监听器少了0.0.0.0 的监听器 多了一条`240.0.221.130 3306 ALL   Cluster: outbound|3306||mysql.demo122`的监听器,我们在来访问外部的mysql的时候就不会冲突匹配到0.0.0.0的监听器
 
 ```yaml
 ➜  ~ istioctl pc  listener mysql-client-b7db8cc46-99cx5 --port 3306

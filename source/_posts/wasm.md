@@ -10,35 +10,35 @@ tags:
 
 ## envoy为什么使用WASM filter
 
-#### 通过 WASM filter的实现，我们可以得到：
+#### 通过 WASM filter的实现,我们可以得到：
 
-* 敏捷性 - 过滤器可以动态加载到正在运行的 Envoy 进程中，而无需停止或重新编译。
+* 敏捷性 - 过滤器可以动态加载到正在运行的 Envoy 进程中,而无需停止或重新编译。
 
 * 可维护性 - 我们不必更改 Envoy 的代码库来扩展其功能。
 
-* 多样性 - 流行的编程语言如 C/C++ 和 Rust 可以编译成 WASM，因此开发人员可以使用他们选择的编程语言来实现过滤器。
+* 多样性 - 流行的编程语言如 C/C++ 和 Rust 可以编译成 WASM,因此开发人员可以使用他们选择的编程语言来实现过滤器。
 
-* 可靠性和隔离 - 过滤器部署到 VM（沙箱）中，因此与托管 Envoy 进程本身隔离（例如，当 WASM 过滤器崩溃时，它不会影响 Envoy 进程）。
+* 可靠性和隔离 - 过滤器部署到 VM（沙箱）中,因此与托管 Envoy 进程本身隔离（例如,当 WASM 过滤器崩溃时,它不会影响 Envoy 进程）。
 
-* 安全性 - 由于过滤器通过定义良好的 API 与主机（Envoy 代理）通信，因此它们可以访问并且只能修改有限数量的连接或请求属性。
+* 安全性 - 由于过滤器通过定义良好的 API 与主机（Envoy 代理）通信,因此它们可以访问并且只能修改有限数量的连接或请求属性。
 
 #### 它还具有一些需要考虑的缺点：
 
 * 性能比原生 C++ 快约 70%。
-* 由于需要启动一个或多个 WASM 虚拟机，因此内存使用量更高。
+* 由于需要启动一个或多个 WASM 虚拟机,因此内存使用量更高。
 
 ### envoy 代理 WASM SDK
 
-Envoy Proxy 在基于堆栈的虚拟机中运行 WASM 过滤器，因此过滤器的内存与主机环境隔离。嵌入主机（Envoy Proxy）和 WASM 过滤器之间的所有交互都是通过 Envoy Proxy WASM SDK 提供的函数和回调实现的。WASM SDK 具有多种编程语言的实现，例如：
+Envoy Proxy 在基于堆栈的虚拟机中运行 WASM 过滤器,因此过滤器的内存与主机环境隔离。嵌入主机（Envoy Proxy）和 WASM 过滤器之间的所有交互都是通过 Envoy Proxy WASM SDK 提供的函数和回调实现的。WASM SDK 具有多种编程语言的实现,例如：
 
 * C++
 * rust
 * AssemblyScript
 * Go
 
-在这篇文章中，我们将讨论如何使用Go Envoy Proxy WASM SDK为 Envoy 编写 WASM 过滤器。我们不打算详细讨论 Envoy Proxy WASM SDK 的 API，因为它超出了本文的范围。但是，我们将涉及掌握为 Envoy 编写 WASM 过滤器的基础知识所必需的一些内容。
+在这篇文章中,我们将讨论如何使用Go Envoy Proxy WASM SDK为 Envoy 编写 WASM 过滤器。我们不打算详细讨论 Envoy Proxy WASM SDK 的 API,因为它超出了本文的范围。但是,我们将涉及掌握为 Envoy 编写 WASM 过滤器的基础知识所必需的一些内容。
 我们的过滤器实现必须派生自以下两个类：
-当加载 WASM 插件（包含过滤器的 WASM 二进制文件）时，会创建一个根上下文。根上下文与 VM 实例具有相同的生命周期，它执行我们的过滤器并用于：
+当加载 WASM 插件（包含过滤器的 WASM 二进制文件）时,会创建一个根上下文。根上下文与 VM 实例具有相同的生命周期,它执行我们的过滤器并用于：
 
 ```go
 
@@ -100,7 +100,7 @@ macos
 brew install tinygo
 ```
 
-安装完成后，在当前项目的根目录执行:
+安装完成后,在当前项目的根目录执行:
 
 ```bash
 tinygo build -o filter.wasm -target=wasi -wasm-abi=generic .
@@ -187,7 +187,7 @@ kubectl run curl --image=xxx --restart=Never -it --rm sh
 ~ # curl -L -v http://productpage.demo:9080
 ```
 
-在响应中，我们希望看到过滤器的标头添加到响应标头中：
+在响应中,我们希望看到过滤器的标头添加到响应标头中：
 
 ```yaml
     * About to connect() to frontpage.backyards-demo port 8080 (#0)

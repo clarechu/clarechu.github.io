@@ -26,7 +26,7 @@ $ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/instal
 $ sudo apt-get install fonts-powerline
 ```
 
-1.4 打开zsh配置文件 ~/.zshrc，修改主题为agnoster
+1.4 打开zsh配置文件 ~/.zshrc,修改主题为agnoster
 
 ```bash
 1 # Set name of the theme to load --- if set to "random", it will

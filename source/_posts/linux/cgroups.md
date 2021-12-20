@@ -28,29 +28,29 @@ Linux内核提供对cgroup技术的一系列控制器或子系统的访问。控
 
 ```
 
-blkio：设置限制每个块设备的输入输出控制。例如:磁盘，光盘以及usb等等。
+blkio：设置限制每个块设备的输入输出控制。例如:磁盘,光盘以及usb等等。
 cpu：使用调度程序为cgroup任务提供cpu的访问。
 cpuacct：产生cgroup任务的cpu资源报告。
-cpuset：如果是多核心的cpu，这个子系统会为cgroup任务分配单独的cpu和内存。
+cpuset：如果是多核心的cpu,这个子系统会为cgroup任务分配单独的cpu和内存。
 devices：允许或拒绝cgroup任务对设备的访问。
 freezer：暂停和恢复cgroup任务。
 memory：设置每个cgroup的内存限制以及产生内存资源报告。
 net_cls：标记每个网络包以供cgroup方便使用。
 ns：命名空间子系统。
-perf_event：增加了对每group的监测跟踪的能力，即可以监测属于某个特定的group的所有线程以及运行在特定CPU上的线程。
+perf_event：增加了对每group的监测跟踪的能力,即可以监测属于某个特定的group的所有线程以及运行在特定CPU上的线程。
 
 ```
 
 ## cgroups 对内存的限制
 
 ### 手动方式
-安装了正确的软件包后，您可以直接通过sysfs层次结构配置cgroup。例如，要foo在memory子系统下创建一个名为cgroup 的目录，请在/ sys / fs / cgroup / memory中创建一个名为foo的目录：
+安装了正确的软件包后,您可以直接通过sysfs层次结构配置cgroup。例如,要foo在memory子系统下创建一个名为cgroup 的目录,请在/ sys / fs / cgroup / memory中创建一个名为foo的目录：
 
 ```bash
 $ sudo mkdir /sys/fs/cgroup/memory/foo
 ```
 
-默认情况下，每个新创建的cgroup都将继承对系统整个内存池的访问权限。对于某些应用程序，主要是那些继续分配更多内存但拒绝释放已经分配的内存的应用程序，可能不是一个好主意。要将应用程序限制在合理的范围内，您需要更新 memory.limit_in_bytes文件。
+默认情况下,每个新创建的cgroup都将继承对系统整个内存池的访问权限。对于某些应用程序,主要是那些继续分配更多内存但拒绝释放已经分配的内存的应用程序,可能不是一个好主意。要将应用程序限制在合理的范围内,您需要更新 memory.limit_in_bytes文件。
 
 将在cgroup下运行的任何内容的内存限制foo为50MB：
 
@@ -66,7 +66,7 @@ $ sudo cat memory.limit_in_bytes
 50003968
 ```
 
-请注意，回读的值始终是内核页面大小的倍数（即4096字节或4KB）。该值是最小的可分配内存大小。
+请注意,回读的值始终是内核页面大小的倍数（即4096字节或4KB）。该值是最小的可分配内存大小。
 
 启动应用程序：
 
@@ -74,13 +74,13 @@ $ sudo cat memory.limit_in_bytes
 $ sh ~/test.sh &
 ```
 
-使用其进程ID（PID），将应用程序移动到控制器foo下的 cgroup memory：
+使用其进程ID（PID）,将应用程序移动到控制器foo下的 cgroup memory：
 
 ```bash
 $ echo 2845 > /sys/fs/cgroup/memory/foo/cgroup.procs
 ```
 
-使用相同的PID编号，列出正在运行的进程并验证其是否在所需的cgroup中运行：
+使用相同的PID编号,列出正在运行的进程并验证其是否在所需的cgroup中运行：
 
 ```bash
 $ ps -o cgroup 2845
@@ -88,7 +88,7 @@ CGROUP
 8:memory:/foo,1:name=systemd:/user.slice/user-0.slice/session-4.scope
 ```
 
-您还可以通过读取所需的文件来监视该cgroup当前正在使用的内容。在这种情况下，您将需要查看由您的进程（和产生的子进程）分配的内存量：
+您还可以通过读取所需的文件来监视该cgroup当前正在使用的内容。在这种情况下,您将需要查看由您的进程（和产生的子进程）分配的内存量：
 
 ```bash
 $ cat /sys/fs/cgroup/memory/foo/memory.usage_in_bytes
@@ -97,23 +97,23 @@ $ cat /sys/fs/cgroup/memory/foo/memory.usage_in_bytes
 
 ### 当我改变limit 
 
-现在，让我们重新创建相同的场景，但不要将cgroup限制 foo为50MB内存，而是将其限制为500个字节：
+现在,让我们重新创建相同的场景,但不要将cgroup限制 foo为50MB内存,而是将其限制为500个字节：
 
 
 ```bash
 $ echo 500 | sudo tee /sys/fs/cgroup/memory/foo/memory.limit_in_bytes
 ```
 
-注意：如果一项任务超出其定义的限制，内核将进行干预，在某些情况下，将终止该任务。
+注意：如果一项任务超出其定义的限制,内核将进行干预,在某些情况下,将终止该任务。
 
-同样，当您读回该值时，该值将始终是内核页面大小的倍数。因此，尽管将其设置为500字节，但实际上设置为4 KB：
+同样,当您读回该值时,该值将始终是内核页面大小的倍数。因此,尽管将其设置为500字节,但实际上设置为4 KB：
 
 ```bash
 $ cat /sys/fs/cgroup/memory/foo/memory.limit_in_bytes
 4096
 ```
 
-启动应用程序，将其移至cgroup并监视系统日志：
+启动应用程序,将其移至cgroup并监视系统日志：
 
 ```bash
 
@@ -183,7 +183,7 @@ Oct 14 10:22:41 localhost kernel: sh invoked oom-killer:
 [ ... ]
 ```
 
-请注意，一旦应用程序达到4KB的限制，内核的“内存不足杀手”（或oom-killer）就会介入。它终止了该应用程序，并且不再运行。您可以通过键入以下内容进行验证：
+请注意,一旦应用程序达到4KB的限制,内核的“内存不足杀手”（或oom-killer）就会介入。它终止了该应用程序,并且不再运行。您可以通过键入以下内容进行验证：
 
 ```bash
 
@@ -194,9 +194,9 @@ CGROUP
 
 ## 使用`libcgroup`
 
-libcgroup软件包中 提供的管理实用程序简化了此处描述的许多早期步骤。例如，使用cgcreate二进制文件的单个命令调用将负责创建sysfs条目和文件的过程。
+libcgroup软件包中 提供的管理实用程序简化了此处描述的许多早期步骤。例如,使用cgcreate二进制文件的单个命令调用将负责创建sysfs条目和文件的过程。
 
-要创建在 子系统foo下命名的组memory，请键入以下内容：
+要创建在 子系统foo下命名的组memory,请键入以下内容：
 
 ```bash
 $ sudo cgcreate -g memory:foo
@@ -204,7 +204,7 @@ $ sudo cgcreate -g memory:foo
 
 注意：libcgroup提供了一种用于管理控制组中的任务的机制。
 
-使用与以前相同的方法，您可以开始设置阈值：
+使用与以前相同的方法,您可以开始设置阈值：
 
 ```bash
 $ echo 50000000 | sudo tee
@@ -224,7 +224,7 @@ foo使用 cgexec二进制文件 在cgroup中运行应用程序：
 $ sudo cgexec -g memory:foo ~/test.sh
 ```
 
-使用其PID编号，验证应用程序正在cgroup中并在已定义的子系统（memory）下运行：
+使用其PID编号,验证应用程序正在cgroup中并在已定义的子系统（memory）下运行：
 
 ```bash
 $  ps -o cgroup 2945
@@ -233,7 +233,7 @@ CGROUP
 ↪session-1.scope
 ```
 
-如果您的应用程序不再运行，并且您想要清理并删除cgroup，则可以使用cgdelete二进制文件来完成。要从控制器foo 下面删除组memory，请键入：
+如果您的应用程序不再运行,并且您想要清理并删除cgroup,则可以使用cgdelete二进制文件来完成。要从控制器foo 下面删除组memory,请键入：
 
 ```bash
 $ sudo cgdelete memory:foo
@@ -275,9 +275,9 @@ memory.limit_in_bytes = 5000000;
 }
 ```
 
-这些cpu.shares选项定义组的CPU优先级。默认情况下，所有组都继承1,024个份额或100％的CPU时间。通过将此值降低到较为保守的程度（例如100），该组将被限制为大约CPU时间的10％。
+这些cpu.shares选项定义组的CPU优先级。默认情况下,所有组都继承1,024个份额或100％的CPU时间。通过将此值降低到较为保守的程度（例如100）,该组将被限制为大约CPU时间的10％。
 
-如前所述，在cgroup中运行的进程也可以限制为它可以访问的CPU（核心）数量。将以下部分添加到相同的cgconfig.conf文件中，并在所需的组名称下：
+如前所述,在cgroup中运行的进程也可以限制为它可以访问的CPU（核心）数量。将以下部分添加到相同的cgconfig.conf文件中,并在所需的组名称下：
 
 ```bash
 
@@ -287,9 +287,9 @@ cpuset.cpus="0-5";
 
 ```
 
-有了这个限制，此cgroup会将应用程序绑定到核心0到5-也就是说，它将仅看到系统上的前六个CPU核心。
+有了这个限制,此cgroup会将应用程序绑定到核心0到5-也就是说,它将仅看到系统上的前六个CPU核心。
 
-接下来，您需要使用该cgconfig服务加载此配置。首先，启用cgconfig以在系统启动时加载以上配置：
+接下来,您需要使用该cgconfig服务加载此配置。首先,启用cgconfig以在系统启动时加载以上配置：
 
 ```bash
 $ sudo systemctl enable cgconfig
@@ -298,17 +298,17 @@ Create symlink from /etc/systemd/system/sysinit.target.wants/
 to /usr/lib/systemd/system/cgconfig.service.
 ```
 
-现在，启动cgconfig服务并手动加载相同的配置文件（或者您可以跳过此步骤并重新引导系统）：
+现在,启动cgconfig服务并手动加载相同的配置文件（或者您可以跳过此步骤并重新引导系统）：
 
 ```bash
 $ sudo systemctl start cgconfig
 ```
 
-将应用程序启动到cgroup中，foo并将其绑定到您的 memory和cpu 限制：
+将应用程序启动到cgroup中,foo并将其绑定到您的 memory和cpu 限制：
 
 ```bash
 $ sudo cgexec -g memory,cpu,cpuset:foo ~/test.sh &
 ```
 
-除了将应用程序启动到预定义的cgroup中之外，其余所有内容将在系统重新引导后继续存在。但是，您可以通过定义依赖于cgconfig 服务的启动初始化脚本来启动该应用程序，从而自动执行该过程 。
+除了将应用程序启动到预定义的cgroup中之外,其余所有内容将在系统重新引导后继续存在。但是,您可以通过定义依赖于cgconfig 服务的启动初始化脚本来启动该应用程序,从而自动执行该过程 。
 

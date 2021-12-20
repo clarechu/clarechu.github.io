@@ -10,10 +10,10 @@ tags:
 
 我们在k8s集群中安装1.9.4 版本的 istio 。
 
-基于 istio1.9.4 版本，我们主要介绍istio在虚拟机中对iptables设置规则是什么样的？
+基于 istio1.9.4 版本,我们主要介绍istio在虚拟机中对iptables设置规则是什么样的？
 
-在虚拟机中安装istio中, istio进程交给system进程保管，
-进程中主要是运行了一个脚本，
+在虚拟机中安装istio中, istio进程交给system进程保管,
+进程中主要是运行了一个脚本,
 我们可以看到istio dep 包的脚本如下:
 
 ```bash
