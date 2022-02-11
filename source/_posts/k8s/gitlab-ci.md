@@ -9,9 +9,18 @@ tags:
 ## 使用docker 运行 gitlab runner
 
 
-gitlab runner 有很多方式 当前我们只使用docker 的方式运行runner.
-这个地方需要注意的是 公司使用的是自签名证书或自定义证书颁发机构所以在使用的过程中会遇到这个问题
+运行 gitlab runner 有很多方式， 当前我们只使用docker 的方式运行runner.
 
+```bash
+$ docker run -d --name gitlab-runner --restart always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+  -v /etc/gitlab-runner/certs:/etc/gitlab-runner/certs \
+  gitlab/gitlab-runner:latest
+```
+
+
+这个地方需要注意的是 公司使用的是自签名证书或自定义证书颁发机构所以在使用的过程中会遇到这个问题
 ```log
   Couldn't execute POST against https://hostname.tld/api/v4/jobs/request:
   Post https://hostname.tld/api/v4/jobs/request: x509: certificate signed by unknown authority
@@ -26,13 +35,7 @@ gitlab runner 有很多方式 当前我们只使用docker 的方式运行runner.
 $ openssl s_client -showcerts -connect gitlab.example.com:443 < /dev/null 2>/dev/null | openssl x509 -outform PEM > /etc/gitlab-runner/certs/gitlab.example.com.crt
 ```
 
-```bash
-$ docker run -d --name gitlab-runner --restart always \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-  -v /etc/gitlab-runner/certs:/etc/gitlab-runner/certs \
-  gitlab/gitlab-runner:latest
-```
+
 
 查看日志发现缺少config.toml 文件
 ```log
@@ -55,12 +58,12 @@ ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file o
 ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0
 ```
 
-解决方法:
+### 解决方法:
 
 直接执行 gitlab-runner register，并填写URL、token和描述即可，tags选填（参考设置tags）。
 executor如果不知道怎么选，就选shell吧。 直接执行shell命令，简单有效。
 
-执行完成后，gitlab-runner会自动修改/etc/gitlab-runner/config.toml文件，并重载daemon程序。
+执行完成后，gitlab-runner会自动修改/etc/gitlab-runner/config.toml文件，并重启daemon程序。
 
 ```bash
 # 进入 gitlab-runner 容器
@@ -151,4 +154,41 @@ job B:
   script:
     - cat vendor/hello.txt
 
+job C:
+  stage: test
+  tags:
+    - solarmesh-dev
+  script:
+    # 触发更新
+    - |-
+      result=$(kubectl set image deployment nginx *=nginx:alpine -n default)
+      if [[ "$(echo $result | grep updated)" != ""  ]]; then
+      # 镜像地址更新了，会自动重新部署
+      echo 'UPDATED'
+      else
+      # 镜像地址与之前相同，需要触发重新部署
+      echo 'NOT UPDATE'
+      kubectl rollout restart deployment nginx -n default
+      fi
+
+```
+
+
+## 踩坑
+
+在测试的过程中上传artifact 报错 [issues](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/3752),
+主要更新虚拟机上面的gitlab-runner 版本即可。
+
+```log
+Uploading artifacts for failed job
+00:00
+mesg: ttyname failed: Inappropriate ioctl for device
+Uploading artifacts...
+Incorrect Usage: flag provided but not defined: -artifact-format
+NAME:
+   gitlab-runner artifacts-uploader - create and upload build artifacts (internal)
+USAGE:
+   gitlab-runner artifacts-uploader [command options] [arguments...]
+OPTIONS:
+FATAL: flag provided but not defined: -artifact-format 
 ```
