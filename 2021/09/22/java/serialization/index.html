@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            java-序列化 |
+        
+        ClareChu
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/golang.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">java-序列化</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-09-22 22:28:03
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/java/">java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="其他方法优先于java序列化"><a href="#其他方法优先于java序列化" class="headerlink" title="其他方法优先于java序列化"></a>其他方法优先于java序列化</h2><pre><code>java反序列化是一个明显存在的风险,它不仅被应用直接广泛使用,也被java子系统RMI(远程方法调用)、JMX(Java管理扩展)和JMS等大量的间接被使用。
+将不被信任的流进行反序列化,可能导致远程代码执行,拒绝服务,以及一系列其他的攻击。即使应用本身没有做错任何事情,也可能被攻击。
+
+下面举一个例子, 在下面的例子中只要引入serializable, 就可以轻易地展开一次拒绝服务的攻击。
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">byte</span>[] bomb() &#123;</span><br><span class="line">    Set&lt;Object&gt; root = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    Set&lt;Object&gt; s1 = root;</span><br><span class="line">    Set&lt;Object&gt; s2 = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">        Set&lt;Object&gt; t1 = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        Set&lt;Object&gt; t2 = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        t1.add(<span class="string">&quot;foo&quot;</span>);</span><br><span class="line">        s1.add(t1);</span><br><span class="line">        s2.add(t1);</span><br><span class="line">        s1 = t1;</span><br><span class="line">        s2 = t2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> serialize(root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每当反序列化一个不信任的字节流时,自己就需要试着去攻击它。<code>避免序列化攻击的最佳方式是永远不要序列化任何东西</code>。主要原因 </p>
+<ol>
+<li>如果系统是机遇java序列化的 ,那么就无法迁移到别的平台或者别的语言的结构化数据表示法。</li>
+<li>java序列化存在很高的风险.</li>
+</ol>
+<p>我们应该使用一种支持跨平台的数据结构例如： json 和protobuf。</p>
+<h2 id="谨慎地实现serializable-接口"><a href="#谨慎地实现serializable-接口" class="headerlink" title="谨慎地实现serializable 接口"></a>谨慎地实现serializable 接口</h2><p>实现了serializable 接口主要有以下代价:</p>
+<ol>
+<li><p>如果想要这个类允许被序列化,那么非常简单 只需要在类上声明 implements serializable即可。但是这样做就会导致 一旦这个类被发布,<br>就大大降低了”改变这个类的实现”的灵活性,如果实现了serializable,那么他的所有的字节流编码就本城了它的导出API的一部分。如果接受了<br>默认的反序列化形式,那么这个类中的私有的实例都变成导出的API的一部分。这个不符合”最低限度地访问域”</p>
+</li>
+<li><p>实现了serializable 接口之后增加了出现BUG 和安全漏洞爹可能性。</p>
+</li>
+<li><p>随着类发行新的版本,相关的测试负担也会增加。</p>
+</li>
+</ol>
+<p>以上几处 我们应该为了继承而设计类 我们应该尽可能少地去实现serializable 接口,用户的接口也应该少的继承serializable 接口。</p>
+<h2 id="考虑使用自定义的序列化形式"><a href="#考虑使用自定义的序列化形式" class="headerlink" title="考虑使用自定义的序列化形式"></a>考虑使用自定义的序列化形式</h2><p>如果一个对象的物理表示法等同于它的逻辑内容,可能就适合于使用默认的序列化形式。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Name</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String lastName;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String firstName;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String middleName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即使你确定了默认的序列化形式是适合的,通常还必须提供一个readObject 方法以保证约束关系和安全性。</p>
+<p>当一个对象的物理表示法与它的逻辑数据内容有实质性的区别时,使用默认序列形式会有以下4个缺点：</p>
+<ol>
+<li>它使这个类的导出API 永远地束缚在该类的内部表示法上。</li>
+<li>他会消耗过多的空间</li>
+<li>他会消耗过多的时间</li>
+<li>他会引起堆栈溢出</li>
+</ol>
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/10/12/openssl/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">如何使用openssl 生成私有证书</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/09/13/go-gc/go-heap2/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">在go中查看代码的内存及cpu使用情况 (二)</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

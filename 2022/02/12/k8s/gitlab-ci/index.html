@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            使用gitlab-ci自动构建代码 |
+        
+        ClareChu
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/golang.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">使用gitlab-ci自动构建代码</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2022-02-12 15:43:13
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/kubernetes/">kubernetes</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/gitlab/">gitlab</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="使用docker-运行-gitlab-runner"><a href="#使用docker-运行-gitlab-runner" class="headerlink" title="使用docker 运行 gitlab runner"></a>使用docker 运行 gitlab runner</h2><p>运行 gitlab runner 有很多方式， 当前我们只使用docker 的方式运行runner.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d --name gitlab-runner --restart always \</span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  -v /srv/gitlab-runner/config:/etc/gitlab-runner \</span><br><span class="line">  -v /etc/gitlab-runner/certs:/etc/gitlab-runner/certs \</span><br><span class="line">  gitlab/gitlab-runner:latest</span><br></pre></td></tr></table></figure>
+
+
+<p>这个地方需要注意的是 公司使用的是自签名证书或自定义证书颁发机构所以在使用的过程中会遇到这个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Couldn&#39;t execute POST against https:&#x2F;&#x2F;hostname.tld&#x2F;api&#x2F;v4&#x2F;jobs&#x2F;request:</span><br><span class="line">Post https:&#x2F;&#x2F;hostname.tld&#x2F;api&#x2F;v4&#x2F;jobs&#x2F;request: x509: certificate signed by unknown authority</span><br></pre></td></tr></table></figure>
+
+<p>解决方法:</p>
+<p>您可以使用openssl客户端将 GitLab 实例的证书下载到<code>/etc/gitlab-runner/certs</code>,因为使用的是docker 所以我们需要将证书挂载到<br><code>/etc/gitlab-runner/certs</code>下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl s_client -showcerts -connect gitlab.example.com:443 &lt; /dev/null 2&gt;/dev/null | openssl x509 -outform PEM &gt; /etc/gitlab-runner/certs/gitlab.example.com.crt</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看日志发现缺少config.toml 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ docker logs -f gitlab-runner</span><br><span class="line">Runtime platform                                    arch&#x3D;amd64 os&#x3D;linux pid&#x3D;8 revision&#x3D;98daeee0 version&#x3D;14.7.0</span><br><span class="line">Starting multi-runner from &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml...  builds&#x3D;0</span><br><span class="line">Running in system-mode.</span><br><span class="line"></span><br><span class="line">Configuration loaded                                builds&#x3D;0</span><br><span class="line">listen_address not defined, metrics &amp; debug endpoints disabled  builds&#x3D;0</span><br><span class="line">[session_server].listen_address not defined, session endpoints disabled  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br><span class="line">ERROR: Failed to load config stat &#x2F;etc&#x2F;gitlab-runner&#x2F;config.toml: no such file or directory  builds&#x3D;0</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法:"></a>解决方法:</h3><p>直接执行 gitlab-runner register，并填写URL、token和描述即可，tags选填（参考设置tags）。<br>executor如果不知道怎么选，就选shell吧。 直接执行shell命令，简单有效。</p>
+<p>执行完成后，gitlab-runner会自动修改/etc/gitlab-runner/config.toml文件，并重启daemon程序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入 gitlab-runner 容器</span></span><br><span class="line">$ docker <span class="built_in">exec</span> -it gitlab-runner</span><br><span class="line"></span><br><span class="line">$ gitlab-ci-multi-runner register</span><br><span class="line">root@10c9e0311f06:/<span class="comment"># gitlab-ci-multi-runner register</span></span><br><span class="line">Runtime platform                                    arch=amd64 os=linux pid=78 revision=98daeee0 version=14.7.0</span><br><span class="line">Running <span class="keyword">in</span> system-mode.</span><br><span class="line"></span><br><span class="line">Enter the GitLab instance URL (<span class="keyword">for</span> example, https://gitlab.com/):</span><br><span class="line">https://gitlab.example.com/</span><br><span class="line">Enter the registration token:</span><br><span class="line">xxxxxxxxxxx</span><br><span class="line">Enter a description <span class="keyword">for</span> the runner:</span><br><span class="line">[10c9e0311f06]: xxxxxxxx</span><br><span class="line">Enter tags <span class="keyword">for</span> the runner (comma-separated):</span><br><span class="line">xx</span><br><span class="line">Registering runner... succeeded                     runner=xxxxx</span><br><span class="line">Enter an executor: kubernetes, docker-ssh, virtualbox, parallels, shell, ssh, docker+machine, docker-ssh+machine, custom, docker:</span><br><span class="line">ssh</span><br><span class="line">Enter the SSH server address (<span class="keyword">for</span> example, my.server.com):</span><br><span class="line">127.0.0.1</span><br><span class="line">Enter the SSH server port (<span class="keyword">for</span> example, 22):</span><br><span class="line">22</span><br><span class="line">Enter the SSH user (<span class="keyword">for</span> example, root):</span><br><span class="line">root</span><br><span class="line">Enter the SSH password (<span class="keyword">for</span> example, docker.io):</span><br><span class="line">password</span><br><span class="line">Enter the path to the SSH identity file (<span class="keyword">for</span> example, /home/user/.ssh/id_rsa):</span><br><span class="line"></span><br><span class="line">Runner registered successfully. Feel free to start it, but <span class="keyword">if</span> it<span class="string">&#x27;s running already the config should be automatically reloaded!</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="编写-gitlab-ci-yaml-文件"><a href="#编写-gitlab-ci-yaml-文件" class="headerlink" title="编写.gitlab-ci.yaml 文件"></a>编写.gitlab-ci.yaml 文件</h2><p>参考文档<a class="link" target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/ci/yaml/">.gitlab-ci 参考<i class="fas fa-external-link-alt"></i></a></p>
+<p>把当前文件放在项目的根目录 <code>.gitlab-ci.yaml</code> 或者使用</p>
+<p>例如:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">default:</span></span><br><span class="line">  <span class="comment"># 指定runner 的 tags</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">demo</span></span><br><span class="line"></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;Hello&quot;</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line">  <span class="attr">CI_COMMIT_REF_SLUG:</span> <span class="string">&quot;master&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">key:</span> <span class="string">$CI_COMMIT_REF_SLUG</span></span><br><span class="line">  <span class="attr">paths:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">vendor/</span>    </span><br><span class="line"></span><br><span class="line"><span class="attr">job A:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">solarmesh-dev</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">vendor</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;build&quot;</span> <span class="string">&gt;</span> <span class="string">vendor/hello.txt</span></span><br><span class="line">  <span class="attr">cache:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">$CI_COMMIT_REF_SLUG</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">vendor/</span>    </span><br><span class="line">  <span class="attr">after_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;World&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job B:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">  <span class="comment"># needs:</span></span><br><span class="line">  <span class="comment">#   - job A</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">solarmesh-dev</span>  </span><br><span class="line">  <span class="attr">cache:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">$CI_COMMIT_REF_SLUG</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">vendor/</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">cat</span> <span class="string">vendor/hello.txt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job C:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">solarmesh-dev</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="comment"># 触发更新</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">|-</span></span><br><span class="line">      <span class="string">result=$(kubectl</span> <span class="string">set</span> <span class="string">image</span> <span class="string">deployment</span> <span class="string">nginx</span> <span class="string">*=nginx:alpine</span> <span class="string">-n</span> <span class="string">default)</span></span><br><span class="line">      <span class="string">if</span> [[ <span class="string">&quot;$(echo $result | grep updated)&quot;</span> <span class="type">!=</span> <span class="string">&quot;&quot;</span>  ]]<span class="string">;</span> <span class="string">then</span></span><br><span class="line">      <span class="comment"># 镜像地址更新了，会自动重新部署</span></span><br><span class="line">      <span class="string">echo</span> <span class="string">&#x27;UPDATED&#x27;</span></span><br><span class="line">      <span class="string">else</span></span><br><span class="line">      <span class="comment"># 镜像地址与之前相同，需要触发重新部署</span></span><br><span class="line">      <span class="string">echo</span> <span class="string">&#x27;NOT UPDATE&#x27;</span></span><br><span class="line">      <span class="string">kubectl</span> <span class="string">rollout</span> <span class="string">restart</span> <span class="string">deployment</span> <span class="string">nginx</span> <span class="string">-n</span> <span class="string">default</span></span><br><span class="line">      <span class="string">fi</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><p>在测试的过程中上传artifact 报错 <a class="link" target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab-runner/-/issues/3752">issues<i class="fas fa-external-link-alt"></i></a>,<br>主要更新虚拟机上面的gitlab-runner 版本即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Uploading artifacts for failed job</span><br><span class="line">00:00</span><br><span class="line">mesg: ttyname failed: Inappropriate ioctl for device</span><br><span class="line">Uploading artifacts...</span><br><span class="line">Incorrect Usage: flag provided but not defined: -artifact-format</span><br><span class="line">NAME:</span><br><span class="line">   gitlab-runner artifacts-uploader - create and upload build artifacts (internal)</span><br><span class="line">USAGE:</span><br><span class="line">   gitlab-runner artifacts-uploader [command options] [arguments...]</span><br><span class="line">OPTIONS:</span><br><span class="line">FATAL: flag provided but not defined: -artifact-format </span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/02/14/java/mysql/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">常用mysql优化</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/01/04/k8s/ocp/scc/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">openshift 中的安全策略(scc)</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

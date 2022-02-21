@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            分布式事务 |
+        
+        ClareChu
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/golang.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">分布式事务</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-11-26 22:28:03
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/java/">java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>在讲分布式事务之前, 我们先了解一下什么是事务, 在程序中事务有什么作用。</p>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>数据库事务的四大特性(ACID)</p>
+<p>(1) 原子性(Atomicity)</p>
+<p>原子性是指事务包含的所有操作要么全部成功,要么全部失败回滚,<br>这和前面两篇博客介绍事务的功能是一样的概念,<br>因此事务的操作如果成功就必须要完全应用到数据库,如果操作失败则不能对数据库有任何影响。</p>
+<p>⑵ 一致性（Consistency）</p>
+<p>一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态,<br>也就是说一个事务执行之前和执行之后都必须处于一致性状态。</p>
+<p>拿转账来说,假设用户A和用户B两者的钱加起来一共是5000,<br>那么不管A和B之间如何转账,转几次账,事务结束后两个用户的钱相加起来应该还得是5000,<br>这就是事务的一致性。</p>
+<p>⑶ 隔离性（Isolation）</p>
+<p>隔离性是当多个用户并发访问数据库时,比如操作同一张表时,<br>数据库为每一个用户开启的事务,不能被其他事务的操作所干扰,多个并发事务之间要相互隔离。</p>
+<p>即要达到这么一种效果：对于任意两个并发的事务T1和T2,<br>在事务T1看来,T2要么在T1开始之前就已经结束,要么在T1结束之后才开始,<br>这样每个事务都感觉不到有其他事务在并发地执行。</p>
+<p>关于事务的隔离性数据库提供了多种隔离级别,稍后会介绍到。</p>
+<p>⑷ 持久性（Durability）</p>
+<p>持久性是指一个事务一旦被提交了,那么对数据库中的数据的改变就是永久性的,<br>即便是在数据库系统遇到故障的情况下也不会丢失提交事务的操作。</p>
+<p>例如我们在使用JDBC操作数据库时,在提交事务方法后,提示用户事务操作完成,<br>当我们程序执行完成直到看到提示后,就可以认定事务以及正确提交,即使这时候数据库出现了问题,<br>也必须要将我们的事务完全执行完成,否则就会造成我们看到提示事务处理完毕,<br>但是数据库因为故障而没有执行事务的重大错误。</p>
+<hr>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><p>分布式事务是指事务的参与者、支持事务的服务器、<br>资源服务器以及事务管理器分别位于不同的分布式系统的不同节点之上。<br>例如在大型电商系统中,下单接口通常会扣减库存、减去优惠、生成订单 id,<br>而订单服务与库存、优惠、订单 id 都是不同的服务,下单接口的成功与否,<br>不仅取决于本地的 db 操作,而且依赖第三方系统的结果,<br>这时候分布式事务就保证这些操作要么全部成功,要么全部失败。<br>本质上来说,分布式事务就是为了保证不同数据库的数据一致性。</p>
+<hr>
+<h2 id="分布式事务的解决方案"><a href="#分布式事务的解决方案" class="headerlink" title="分布式事务的解决方案"></a>分布式事务的解决方案</h2><p>AT,XA,TCC,Saga</p>
+<h3 id="AT"><a href="#AT" class="headerlink" title="AT"></a>AT</h3><p>这是Seata的一大特色,AT对业务代码完全无侵入性,使用非常简单,<br>改造成本低。我们只需要关注自己的业务SQL,Seata会通过分析我们业务SQL,反向生成回滚数据</p>
+<p>AT 包含两个阶段</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">一阶段,所有参与事务的分支,本地事务Commit 业务数据和回滚日志(undoLog)</span><br><span class="line">二阶段,事务协调者根据所有分支的情况,决定本次全局事务是Commit 还是 Rollback(二阶段是完全异步)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="XA"><a href="#XA" class="headerlink" title="XA"></a>XA</h2><p>也是我们常说的二阶段提交,XA要求数据库本身提供对规范和协议的支持。<br>XA用起来的话,也是对业务代码无侵入性的。</p>
+<p>其他三种模式,都是属于补偿型,无法保证全局一致性。<br>啥意思呢,例如刚刚说的AT模式,我们是可能读到这一次分布式事务的中间状态,而XA模式不会。</p>
+<p>补偿型 </p>
+<p>事务处理机制构建在 事务资源（数据库）之上（要么在中间件层面,要么在应用层面）,<br>事务资源 本身对分布式事务是无感知的,这也就导致了补偿型事务无法做到真正的 全局一致性.<br>比如,一条库存记录,处在 补偿型 事务处理过程中,由 100 扣减为 50。此时,<br>仓库管理员连接数据库,查询统计库存,就看到当前的 50。之后,<br>事务因为意外回滚,库存会被补偿回滚为 100。显然,仓库管理员查询统计到的 50 就是脏数据。<br>如果是XA的话,中间态数据库存 50 由数据库本身保证,<br>不会被仓库管理员读到（当然隔离级别需要 读已提交 以上）<br>但是全局一致性带来的结果就是数据的锁定（AT模式也是存在全局锁的,<br>但是隔离级别无法保证,后边我们会详细说）,例如全局事务中有一条update语句,<br>其他事务想要更新同一条数据的话,只能等待全局事务结束</p>
+<h2 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h2><p>TCC 模式同样包含三个阶段</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">一阶段 (Try): 所有参与分布式事务的分支,对业务资源进行检查和预留</span><br><span class="line">二阶段 (Confirm): 所有分支的Try全部成功后,执行业务提交</span><br><span class="line">二阶段 (Cancel): 取消Try阶段预留的业务资源</span><br></pre></td></tr></table></figure>
+
+<p>对比AT或者XA模式来说,TCC模式需要我们自己抽象并实现Try,Confirm,Cancel三个接口,<br>编码量会大一些,但是由于事务的每一个阶段都由开发人员自行实现。<br>而且相较于AT模式来说,减少了SQL解析的过程,也没有全局锁的限制,<br>所以TCC模式的性能是优于AT 、XA模式。</p>
+<h2 id="SAGA"><a href="#SAGA" class="headerlink" title="SAGA"></a>SAGA</h2><p>Saga 是长事务解决方案,每个参与者需要实现事务的正向操作和补偿操作。<br>当参与者正向操作执行失败时,回滚本地事务的同时,<br>会调用上一阶段的补偿操作,在业务失败时最终会使事务回到初始状态.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">一阶段(reduce): commit 提交事务,或者说执行当前任务</span><br><span class="line">二阶段(compensateReduce): 回滚当前业务</span><br></pre></td></tr></table></figure>
+
+<p>Saga与TCC类似,同样没有全局锁。由于相比缺少锁定资源这一步,<br>在某些适合的场景,Saga要比TCC实现起来更简单。<br>由于Saga和TCC都需要我们手动编码实现,所以在开发时我们需要参考一些设计上的规范,<br>由于不是本文重点,这里就不多说了,可以参考分布式事务 <code>Seata</code> 及其三种模式详解<br>在我们了解完四种分布式事务的原理之后,我们回到本文重点AT模式</p>
+<h2 id="结合seata"><a href="#结合seata" class="headerlink" title="结合seata"></a>结合seata</h2><p>tcc事务 </p>
+<p>申明一个全局事务 <code>@GlobalTransactional</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(value = &quot;/tc&quot;)</span></span><br><span class="line"><span class="meta">@GlobalTransactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">tc</span><span class="params">(<span class="meta">@RequestParam(&quot;from&quot;)</span> String accountNo, <span class="meta">@RequestParam(&quot;to&quot;)</span> String toAccountNo, <span class="meta">@RequestParam(&quot;amount&quot;)</span> <span class="keyword">double</span> amount)</span> </span>&#123;</span><br><span class="line">    Boolean first = firstTccAction.prepare(<span class="keyword">null</span>, accountNo, amount);</span><br><span class="line">    secondTccAction.prepare(<span class="keyword">null</span>, toAccountNo, amount);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>声明 tcc 的try confirm cancel, 使用 <code>@LocalTCC</code>标签 开启一个本地的tcc 事务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@LocalTCC</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FirstTccAction</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@TwoPhaseBusinessAction(name = &quot;FirstTccAction&quot;, commitMethod = &quot;commit&quot;, rollbackMethod = &quot;rollback&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">prepare</span><span class="params">(BusinessActionContext businessActionContext, <span class="meta">@BusinessActionContextParameter(paramName = &quot;accountNo&quot;)</span> String accountNo, <span class="meta">@BusinessActionContextParameter(paramName = &quot;amount&quot;)</span> <span class="keyword">double</span> amount)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">commit</span><span class="params">(BusinessActionContext businessActionContext)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">rollback</span><span class="params">(BusinessActionContext businessActionContext)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@LocalTCC</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SecondTccAction</span> </span>&#123;</span><br><span class="line">    <span class="meta">@TwoPhaseBusinessAction(name = &quot;SecondTccAction&quot;, commitMethod = &quot;commit&quot;, rollbackMethod = &quot;rollback&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">prepare</span><span class="params">(BusinessActionContext businessActionContext, <span class="meta">@BusinessActionContextParameter(paramName = &quot;accountNo&quot;)</span> String accountNo, <span class="meta">@BusinessActionContextParameter(paramName = &quot;amount&quot;)</span> <span class="keyword">double</span> amount)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">commit</span><span class="params">(BusinessActionContext businessActionContext)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">rollback</span><span class="params">(BusinessActionContext businessActionContext)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/12/17/linux/gitlab/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Gitlab 升级备份迁移</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/10/12/openssl/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">如何使用openssl 生成私有证书</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Lei Chu">
+    
+    <title>
+        
+            读写锁与互斥锁、自旋锁、悲观锁和乐观锁的区别 |
+        
+        ClareChu
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/golang.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/golang.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bp.jpg","description":"前期追深度，否则会华而不实，后期追广度，否则会坐井观天"},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                ClareChu
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">读写锁与互斥锁、自旋锁、悲观锁和乐观锁的区别</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Lei Chu</span>
+                        
+                            <span class="author-label">Lv4</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-06-28 14:43:55
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/golang/">golang</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>多线程访问共享资源的时候,避免不了资源竞争而导致数据错乱的问题,所以我们通常为了解决这一问题,都会在访问共享资源之前加锁。</p>
+<p>最常用的就是互斥锁,当然还有很多种不同的锁,比如自旋锁、读写锁、乐观锁等,不同种类的锁自然适用于不同的场景。</p>
+<p>如果选择了错误的锁,那么在一些高并发的场景下,可能会降低系统的性能,这样用户体验就会非常差了。</p>
+<p>所以,为了选择合适的锁,我们不仅需要清楚知道加锁的成本开销有多大,还需要分析业务场景中访问的共享资源的方式,再来还要考虑并发访问共享资源时的冲突概率。</p>
+<p>对症下药,才能减少锁对高并发性能的影响。</p>
+<h2 id="读写锁-RWMutex"><a href="#读写锁-RWMutex" class="headerlink" title="读写锁(RWMutex)"></a>读写锁(RWMutex)</h2><p>读写锁是针对于读写操作的互斥锁。它与普通的互斥锁最大的不同就是,<br>它可以分别针对读操作和写操作进行锁定和解锁操作。<br>读写锁遵循的访问控制规则与互斥锁有所不同。<br>在读写锁管辖的范围内,它允许任意个读操作的同时进行。<br>但是,在同一时刻,它只允许有一个写操作在进行。<br>并且,在某一个写操作被进行的过程中,读操作的进行也是不被允许的。<br>也就是说,读写锁控制下的多个写操作之间都是互斥的,并且写操作与读操作之间也都是互斥的。<br>但是,多个读操作之间却不存在互斥关系。</p>
+<p>1、 读锁: 所有的 goroutine 都可以同时读, 但不允许写。<br>2、 写锁: 写锁 只允许一个goroutine 写, 其他的goroutine 不允许读也不允许写</p>
+<p>用golang 来演示读写锁的作用,如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">Lock</span>       //写锁定</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">Unlock</span>     //写解锁</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">RLock</span>      //读锁定</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RWMutex)</span> <span class="title">RUnlock</span>    //读解锁</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="互斥锁-Mutex"><a href="#互斥锁-Mutex" class="headerlink" title="互斥锁(Mutex)"></a>互斥锁(Mutex)</h2><p>使用互斥锁（Mutex,全称 mutual exclusion）是为了来保护一个资源不会因为并发操作而引起冲突导致<br>数据不准确。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(count *<span class="keyword">int</span>, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		*count = *count + <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line">	wg.Done()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	count := <span class="number">0</span></span><br><span class="line">	wg.Add(<span class="number">3</span>)</span><br><span class="line">	<span class="keyword">go</span> add(&amp;count, &amp;wg)</span><br><span class="line">	<span class="keyword">go</span> add(&amp;count, &amp;wg)</span><br><span class="line">	<span class="keyword">go</span> add(&amp;count, &amp;wg)</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	fmt.Println(<span class="string">&quot;count 的值为：&quot;</span>, count)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="互斥锁与自旋锁"><a href="#互斥锁与自旋锁" class="headerlink" title="互斥锁与自旋锁"></a>互斥锁与自旋锁</h2><h3 id="互斥锁与自旋锁的区别"><a href="#互斥锁与自旋锁的区别" class="headerlink" title="互斥锁与自旋锁的区别"></a>互斥锁与自旋锁的区别</h3><p>最底层的两种就是会「互斥锁和自旋锁」,有很多高级的锁都是基于它们实现的,你可以认为它们是各种锁的地基,所以我们必须清楚它俩之间的区别和应用。</p>
+<p>加锁的目的就是保证共享资源在任意时间里,只有一个线程访问,这样就可以避免多线程导致共享数据错乱的问题。</p>
+<p>当已经有一个线程加锁后,其他线程加锁则就会失败,互斥锁和自旋锁对于加锁失败后的处理方式是不一样的：</p>
+<h3 id="互斥锁与自旋锁的开销成本"><a href="#互斥锁与自旋锁的开销成本" class="headerlink" title="互斥锁与自旋锁的开销成本:"></a>互斥锁与自旋锁的开销成本:</h3><p>互斥锁加锁失败后,线程会释放 CPU ,给其他线程；<br>自旋锁加锁失败后,线程会忙等待,直到它拿到锁；<br>互斥锁是一种「独占锁」,比如当线程 A 加锁成功后,此时互斥锁已经被线程 A 独占了,<br>只要线程 A 没有释放手中的锁,线程 B 加锁就会失败,于是就会释放 CPU 让给其他线程,<br>既然线程 B 释放掉了 CPU,自然线程 B 加锁的代码就会被阻塞。</p>
+<p>对于互斥锁加锁失败而阻塞的现象,是由操作系统内核实现的。当加锁失败时,<br>内核会将线程置为「睡眠」状态,等到锁被释放后,内核会在合适的时机唤醒线程,<br>当这个线程成功获取到锁后,于是就可以继续执行。</p>
+<h2 id="乐观锁与悲观锁"><a href="#乐观锁与悲观锁" class="headerlink" title="乐观锁与悲观锁"></a>乐观锁与悲观锁</h2><p>前面提到的互斥锁、自旋锁、读写锁,都是属于悲观锁。<br>悲观锁做事比较悲观,它认为多线程同时修改共享资源的概率比较高,于是很容易出现冲突,所以访问共享资源前,先要上锁。<br>那相反的,如果多线程同时修改共享资源的概率比较低,就可以采用乐观锁。<br>乐观锁做事比较乐观,它假定冲突的概率很低,它的工作方式是：先修改完共享资源,<br>再验证这段时间内有没有发生冲突,如果没有其他线程在修改资源,那么操作完成,如果发现有其他线程已经修改过这个资源,就放弃本次操作。<br>放弃后如何重试,这跟业务场景息息相关,虽然重试的成本很高,但是冲突的概率足够低的话,还是可以接受的。<br>可见,乐观锁的心态是,不管三七二十一,先改了资源再说。<br>另外,你会发现乐观锁全程并没有加锁,所以它也叫无锁编程。</p>
+<ul>
+<li>这里举一个场景例子：在线文档。</li>
+</ul>
+<p>我们都知道在线文档可以同时多人编辑的,如果使用了悲观锁,那么只要有一个用户正在编辑文档,此时其他用户就无法打开相同的文档了,这用户体验当然不好了。<br>那实现多人同时编辑,实际上是用了乐观锁,它允许多个用户打开同一个文档进行编辑,编辑完提交之后才验证修改的内容是否有冲突。<br>怎么样才算发生冲突？这里举个例子,比如用户 A 先在浏览器编辑文档,之后用户 B 在浏览器也打开了相同的文档进行编辑,但是用户 B 比用户 A 提交改动,这一过程用户 A 是不知道的,当 A 提交修改完的内容时,那么 A 和 B 之间并行修改的地方就会发生冲突。</p>
+<p>服务端要怎么验证是否冲突了呢？通常方案如下：<br>由于发生冲突的概率比较低,所以先让用户编辑文档,但是浏览器在下载文档时会记录下服务端返回的文档版本号；<br>当用户提交修改时,发给服务端的请求会带上原始文档版本号,服务器收到后将它与当前版本号进行比较,如果版本号一致则修改成功,否则提交失败。<br>实际上,我们常见的 SVN 和 Git 也是用了乐观锁的思想,先让用户编辑代码,然后提交的时候,通过版本号来判断是否产生了冲突,发生了冲突的地方,需要我们自己修改后,再重新提交。<br>乐观锁虽然去除了加锁解锁的操作,但是一旦发生冲突,重试的成本非常高,所以只有在冲突概率非常低,且加锁成本非常高的场景时,才考虑使用乐观锁。</p>
+
+        </div>
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/07/12/proccess/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">孤儿进程与僵尸进程</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/05/30/go-gc/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Golang 内存分配之逃逸分析</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Lei Chu</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>
