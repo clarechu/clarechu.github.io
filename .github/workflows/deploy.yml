@@ -9,7 +9,7 @@ env:
   GIT_USER: clarechu
   GIT_EMAIL: 1062186165@qq.com
   THEME_BRANCH: dev
-  DEPLOY_BRANCH: themes
+  DEPLOY_BRANCH: dev
 
 jobs:
   build:

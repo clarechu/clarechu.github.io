@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4e35863-4586-499a-98fe-f67da23c8cf0" name="Changes" comment="docker buildx 多架构编译">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/deploy.yml" afterDir="false" />
+    <list default="true" id="c4e35863-4586-499a-98fe-f67da23c8cf0" name="Changes" comment="set github action">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/deploy.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/deploy.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/doc-dev" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,9 +39,10 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
-  <component name="KubernetesApiPersistence">
-    <option name="context" value="cluster01" />
-  </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -109,7 +111,8 @@
     <MESSAGE value="更换中文标点符号的问题" />
     <MESSAGE value="scc &amp; gitlab-ci" />
     <MESSAGE value="docker buildx 多架构编译" />
-    <option name="LAST_COMMIT_MESSAGE" value="docker buildx 多架构编译" />
+    <MESSAGE value="set github action" />
+    <option name="LAST_COMMIT_MESSAGE" value="set github action" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
