@@ -1,10 +1,10 @@
----
+`---
 title: 使用gitlab-ci自动构建代码
 date: 2022-02-12 15:43:13
 tags:
 - kubernetes
 - gitlab
----
+---`
 
 ## 使用docker 运行 gitlab runner
 
