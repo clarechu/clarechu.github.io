@@ -22,8 +22,9 @@ jobs:
 
 
     steps:
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: LizardByte/setup-python-action@master
         with:
           python-version: '2.7'
       - name: Checkout
